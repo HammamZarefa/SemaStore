@@ -22,7 +22,7 @@
                                 </thead>
                                 <tbody>
                                 @forelse ($orders as $item)
-                                    <tr>
+                                    <tr style="border: 2px solid #f05234;">
                                         <td data-label="@lang('Order ID')">{{ $item->id }}</td>
                                         <td data-label="@lang('Category')">{{__($item->category->name)}}</td>
                                         <td data-label="@lang('Service')" class="break_line">{{ __($item->service->name) }}</td>
