@@ -2,61 +2,59 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Constants\Status;
+use App\Traits\GlobalStatus;
+use App\Traits\Searchable;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
+	use Searchable, GlobalStatus;
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class)->withDefault();
-    }
+	public function category()
+	{
+		return $this->belongsTo(Category::class);
+	}
 
-    public function user()
-    {
-        return $this->belongsTo(User::class)->withDefault();
-    }
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
 
-    public function service()
-    {
-        return $this->belongsTo(Service::class)->withDefault();
-    }
+	public function service()
+	{
+		return $this->belongsTo(Service::class);
+	}
 
-    //Scopes
-    public function scopePending($query)
-    {
-        return $query->where('status', 0);
-    }
+	public function provider()
+	{
+		return $this->belongsTo(ApiProvider::class, 'api_provider_id', 'id');
+	}
 
-    public function scopeProcessing($query)
-    {
-        return $query->where('status', 1);
-    }
+	//Scopes
+	public function scopePending($query)
+	{
+		$query->where('status', Status::ORDER_PENDING);
+	}
 
-    public function scopeCompleted($query)
-    {
-        return $query->where('status', 2);
-    }
+	public function scopeProcessing($query)
+	{
+		$query->where('status', Status::ORDER_PROCESSING);
+	}
 
-    public function scopeCancelled($query)
-    {
-        return $query->where('status', 3);
-    }
+	public function scopeCompleted($query)
+	{
+		$query->where('status', Status::ORDER_COMPLETED);
+	}
 
-    public function scopeRefunded($query)
-    {
-        return $query->where('status', 4);
-    }
+	public function scopeCancelled($query)
+	{
+		$query->where('status', Status::ORDER_CANCELLED);
+	}
 
-    public function scopeApiorder($query)
-    {
-        return $query->where('api_order', 1);
-    }
-
-    public function scopeOrdernotplaced($query)
-    {
-        return $query->where('order_placed_to_api', 0);
-    }
+	public function scopeRefunded($query)
+	{
+		$query->where('status', Status::ORDER_REFUNDED);
+	}
 }

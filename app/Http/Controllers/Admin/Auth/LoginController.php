@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\Admin\Auth;
 
-use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Laramin\Utility\Onumoti;
 
 class LoginController extends Controller
 {
@@ -36,6 +36,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('admin.guest')->except('logout');
     }
 
@@ -46,8 +47,8 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $page_title = "Admin Login";
-        return view('admin.auth.login', compact('page_title'));
+        $pageTitle = "Admin Login";
+        return view('admin.auth.login', compact('pageTitle'));
     }
 
     /**
@@ -57,7 +58,7 @@ class LoginController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('admin');
+        return auth()->guard('admin');
     }
 
     public function username()
@@ -69,22 +70,24 @@ class LoginController extends Controller
     {
 
         $this->validateLogin($request);
-        $lv = @getLatestVersion();
-        $gnl = GeneralSetting::first();
-        if (@systemDetails()['version'] < @json_decode($lv)->version) {
-            $gnl->sys_version = $lv;
-        } else {
-            $gnl->sys_version = null;
-        }
-        $gnl->save();
 
-//
+        $request->session()->regenerateToken();
+
+        if (!verifyCaptcha()) {
+            $notify[] = ['error', 'Invalid captcha provided'];
+            return back()->withNotify($notify);
+        }
+
+
+        Onumoti::getData();
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
             $this->fireLockoutEvent($request);
             return $this->sendLockoutResponse($request);
         }
@@ -107,11 +110,5 @@ class LoginController extends Controller
         $this->guard('admin')->logout();
         $request->session()->invalidate();
         return $this->loggedOut($request) ?: redirect('/admin');
-    }
-
-    public function resetPassword()
-    {
-        $page_title = 'Account Recovery';
-        return view('admin.reset', compact('page_title'));
     }
 }

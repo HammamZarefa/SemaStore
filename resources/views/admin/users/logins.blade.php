@@ -11,31 +11,40 @@
                         <table class="table table--light style--two">
                             <thead>
                             <tr>
-                                <th scope="col">@lang('Date')</th>
-                                <th scope="col">@lang('Username')</th>
-                                <th scope="col">@lang('IP')</th>
-                                <th scope="col">@lang('Location')</th>
-                                <th scope="col">@lang('Browser')</th>
-                                <th scope="col">@lang('OS')</th>
+                                <th>@lang('User')</th>
+                                <th>@lang('Login at')</th>
+                                <th>@lang('IP')</th>
+                                <th>@lang('Location')</th>
+                                <th>@lang('Browser | OS')</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($login_logs as $log)
+                            @forelse($loginLogs as $log)
                                 <tr>
-                                    <td data-label="@lang('Date')">{{diffForHumans($log->created_at) }}</td>
-                                    <td data-label="@lang('Username')"><a href="{{ route('admin.users.detail', $log->user_id)}}"> {{ ($log->user) ? $log->user->username : '' }}</a></td>
-                                    <td data-label="@lang('IP')">
-                                        <a href="{{route('admin.report.login.ipHistory',[$log->user_ip])}}">
-                                            {{ $log->user_ip }}
-                                        </a>
+                                    <td>
+                                        <span class="fw-bold">{{ @$log->user->fullname }}</span>
+                                        <br>
+                                        <span class="small"> <a href="{{ route('admin.users.detail', $log->user_id) }}"><span>@</span>{{ @$log->user->username }}</a> </span>
                                     </td>
-                                    <td data-label="@lang('Location')">{{ $log->location }}</td>
-                                    <td data-label="@lang('Browser')">{{ __($log->browser) }}</td>
-                                    <td data-label="@lang('OS')">{{ __($log->os) }}</td>
+
+                                    <td>
+                                        {{showDateTime($log->created_at) }} <br> {{diffForHumans($log->created_at) }}
+                                    </td>
+
+                                    <td>
+                                        <span class="fw-bold">
+                                        <a href="{{route('admin.report.login.ipHistory',[$log->user_ip])}}">{{ $log->user_ip }}</a>
+                                        </span>
+                                    </td>
+
+                                    <td>{{ __($log->city) }} <br> {{ __($log->country) }}</td>
+                                    <td>
+                                        {{ __($log->browser) }} <br> {{ __($log->os) }}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-muted text-center" colspan="100%">{{ __($empty_message) }}</td>
+                                    <td class="text-muted text-center" colspan="100%">{{ __($emptyMessage) }}</td>
                                 </tr>
                             @endforelse
 
@@ -43,9 +52,11 @@
                         </table><!-- table end -->
                     </div>
                 </div>
+                @if($loginLogs->hasPages())
                 <div class="card-footer py-4">
-                    {{ paginateLinks($login_logs) }}
+                    {{ paginateLinks($loginLogs) }}
                 </div>
+                @endif
             </div><!-- card end -->
         </div>
 

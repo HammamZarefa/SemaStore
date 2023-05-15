@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Gateway\stripe;
+namespace App\Http\Controllers\Gateway\Stripe;
 
+use App\Constants\Status;
 use App\Models\Deposit;
-use App\Models\GeneralSetting;
 use App\Http\Controllers\Gateway\PaymentController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,19 +25,19 @@ class ProcessController extends Controller
         $alias = $deposit->gateway->alias;
 
         $send['track'] = $deposit->trx;
-        $send['view'] = 'user.payment.'.$alias;
+        $send['view'] = 'user.payment.' . $alias;
         $send['method'] = 'post';
-        $send['url'] = route('ipn.'.$alias);
+        $send['url'] = route('ipn.' . $alias);
         return json_encode($send);
     }
 
     public function ipn(Request $request)
     {
         $track = Session::get('Track');
-        $data = Deposit::where('trx', $track)->orderBy('id', 'DESC')->first();
-        if ($data->status == 1) {
-            $notify[] = ['error', 'Invalid Request.'];
-            return redirect()->route(gatewayRedirectUrl())->withNotify($notify);
+        $deposit = Deposit::where('trx', $track)->orderBy('id', 'DESC')->first();
+        if ($deposit->status == Status::PAYMENT_SUCCESS) {
+            $notify[] = ['error', 'Invalid request.'];
+            return to_route(gatewayRedirectUrl())->withNotify($notify);
         }
         $this->validate($request, [
             'cardNumber' => 'required',
@@ -49,12 +49,12 @@ class ProcessController extends Controller
         $exp = $request->cardExpiry;
         $cvc = $request->cardCVC;
 
-        $exp = $pieces = explode("/", $_POST['cardExpiry']);
+        $exp = explode("/", $_POST['cardExpiry']);
         $emo = trim($exp[0]);
         $eyr = trim($exp[1]);
-        $cnts = round($data->final_amo, 2) * 100;
+        $cnts = round($deposit->final_amo, 2) * 100;
 
-        $stripeAcc = json_decode($data->gateway_currency()->gateway_parameter);
+        $stripeAcc = json_decode($deposit->gatewayCurrency()->gateway_parameter);
 
 
         Stripe::setApiKey($stripeAcc->secret_key);
@@ -73,14 +73,15 @@ class ProcessController extends Controller
             try {
                 $charge = Charge::create(array(
                     'card' => $token['id'],
-                    'currency' => $data->method_currency,
+                    'currency' => $deposit->method_currency,
                     'amount' => $cnts,
                     'description' => 'item',
                 ));
 
                 if ($charge['status'] == 'succeeded') {
-                    PaymentController::userDataUpdate($data->trx);
-                    $notify[] = ['success', 'Payment Success.'];
+                    PaymentController::userDataUpdate($deposit);
+                    $notify[] = ['success', 'Payment captured successfully'];
+                    return to_route(gatewayRedirectUrl(true))->withNotify($notify);
                 }
             } catch (\Exception $e) {
                 $notify[] = ['error', $e->getMessage()];
@@ -89,6 +90,6 @@ class ProcessController extends Controller
             $notify[] = ['error', $e->getMessage()];
         }
 
-        return redirect()->route(gatewayRedirectUrl())->withNotify($notify);
+        return to_route(gatewayRedirectUrl())->withNotify($notify);
     }
 }

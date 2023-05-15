@@ -10,48 +10,36 @@ class ExtensionController extends Controller
 {
     public function index()
     {
-        $page_title = 'Extension';
-        $extensions = Extension::orderByDesc('status')->get();
-        return view('admin.extension.index', compact('page_title', 'extensions'));
+        $pageTitle  = 'Extensions';
+        $extensions = Extension::orderBy('name')->get();
+        return view('admin.extension.index', compact('pageTitle', 'extensions'));
     }
 
     public function update(Request $request, $id)
     {
-        $extension = Extension::findOrFail($id);
+        $extension       = Extension::findOrFail($id);
+        $validation_rule = [];
 
         foreach ($extension->shortcode as $key => $val) {
-            $validation_rule = [$key => 'required'];
+            $validation_rule = array_merge($validation_rule, [$key => 'required']);
         }
+
         $request->validate($validation_rule);
 
         $shortcode = json_decode(json_encode($extension->shortcode), true);
-        foreach ($shortcode as $key => $code) {
+
+        foreach ($shortcode as $key => $value) {
             $shortcode[$key]['value'] = $request->$key;
         }
 
         $extension->shortcode = $shortcode;
         $extension->save();
-        $notify[] = ['success', $extension->name . ' has been updated'];
-        return redirect()->route('admin.extensions.index')->withNotify($notify);
+        $notify[] = ['success', $extension->name . ' updated successfully'];
+        return back()->withNotify($notify);
     }
 
-    public function activate(Request $request)
+    public function status($id)
     {
-        $request->validate(['id' => 'required|integer']);
-        $extension = Extension::findOrFail($request->id);
-        $extension->status = 1;
-        $extension->save();
-        $notify[] = ['success', $extension->name . ' has been activated'];
-        return redirect()->route('admin.extensions.index')->withNotify($notify);
-    }
-
-    public function deactivate(Request $request)
-    {
-        $request->validate(['id' => 'required|integer']);
-        $extension = Extension::findOrFail($request->id);
-        $extension->status = 0;
-        $extension->save();
-        $notify[] = ['success', $extension->name . ' has been disabled'];
-        return redirect()->route('admin.extensions.index')->withNotify($notify);
+        return Extension::changeStatus($id);
     }
 }

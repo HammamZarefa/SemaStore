@@ -2,143 +2,188 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\GeneralSetting;
+use App\Constants\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Frontend;
+use App\Models\GeneralSetting;
+use App\Rules\FileTypeValidate;
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
 use Image;
 
 class GeneralSettingController extends Controller
 {
     public function index()
     {
-        $general = GeneralSetting::first();
-        $page_title = 'General Settings';
-        return view('admin.setting.general_setting', compact('page_title', 'general'));
+        $pageTitle = 'General Setting';
+        $timezones = json_decode(file_get_contents(resource_path('views/admin/partials/timezone.json')));
+        return view('admin.setting.general', compact('pageTitle', 'timezones'));
     }
 
     public function update(Request $request)
     {
-        $validation_rule = [
-            'base_color' => ['nullable', 'regex:/^[a-f0-9]{6}$/i'],
-            'secondary_color' => ['nullable', 'regex:/^[a-f0-9]{6}$/i'],
-        ];
+        $request->validate([
+            'site_name'       => 'required|string|max:40',
+            'cur_text'        => 'required|string|max:40',
+            'cur_sym'         => 'required|string|max:40',
+            'base_color'      => 'nullable', 'regex:/^[a-f0-9]{6}$/i',
+            'secondary_color' => 'nullable', 'regex:/^[a-f0-9]{6}$/i',
+            'timezone'        => 'required',
+        ]);
 
-        $validator = Validator::make($request->all(), $validation_rule, []);
-        $validator->validate();
+        $general                  = gs();
+        $general->site_name       = $request->site_name;
+        $general->cur_text        = $request->cur_text;
+        $general->cur_sym         = $request->cur_sym;
+        $general->base_color      = $request->base_color;
+        $general->secondary_color = $request->secondary_color;
+        $general->save();
 
-        $general_setting = GeneralSetting::first();
-        $request->merge(['ev' => isset($request->ev) ? 1 : 0]);
-        $request->merge(['en' => isset($request->en) ? 1 : 0]);
-        $request->merge(['sv' => isset($request->sv) ? 1 : 0]);
-        $request->merge(['sn' => isset($request->sn) ? 1 : 0]);
-        $request->merge(['force_ssl' => isset($request->force_ssl) ? 1 : 0]);
-        $request->merge(['secure_password' => isset($request->secure_password) ? 1 : 0]);
-        $request->merge(['registration' => isset($request->registration) ? 1 : 0]);
-
-        $general_setting->update($request->only(['sitename', 'cur_text', 'cur_sym', 'ev', 'en', 'sv', 'sn', 'force_ssl', 'secure_password', 'registration', 'base_color', 'secondary_color']));
-        $notify[] = ['success', 'General Setting has been updated.'];
+        $timezoneFile = config_path('timezone.php');
+        $content      = '<?php $timezone = ' . $request->timezone . ' ?>';
+        file_put_contents($timezoneFile, $content);
+        $notify[] = ['success', 'General setting updated successfully'];
         return back()->withNotify($notify);
     }
 
+    public function systemConfiguration()
+    {
+        $pageTitle = 'System Configuration';
+        return view('admin.setting.configuration', compact('pageTitle'));
+    }
+
+    public function systemConfigurationSubmit(Request $request)
+    {
+        $general                  = GeneralSetting::first();
+        $general->ev              = $request->ev ? Status::ENABLE : Status::DISABLE;
+        $general->en              = $request->en ? Status::ENABLE : Status::DISABLE;
+        $general->sv              = $request->sv ? Status::ENABLE : Status::DISABLE;
+        $general->sn              = $request->sn ? Status::ENABLE : Status::DISABLE;
+        $general->ln              = $request->ln ? Status::ENABLE : Status::DISABLE;
+        $general->force_ssl       = $request->force_ssl ? Status::ENABLE : Status::DISABLE;
+        $general->secure_password = $request->secure_password ? Status::ENABLE : Status::DISABLE;
+        $general->registration    = $request->registration ? Status::ENABLE : Status::DISABLE;
+        $general->agree           = $request->agree ? Status::ENABLE : Status::DISABLE;
+        $general->save();
+        $notify[] = ['success', 'System configuration updated successfully'];
+        return back()->withNotify($notify);
+    }
 
     public function logoIcon()
     {
-        $page_title = 'Logo & Icon';
-        return view('admin.setting.logo_icon', compact('page_title'));
+        $pageTitle = 'Logo & Favicon';
+        return view('admin.setting.logo_icon', compact('pageTitle'));
     }
 
     public function logoIconUpdate(Request $request)
     {
         $request->validate([
-            'logo' => 'image|mimes:jpg,jpeg,png',
-            'favicon' => 'image|mimes:png',
+            'logo'    => ['image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
+            'favicon' => ['image', new FileTypeValidate(['png'])],
         ]);
+
         if ($request->hasFile('logo')) {
             try {
-                $path = imagePath()['logoIcon']['path'];
+                $path = getFilePath('logoIcon');
+
                 if (!file_exists($path)) {
                     mkdir($path, 0755, true);
                 }
+
                 Image::make($request->logo)->save($path . '/logo.png');
             } catch (\Exception $exp) {
-                $notify[] = ['error', 'Logo could not be uploaded.'];
+                $notify[] = ['error', 'Couldn\'t upload the logo'];
                 return back()->withNotify($notify);
             }
         }
 
         if ($request->hasFile('favicon')) {
             try {
-                $path = imagePath()['logoIcon']['path'];
+                $path = getFilePath('logoIcon');
+
                 if (!file_exists($path)) {
                     mkdir($path, 0755, true);
                 }
-                $size = explode('x', imagePath()['favicon']['size']);
+
+                $size = explode('x', getFileSize('favicon'));
                 Image::make($request->favicon)->resize($size[0], $size[1])->save($path . '/favicon.png');
             } catch (\Exception $exp) {
-                $notify[] = ['error', 'Favicon could not be uploaded.'];
+                $notify[] = ['error', 'Couldn\'t upload the favicon'];
                 return back()->withNotify($notify);
             }
         }
-        $notify[] = ['success', 'Logo Icons has been updated.'];
+
+        $notify[] = ['success', 'Logo & favicon updated successfully'];
         return back()->withNotify($notify);
     }
 
-    //API settings
-    public function apiSettings()
+    public function customCss()
     {
-        $general = GeneralSetting::first();
-        $page_title = 'API Settings';
-        return view('admin.setting.api_setting', compact('page_title', 'general'));
+        $pageTitle    = 'Custom CSS';
+        $file         = activeTemplate(true) . 'css/custom.css';
+        $file_content = @file_get_contents($file);
+        return view('admin.setting.custom_css', compact('pageTitle', 'file_content'));
     }
 
-    public function apiSettingsUpdate(Request $request)
+    public function customCssSubmit(Request $request)
+    {
+        $file = activeTemplate(true) . 'css/custom.css';
+
+        if (!file_exists($file)) {
+            fopen($file, "w");
+        }
+
+        file_put_contents($file, $request->css);
+        $notify[] = ['success', 'CSS updated successfully'];
+        return back()->withNotify($notify);
+    }
+
+    public function maintenanceMode()
+    {
+        $pageTitle   = 'Maintenance Mode';
+        $maintenance = Frontend::where('data_keys', 'maintenance.data')->firstOrFail();
+        return view('admin.setting.maintenance', compact('pageTitle', 'maintenance'));
+    }
+
+    public function maintenanceModeSubmit(Request $request)
     {
         $request->validate([
-            'api_url' => 'required|string|max:100',
-            'api_key' => 'required|string|max:100'
+            'description' => 'required',
         ]);
-
-        $general = GeneralSetting::first();
-        $general->api_url = $request->api_url;
-        $general->api_key = $request->api_key;
+        $general                   = GeneralSetting::first();
+        $general->maintenance_mode = $request->status ? Status::ENABLE : Status::DISABLE;
         $general->save();
 
-        $notify[] = ['success', 'API settings updated.'];
+        $maintenance              = Frontend::where('data_keys', 'maintenance.data')->firstOrFail();
+        $maintenance->data_values = [
+            'description' => $request->description,
+        ];
+        $maintenance->save();
+
+        $notify[] = ['success', 'Maintenance mode updated successfully'];
         return back()->withNotify($notify);
     }
 
-    public function apiTest()
+    public function cookie()
     {
-        $general = GeneralSetting::first();
-
-        $response = Http::post($general->api_url, [
-            'key' => $general->api_key,
-            'action' => "services",
-        ]);
-
-        if (!$response->json()){
-            $notify[] = ['error', $response->body()];
-            return back()->withNotify($notify);
-        }
-
-        if (array_key_exists('error', $response->json())){
-            $notify[] = ['error', $response->json()['error']];
-            return back()->withNotify($notify);
-        }
-
-        $notify[] = ['success', 'API tasted. You can save these credentials.'];
-        return back()->withNotify($notify);
+        $pageTitle = 'GDPR Cookie';
+        $cookie    = Frontend::where('data_keys', 'cookie.data')->firstOrFail();
+        return view('admin.setting.cookie', compact('pageTitle', 'cookie'));
     }
-    public function exchange_rate(Request $request)
-    {
-        $general = GeneralSetting::first();
-        $general->exchange_rate = $request->rate;
-        $general->save();
 
-        $notify[] = ['success', 'exchange rate settings updated.'];
+    public function cookieSubmit(Request $request)
+    {
+        $request->validate([
+            'short_desc'  => 'required|string|max:255',
+            'description' => 'required',
+        ]);
+        $cookie              = Frontend::where('data_keys', 'cookie.data')->firstOrFail();
+        $cookie->data_values = [
+            'short_desc'  => $request->short_desc,
+            'description' => $request->description,
+            'status'      => $request->status ? Status::ENABLE : Status::DISABLE,
+        ];
+        $cookie->save();
+        $notify[] = ['success', 'Cookie policy updated successfully'];
         return back()->withNotify($notify);
     }
 }

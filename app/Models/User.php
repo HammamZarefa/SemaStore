@@ -2,20 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Searchable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use App\Constants\Status;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
-    protected $guarded = ['id'];
+    use HasApiTokens, Searchable;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -23,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'ver_code'
     ];
 
     /**
@@ -37,73 +32,61 @@ class User extends Authenticatable
         'ver_code_send_at' => 'datetime'
     ];
 
-    protected $data = [
-        'data'=>1
-    ];
 
-
-
-
-    public function login_logs()
+    public function loginLogs()
     {
         return $this->hasMany(UserLogin::class);
     }
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class)->orderBy('id','desc');
+        return $this->hasMany(Transaction::class)->orderBy('id', 'desc');
     }
 
     public function deposits()
     {
-        return $this->hasMany(Deposit::class)->where('status','!=',0);
+        return $this->hasMany(Deposit::class)->where('status', '!=', Status::PAYMENT_INITIATE);
     }
 
-    public function withdrawals()
+    public function fullname(): Attribute
     {
-        return $this->hasMany(Withdrawal::class)->where('status','!=',0);
+        return new Attribute(
+            get: fn () => $this->firstname . ' ' . $this->lastname,
+        );
     }
-
 
     // SCOPES
-
-    public function getFullnameAttribute()
-    {
-        return $this->firstname . ' ' . $this->lastname;
-    }
-
     public function scopeActive()
     {
-        return $this->where('status', 1);
+        return $this->where('status', Status::USER_ACTIVE)->where('ev', Status::VERIFIED)->where('sv', Status::VERIFIED);
     }
 
     public function scopeBanned()
     {
-        return $this->where('status', 0);
+        return $this->where('status', Status::USER_BAN);
     }
 
     public function scopeEmailUnverified()
     {
-        return $this->where('ev', 0);
+        return $this->where('ev', Status::UNVERIFIED);
     }
 
-    public function scopeSmsUnverified()
+    public function scopeMobileUnverified()
     {
-        return $this->where('sv', 0);
+        return $this->where('sv', Status::UNVERIFIED);
     }
     public function scopeEmailVerified()
     {
-        return $this->where('ev', 1);
+        return $this->where('ev', Status::VERIFIED);
     }
 
-    public function scopeSmsVerified()
+    public function scopeMobileVerified()
     {
-        return $this->where('sv', 1);
+        return $this->where('sv', Status::VERIFIED);
     }
 
-    public function serials()
+    public function scopeWithBalance()
     {
-        return $this->hasMany(Serial::class);
+        return $this->where('balance', '>', 0);
     }
-
 }

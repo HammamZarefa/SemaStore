@@ -1,7 +1,7 @@
 {
     "address": {
         "builder": true,
-        "no_selection":true,
+        "no_selection": true,
         "name": "Address Section",
         "content": {
             "phone": "text",
@@ -9,14 +9,14 @@
             "address": "text"
         }
     },
-    "hero": {
+    "banner": {
         "builder": true,
-        "no_selection":true,
-        "name": "Hero Section",
+        "no_selection": true,
+        "name": "Banner Section",
         "content": {
             "images": {
                 "image": {
-                    "size": "633x539"
+                    "size": "630x540"
                 }
             },
             "heading": "text",
@@ -35,43 +35,43 @@
             "modal": true
         }
     },
-    "about": {
+    "about_1": {
         "builder": true,
-        "name": "About Section",
+        "name": "About Section 1",
         "content": {
             "images": {
                 "image": {
-                    "size": "518x499"
+                    "size": "520x500"
                 }
             },
             "title": "text",
-            "content": "textarea"
+            "description": "textarea-nic"
         }
     },
     "about_2": {
         "builder": true,
-        "name": "About 2 Section",
+        "name": "About Section 2",
         "content": {
             "images": {
                 "image": {
-                    "size": "569x402"
+                    "size": "555x390"
                 }
             },
             "title": "text",
-            "content": "textarea"
+            "description": "textarea-nic"
         }
     },
     "about_3": {
         "builder": true,
-        "name": "About 3 Section",
+        "name": "About Section 3",
         "content": {
             "images": {
                 "image": {
-                    "size": "599x503"
+                    "size": "555x465"
                 }
             },
             "title": "text",
-            "content": "textarea"
+            "description": "textarea-nic"
         }
     },
     "counter": {
@@ -114,7 +114,7 @@
         "content": {
             "images": {
                 "image": {
-                    "size": "569x402"
+                    "size": "570x400"
                 }
             },
             "heading": "text",
@@ -133,15 +133,24 @@
             "heading": "text"
         },
         "element": {
-            "images":{
-                "image":{
-                    "size":"107x107"
+            "images": {
+                "image": {
+                    "size": "70x70"
                 }
             },
             "name": "text",
             "designation": "text",
             "review": "textarea",
-            "rating_out_of_5": "text",
+            "select": {
+                "name": "Rating",
+                "options": {
+                    "1": "One Star",
+                    "2": "Two Star",
+                    "3": "Three Star",
+                    "4": "Four Star",
+                    "5": "Five Star"
+                }
+            },
             "modal": true
         }
     },
@@ -153,20 +162,18 @@
             "sub_heading": "text"
         },
         "element": {
-            "images":{
-                "image":{
-                    "size":"770x390",
-                    "thumb":"600x400"
+            "images": {
+                "image": {
+                    "size": "770x390",
+                    "thumb": "480x280"
                 }
             },
             "title": "text",
-            "short_description": "text",
+            "short_description": "textarea",
             "description": "textarea-nic",
             "modal": false
         }
     },
-
-
     "subscribe": {
         "builder": true,
         "name": "Subscribe Section",
@@ -174,10 +181,9 @@
             "heading": "text"
         }
     },
-
     "footer": {
         "builder": true,
-        "no_selection":true,
+        "no_selection": true,
         "name": "Footer Section",
         "content": {
             "content": "textarea"
@@ -188,26 +194,24 @@
             "modal": true
         }
     },
-
-    "extra": {
+    "privacy_policy": {
         "builder": true,
-        "no_selection":true,
-        "name": "Extra Pages",
+        "no_selection": true,
+        "name": "Policy Pages",
         "element": {
             "title": "text",
             "content": "textarea-nic",
             "modal": false
         }
     },
-
     "contact": {
         "builder": true,
-        "no_selection":true,
+        "no_selection": true,
         "name": "Contact Section",
         "content": {
             "images": {
                 "image": {
-                    "size": "715x471"
+                    "size": "715x470"
                 }
             }
         }

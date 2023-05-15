@@ -1,10 +1,6 @@
 @php
-    $blog_content = getContent('blog.content', true);
-    if (request()->route()->getName() == 'home'){
-        $blog_elements = getContent('blog.element', false, 3);
-    } else {
-        $blog_elements = \App\Models\Frontend::where('data_keys', 'blog.element')->latest()->paginate(getPaginate());
-    }
+    $blogContent = getContent('blog.content', true);
+    $blogElements = getContent('blog.element', false, 3);
 @endphp
 <!-- news-section start -->
 <section class="news-section ptb-80" id="blog">
@@ -25,8 +21,8 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
                 <div class="section-header">
-                    <span class="sub-title">{{ __(@$blog_content->data_values->heading) }}</span>
-                    <h2 class="section-title">{{ __(@$blog_content->data_values->sub_heading) }}</h2>
+                    <span class="sub-title">{{ __(@$blogContent->data_values->heading) }}</span>
+                    <h2 class="section-title">{{ __(@$blogContent->data_values->sub_heading) }}</h2>
                     <span class="title-border"></span>
                 </div>
             </div>
@@ -34,28 +30,30 @@
         <div class="news-area">
             <div class="row justify-content-center ml-b-30">
 
-                @forelse($blog_elements as $item)
-                    <div class="col-lg-4 col-md-6 col-sm-8 mrb-30">
+                @forelse($blogElements as $item)
+                    <div class="col-lg-4 col-md-6 col-sm-12 mrb-30">
                         <div class="news-item">
                             <div class="news-thumb">
-                                <img src="{{ getImage('assets/images/frontend/blog/thumb_' . @$item->data_values->image, '600x400') }}" alt="news">
+                                <img src="{{ getImage('assets/images/frontend/blog/thumb_' . @$item->data_values->image, '480x280') }}" alt="@lang('news')">
                             </div>
                             <div class="news-content">
-                                <h3 class="title"><a href="{{ route('blog.details',[$item->id,str_slug($item->data_values->title)]) }}">{{ __(@$item->data_values->title) }}</a></h3>
+                                <h3 class="title"><a
+                                        href="{{ route('blog.details', [$item->id, slug($item->data_values->title)]) }}">{{ __(@$item->data_values->title) }}</a>
+                                </h3>
                                 <p>{{ __(@$item->data_values->short_description) }}</p>
                                 <div class="news-btn">
-                                    <a href="{{ route('blog.details',[$item->id,str_slug($item->data_values->title)]) }}" class="custom-btn">@lang('Read More') <i class="ti-angle-right"></i></a>
+                                    <a class="custom-btn" href="{{ route('blog.details', [$item->id, slug($item->data_values->title)]) }}">@lang('READ MORE') <i class="las la-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @empty
+                    <div class="col-lg-4 col-md-6 col-sm-12 mrb-30">
+                        {{ __($emptyMessage) }}
+                    </div>
                 @endforelse
 
             </div>
-            @if(request()->route()->getName() != 'home')
-                {{ $blog_elements->links() }}
-            @endif
         </div>
     </div>
 </section>

@@ -1,382 +1,369 @@
 @extends('admin.layouts.app')
 
 @section('panel')
-    {{--@if(@json_decode($general->sys_version)->version > systemDetails()['version'])--}}
-        {{--<div class="row">--}}
-            {{--<div class="col-md-12">--}}
-                {{--<div class="card text-white bg-warning mb-3">--}}
-                    {{--<div class="card-header">--}}
-                        {{--<h3 class="card-title"> @lang('New Version Available')--}}
-                            {{--<button--}}
-                                {{--class="btn btn--dark float-right">@lang('Version') {{json_decode($general->sys_version)->version}}</button>--}}
-                        {{--</h3>--}}
-                    {{--</div>--}}
-                    {{--<div class="card-body">--}}
-                        {{--<h5 class="card-title text-dark">@lang('What is the Update ?')</h5>--}}
-                        {{--<p>--}}
-                        {{--<pre class="f-size--24">{{json_decode($general->sys_version)->details}}</pre>--}}
-                        {{--</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--@endif--}}
-    {{--@if(@json_decode($general->sys_version)->message)--}}
-        {{--<div class="row">--}}
-            {{--@foreach(json_decode($general->sys_version)->message as $msg)--}}
-                {{--<div class="col-md-12">--}}
-                    {{--<div class="alert border border--primary" role="alert">--}}
-                        {{--<div class="alert__icon bg--primary"><i class="far fa-bell"></i></div>--}}
-                        {{--<p class="alert__message">@php echo $msg; @endphp</p>--}}
-                        {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
-                            {{--<span aria-hidden="true">×</span>--}}
-                        {{--</button>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--@endforeach--}}
-        {{--</div>--}}
-    {{--@endif--}}
-
-    <div class="row mb-none-30">
-        <div class="col-xl-3  col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--primary b-radius--10 box-shadow">
-                <div class="icon">
-                    <i class="fa fa-users"></i>
-                </div>
-                <div class="details">
-                    <div class="numbers">
-                        <span class="amount">{{$widget['total_users']}}</span>
+    @if (@json_decode($general->system_info)->version > systemDetails()['version'])
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-warning mb-3 text-white">
+                    <div class="card-header">
+                        <h3 class="card-title"> @lang('New Version Available') <button class="btn btn--dark float-end">@lang('Version')
+                                {{ json_decode($general->system_info)->version }}</button> </h3>
                     </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Total Users')</span>
+                    <div class="card-body">
+                        <h5 class="card-title text--dark">@lang('What is the Update ?')</h5>
+                        <p>
+                            <pre class="f-size--24">{{ json_decode($general->system_info)->details }}</pre>
+                        </p>
                     </div>
-                    <a href="{{route('admin.users.all')}}"
-                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
-                </div>
-            </div>
-        </div><!-- dashboard-w1 end -->
-        <div class="col-xl-3  col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--cyan b-radius--10 box-shadow">
-                <div class="icon">
-                    <i class="fa fa-users"></i>
-                </div>
-                <div class="details">
-                    <div class="numbers">
-                        <span class="amount">{{$widget['verified_users']}}</span>
-                    </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Total Verified Users')</span>
-                    </div>
-                    <a href="{{route('admin.users.active')}}"
-                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--orange b-radius--10 box-shadow ">
-                <div class="icon">
-                    <i class="la la-envelope"></i>
-                </div>
-                <div class="details">
-                    <div class="numbers">
-                        <span class="amount">{{$widget['email_unverified_users']}}</span>
+    @endif
+    @if (@json_decode($general->system_info)->message)
+        <div class="row">
+            @foreach (json_decode($general->system_info)->message as $msg)
+                <div class="col-md-12">
+                    <div class="alert border--primary border" role="alert">
+                        <div class="alert__icon bg--primary"><i class="far fa-bell"></i></div>
+                        <p class="alert__message">@php echo $msg; @endphp</p>
+                        <button class="close" data-bs-dismiss="alert" type="button" aria-label="Close">
+                            <i class="las la-times"></i>
+                        </button>
                     </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Total Email Unverified Users')</span>
-                    </div>
-
-                    <a href="{{route('admin.users.emailUnverified')}}"
-                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                 </div>
-            </div>
-        </div><!-- dashboard-w1 end -->
-        <div class="col-xl-3  col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--pink b-radius--10 box-shadow ">
-                <div class="icon">
-                    <i class="fa fa-shopping-cart"></i>
-                </div>
-                <div class="details">
-                    <div class="numbers">
-                        <span class="amount">{{$widget['banned_users']}}</span>
+            @endforeach
+        </div>
+    @endif
+    <div>
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card bg--primary has-link box--shadow2 overflow-hidden">
+                    <a class="item-link" href="{{ route('admin.users.all') }}"></a>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <i class="las la-users f-size--56"></i>
+                            </div>
+                            <div class="col-8 text-end">
+                                <span class="text--small text-white">@lang('Total Users')</span>
+                                <h2 class="text-white">{{ $widget['total_users'] }}</h2>
+                            </div>
+                        </div>
                     </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Total Banned Users')</span>
-                    </div>
-
-                    <a href="{{route('admin.users.banned')}}"
-                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                 </div>
-            </div>
-        </div><!-- dashboard-w1 end -->
-    </div><!-- row end-->
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card bg--success has-link box--shadow2">
+                    <a class="item-link" href="{{ route('admin.users.active') }}"></a>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <i class="las la-user-check f-size--56"></i>
+                            </div>
+                            <div class="col-8 text-end">
+                                <span class="text--small text-white">@lang('Active Users')</span>
+                                <h2 class="text-white">{{ $widget['verified_users'] }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card bg--danger has-link box--shadow2">
+                    <a class="item-link" href="{{ route('admin.users.email.unverified') }}"></a>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <i class="lar la-envelope f-size--56"></i>
+                            </div>
+                            <div class="col-8 text-end">
+                                <span class="text--small text-white">@lang('Email Unverified Users')</span>
+                                <h2 class="text-white">{{ $widget['email_unverified_users'] }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card bg--red has-link box--shadow2">
+                    <a class="item-link" href="{{ route('admin.users.mobile.unverified') }}"></a>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <i class="las la-comment-slash f-size--56"></i>
+                            </div>
+                            <div class="col-8 text-end">
+                                <span class="text--small text-white">@lang('Mobile Unverified Users')</span>
+                                <h2 class="text-white">{{ $widget['mobile_unverified_users'] }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- dashboard-w1 end -->
+        </div><!-- row end-->
 
+        <div class="row gy-4 mt-2">
+            <div class="col-xxl-3 col-sm-6">
+                <div class="widget-two box--shadow2 b-radius--5 bg--white">
+                    <i class="fas fa-hand-holding-usd overlay-icon text--success"></i>
+                    <div class="widget-two__icon b-radius--5 bg--success">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="widget-two__content">
+                        <h3>{{ $general->cur_sym }}{{ showAmount($deposit['total_deposit_amount']) }}</h3>
+                        <p>@lang('Total Deposited')</p>
+                    </div>
+                    <a class="widget-two__btn border--primary btn-outline--primary border--success btn-outline--success border border" href="{{ route('admin.deposit.list') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-3 col-sm-6">
+                <div class="widget-two box--shadow2 b-radius--5 bg--white">
+                    <i class="fas fa-spinner overlay-icon text--warning"></i>
+                    <div class="widget-two__icon b-radius--5 bg--warning">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="widget-two__content">
+                        <h3>{{ $deposit['total_deposit_pending'] }}</h3>
+                        <p>@lang('Pending Deposits')</p>
+                    </div>
+                    <a class="widget-two__btn border--primary btn-outline--primary border--warning btn-outline--warning border border" href="{{ route('admin.deposit.pending') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-3 col-sm-6">
+                <div class="widget-two box--shadow2 b-radius--5 bg--white">
+                    <i class="fas fa-ban overlay-icon text--danger"></i>
+                    <div class="widget-two__icon b-radius--5 bg--danger">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="widget-two__content">
+                        <h3>{{ $deposit['total_deposit_rejected'] }}</h3>
+                        <p>@lang('Rejected Deposits')</p>
+                    </div>
+                    <a class="widget-two__btn border--primary btn-outline--primary border--danger btn-outline--danger border border" href="{{ route('admin.deposit.rejected') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-3 col-sm-6">
+                <div class="widget-two box--shadow2 b-radius--5 bg--white">
+                    <i class="fas fa-percentage overlay-icon text--primary"></i>
+                    <div class="widget-two__icon b-radius--5 bg--primary">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="widget-two__content">
+                        <h3>{{ $general->cur_sym }}{{ showAmount($deposit['total_deposit_charge']) }}</h3>
+                        <p>@lang('Deposited Charge')</p>
+                    </div>
+                    <a class="widget-two__btn border--primary btn-outline--primary border--primary btn-outline--primary border border" href="{{ route('admin.deposit.list') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+        </div><!-- row end-->
 
-    <div class="row mt-50 mb-none-30">
-        <div class="col-xl-4 col-sm-6 mb-30">
-            <a href="{{ route('admin.orders.all') }}">
+        <div class="row gy-4 mt-2">
+            <div class="col-xxl-4 col-sm-6">
                 <div class="widget-two box--shadow2 b-radius--5 bg--white">
                     <i class="las la-shopping-cart overlay-icon text--primary"></i>
                     <div class="widget-two__icon b-radius--5 bg--primary">
                         <i class="las la-shopping-cart"></i>
                     </div>
                     <div class="widget-two__content">
-                        <h2 class="">{{$widget['total_orders']}}</h2>
+                        <h3>{{ $widget['total_order'] }}</h3>
                         <p>@lang('Total Order')</p>
                     </div>
-                </div><!-- widget-two end -->
-            </a>
-        </div>
-
-        <div class="col-xl-4 col-sm-6 mb-30">
-            <a href="{{ route('admin.orders.pending') }}">
+                    <a class="widget-two__btn border--primary btn-outline--primary border" href="{{ route('admin.orders.index') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-4 col-sm-6">
                 <div class="widget-two box--shadow2 b-radius--5 bg--white">
                     <i class="las la-spinner overlay-icon text--warning"></i>
                     <div class="widget-two__icon b-radius--5 bg--warning">
                         <i class="las la-spinner"></i>
                     </div>
                     <div class="widget-two__content">
-                        <h2 class="">{{$widget['pending_orders']}}</h2>
+                        <h3>{{ $widget['pending_order'] }}</h3>
                         <p>@lang('Pending Order')</p>
                     </div>
-                </div><!-- widget-two end -->
-            </a>
-        </div>
-
-        <div class="col-xl-4 col-sm-6 mb-30">
-            <a href="{{ route('admin.orders.processing') }}">
+                    <a class="widget-two__btn border--warning btn-outline--warning border" href="{{ route('admin.orders.pending') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-4 col-sm-6">
                 <div class="widget-two box--shadow2 b-radius--5 bg--white">
-                    <i class="la la-refresh overlay-icon text--teal"></i>
-                    <div class="widget-two__icon b-radius--5 bg--teal">
+                    <i class="la la-refresh overlay-icon text--info"></i>
+                    <div class="widget-two__icon b-radius--5 bg--info">
                         <i class="la la-refresh"></i>
                     </div>
                     <div class="widget-two__content">
-                        <h2 class="">{{$widget['processing_orders']}}</h2>
+                        <h3>{{ $widget['processing_order'] }}</h3>
                         <p>@lang('Processing Order')</p>
                     </div>
-                </div><!-- widget-two end -->
-            </a>
-        </div>
-    </div>
+                    <a class="widget-two__btn border--info btn-outline--info border" href="{{ route('admin.orders.processing') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
 
-    <div class="row mt-50 mb-none-30">
-        <div class="col-xl-4 col-sm-6 mb-30">
-            <a href="{{ route('admin.orders.completed') }}">
+        </div><!-- row end-->
+
+        <div class="row gy-4 mt-2">
+            <div class="col-xxl-4 col-sm-6">
                 <div class="widget-two box--shadow2 b-radius--5 bg--white">
-                    <i class="las la-check-circle overlay-icon text--green"></i>
-                    <div class="widget-two__icon b-radius--5 bg--green">
+                    <i class="las la-check-circle overlay-icon text--success"></i>
+                    <div class="widget-two__icon b-radius--5 bg--success">
                         <i class="las la-check-circle"></i>
                     </div>
                     <div class="widget-two__content">
-                        <h2 class="">{{$widget['completed_orders']}}</h2>
+                        <h3>{{ $widget['completed_order'] }}</h3>
                         <p>@lang('Completed Order')</p>
                     </div>
-                </div><!-- widget-two end -->
-            </a>
-        </div>
-
-        <div class="col-xl-4 col-sm-6 mb-30">
-            <a href="{{ route('admin.orders.cancelled') }}">
+                    <a class="widget-two__btn border--success btn-outline--success border" href="{{ route('admin.orders.completed') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-4 col-sm-6">
                 <div class="widget-two box--shadow2 b-radius--5 bg--white">
-                    <i class="las la-times-circle overlay-icon text--pink"></i>
-                    <div class="widget-two__icon b-radius--5 bg--pink">
-                        <i class="la la-times-circle"></i>
+                    <i class="las la-times-circle overlay-icon text--danger"></i>
+                    <div class="widget-two__icon b-radius--5 bg--danger">
+                        <i class="las la-times-circle"></i>
                     </div>
                     <div class="widget-two__content">
-                        <h2 class="">{{$widget['cancelled_orders']}}</h2>
+                        <h3>{{ $widget['cancelled_order'] }}</h3>
                         <p>@lang('Cancelled Order')</p>
                     </div>
-                </div><!-- widget-two end -->
-            </a>
+                    <a class="widget-two__btn border--danger btn-outline--danger border" href="{{ route('admin.orders.cancelled') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+            <div class="col-xxl-4 col-sm-6">
+                <div class="widget-two box--shadow2 b-radius--5 bg--white">
+                    <i class="la la-fast-backward overlay-icon text-secondary"></i>
+                    <div class="widget-two__icon b-radius--5 bg--secondary">
+                        <i class="la la-fast-backward"></i>
+                    </div>
+                    <div class="widget-two__content">
+                        <h3>{{ $widget['refunded_order'] }}</h3>
+                        <p>@lang('Refunded Order')</p>
+                    </div>
+                    <a class="widget-two__btn border--secondary btn-outline--secondary border" href="{{ route('admin.orders.refunded') }}">@lang('View All')</a>
+                </div>
+            </div><!-- dashboard-w1 end -->
+        </div>
+        <div class="row mb-none-30 mt-30">
+            <div class="col-xl-6 mb-30">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('Monthly Deposit') (@lang('Last 12 Month'))</h5>
+                        <div id="apex-bar-chart"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 mb-30">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('Transactions Report') (@lang('Last 30 Days'))</h5>
+                        <div id="apex-line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-none-30 mt-5">
+            <div class="col-xl-4 col-lg-6 mb-30">
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('Login By Browser') (@lang('Last 30 days'))</h5>
+                        <canvas id="userBrowserChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 mb-30">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('Login By OS') (@lang('Last 30 days'))</h5>
+                        <canvas id="userOsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 mb-30">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('Login By Country') (@lang('Last 30 days'))</h5>
+                        <canvas id="userCountryChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-xl-4 col-sm-6 mb-30">
-            <a href="{{ route('admin.orders.refunded') }}">
-                <a href="{{ route('admin.orders.refunded') }}">
-                    <div class="widget-two box--shadow2 b-radius--5 bg--white">
-                        <i class="las la-fast-backward overlay-icon text--secondary"></i>
-                        <div class="widget-two__icon b-radius--5 bg--secondary">
-                            <i class="la la-fast-backward"></i>
+        <div class="modal fade" id="cronModal" role="dialog" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">@lang('Cron Job Setting Instruction')</h5>
+                        <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
+                            <i class="las la-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="text--danger text-center">@lang('Please Set Cron Job Now')</h3>
+                        <p class="lead">
+                            @lang('To automate the api order placement, we need to set the cron job and make sure the cron job is running properly. Set the Cron time as minimum as possible. Once per 5-15 minutes is ideal while once every minute is the best option.') </p>
+                        <label class="font-weight-bold">@lang('Cron Command')</label>
+
+                        <div class="input-group">
+                            <input class="form-control" id="referralURL" name="text" type="text" value="curl -s {{ route('cron') }}" readonly>
+                            <span class="input-group-text copytext btn btn--primary copyBoard pt-2" id="copyBoard">
+                                @lang('Copy')
+                            </span>
                         </div>
-                        <div class="widget-two__content">
-                            <h2 class="">{{$widget['refunded_orders']}}</h2>
-                            <p>@lang('Refunded Order')</p>
-                        </div>
-                    </div><!-- widget-two end -->
-                </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
-
-
-    <div class="row mt-50 mb-none-30">
-        <div class="col-xl-6 mb-30">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@lang('Monthly  Deposit Report')</h5>
-                    <div id="apex-bar-chart"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 mb-30">
-            <div class="row mb-none-30">
-                <div class="col-lg-6 col-sm-6 mb-30">
-                    <div class="widget-three box--shadow2 b-radius--5 bg--white">
-                        <div class="widget-three__icon b-radius--rounded bg--primary box--shadow2">
-                            <i class="las la-wallet "></i>
-                        </div>
-                        <div class="widget-three__content">
-                            <h2 class="numbers">{{$payment['total_deposit']}}</h2>
-                            <p class="text--small">@lang('Total Deposit')</p>
-                        </div>
-                    </div><!-- widget-two end -->
-                </div>
-                <div class="col-lg-6 col-sm-6 mb-30">
-                    <div class="widget-three box--shadow2 b-radius--5 bg--white">
-                        <div class="widget-three__icon b-radius--rounded bg--pink  box--shadow2">
-                            <i class="las la-money-bill "></i>
-                        </div>
-                        <div class="widget-three__content">
-                            <h2 class="numbers">{{getAmount($payment['total_deposit_amount'])}} {{__($general->cur_text)}}</h2>
-                            <p class="text--small">@lang('Total Deposit')</p>
-                        </div>
-                    </div><!-- widget-two end -->
-                </div>
-                <div class="col-lg-6 col-sm-6 mb-30">
-                    <div class="widget-three box--shadow2 b-radius--5 bg--white">
-                        <div class="widget-three__icon b-radius--rounded bg--teal box--shadow2">
-                            <i class="las la-money-check"></i>
-                        </div>
-                        <div class="widget-three__content">
-                            <h2 class="numbers">{{getAmount($payment['total_deposit_charge'])}} {{__($general->cur_text)}}</h2>
-                            <p class="text--small">@lang('Total Deposit Charge')</p>
-                        </div>
-                    </div><!-- widget-two end -->
-                </div>
-                <div class="col-lg-6 col-sm-6 mb-30">
-                    <div class="widget-three box--shadow2 b-radius--5 bg--white">
-                        <div class="widget-three__icon b-radius--rounded bg--green  box--shadow2">
-                            <i class="las la-money-bill-wave "></i>
-                        </div>
-                        <div class="widget-three__content">
-                            <h2 class="numbers">{{$payment['total_deposit_pending']}}</h2>
-                            <p class="text--small">@lang('Pending Deposit')</p>
-                        </div>
-                    </div><!-- widget-two end -->
-                </div>
-            </div>
-        </div>
-    </div><!-- row end -->
-
-    {{--<div class="row mb-none-30 mt-5">--}}
-        {{--<div class="col-xl-4 col-lg-6 mb-30">--}}
-            {{--<div class="card overflow-hidden">--}}
-                {{--<div class="card-body">--}}
-                    {{--<h5 class="card-title">@lang('Login By Browser')</h5>--}}
-                    {{--<canvas id="userBrowserChart"></canvas>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-        {{--<div class="col-xl-4 col-lg-6 mb-30">--}}
-            {{--<div class="card">--}}
-                {{--<div class="card-body">--}}
-                    {{--<h5 class="card-title">@lang('Login By OS')</h5>--}}
-                    {{--<canvas id="userOsChart"></canvas>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-        {{--<div class="col-xl-4 col-lg-6 mb-30">--}}
-            {{--<div class="card">--}}
-                {{--<div class="card-body">--}}
-                    {{--<h5 class="card-title">@lang('Login By Country')</h5>--}}
-                    {{--<canvas id="userCountryChart"></canvas>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-
-    {{--<!-- Alert -->--}}
-    {{--<div class="modal fade" id="cronModal" tabindex="-1" role="dialog" aria-hidden="true">--}}
-        {{--<div class="modal-dialog modal-dialog-centered modal-lg" role="document">--}}
-            {{--<div class="modal-content">--}}
-                {{--<div class="modal-header">--}}
-                    {{--<h5 class="modal-title" id="exampleModalLongTitle">@lang('Cron Job Setting Instruction')</h5>--}}
-                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                        {{--<span aria-hidden="true">&times;</span>--}}
-                    {{--</button>--}}
-                {{--</div>--}}
-                {{--<div class="modal-body">--}}
-                    {{--<h3 class="text--danger text-center">@lang('Please Set Cron Job Now')</h3>--}}
-                    {{--<p class="lead">--}}
-                        {{--@lang('To automate the api order placement, we need to set the cron job and make sure the cron job is running properly. Set the Cron time as minimum as possible. Once per 5-15 minutes is ideal while once every minute is the best option.') </p>--}}
-                    {{--<label class="font-weight-bold">@lang('Cron Command')</label>--}}
-                    {{--<div class="input-group">--}}
-                        {{--<input type="text" name="text" class="form-control form-control-lg" id="referralURL"--}}
-                               {{--value="curl -s {{route('cron')}}" readonly>--}}
-                        {{--<div class="input-group-append">--}}
-                                    {{--<span class="input-group-text copytext btn--primary copyBoard" id="copyBoard"--}}
-                                    {{--> @lang('Copy') </span>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="modal-footer">--}}
-                    {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('Close')</button>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
 @endsection
 
-{{--@push('breadcrumb-plugins')--}}
-    {{--<span class=" @if(Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 300)--}}
-        {{--text--info--}}
-        {{--@elseif(Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 900)--}}
-        {{--text--warning--}}
-        {{--@else--}}
-        {{--text--danger--}}
-{{--@endif ">@lang('Last Cron Run') <strong>{{diffForHumans($general->last_cron)}}</strong>--}}
-    {{--</span>--}}
-{{--@endpush--}}
-
+@push('breadcrumb-plugins')
+    @php
+        $lastCron = Carbon\Carbon::parse($general->last_cron)->diffInSeconds();
+    @endphp
+    <span
+        class="@if ($lastCron < 300) text--info @elseif($lastCron < 900) text--warning @else text--danger @endif">
+        @lang('Last Cron Run')
+        <strong>{{ diffForHumans($general->last_cron) }}</strong>
+    </span>
+@endpush
 @push('script')
-
-    <script src="{{asset('assets/admin/js/vendor/apexcharts.min.js')}}"></script>
-    <script src="{{asset('assets/admin/js/vendor/chart.js.2.8.0.js')}}"></script>
-
+    <script src="{{ asset('assets/viseradmin/js/vendor/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/viseradmin/js/vendor/chart.js.2.8.0.js') }}"></script>
     <script>
-        (function ($) {
+        (function($) {
             "use strict";
-            //Show cron modal
-            @if(Carbon\Carbon::parse($general->last_cron)->diffInMinutes() > 15)
-            $('#cronModal').modal('show');
+            @if (Carbon\Carbon::parse($general->last_cron)->diffInMinutes() > 15)
+                window.onload = () => {
+                    $('#cronModal').modal('show');
+                }
             @endif
 
-            $('.copyBoard').on('click', function () {
+            $('.copyBoard').on('click', function() {
                 var copyText = document.getElementById("referralURL");
                 copyText.select();
                 copyText.setSelectionRange(0, 99999);
-                /*For mobile devices*/
                 document.execCommand("copy");
-                iziToast.success({message: "Copied: " + copyText.value, position: "topRight"});
+                iziToast.success({
+                    message: "Copied: " + copyText.value,
+                    position: "topRight"
+                });
             });
         })(jQuery);
     </script>
 
-
     <script>
         "use strict";
-
-        // apex-bar-chart js
         var options = {
             series: [{
                 name: 'Total Deposit',
                 data: [
-                    @foreach($report['months'] as $month)
-                    {{ getAmount(@$depositsMonth->where('months',$month)->first()->depositAmount) }},
+                    @foreach ($months as $month)
+                        {{ getAmount(@$depositsMonth->where('months', $month)->first()->depositAmount) }},
                     @endforeach
                 ]
             }],
             chart: {
                 type: 'bar',
-                height: 400,
+                height: 450,
                 toolbar: {
                     show: false
                 }
@@ -389,7 +376,7 @@
                 },
             },
             dataLabels: {
-                enabled: true
+                enabled: false
             },
             stroke: {
                 show: true,
@@ -397,11 +384,11 @@
                 colors: ['transparent']
             },
             xaxis: {
-                categories: @json($report['months']->flatten()),
+                categories: @json($months),
             },
             yaxis: {
                 title: {
-                    text: "{{__($general->cur_sym)}}",
+                    text: "{{ __($general->cur_sym) }}",
                     style: {
                         color: '#7c97bb'
                     }
@@ -424,22 +411,16 @@
             },
             tooltip: {
                 y: {
-                    formatter: function (val) {
-                        return "{{__($general->cur_sym)}}" + val + " "
+                    formatter: function(val) {
+                        return "{{ __($general->cur_sym) }}" + val + " "
                     }
                 }
             }
         };
-
         var chart = new ApexCharts(document.querySelector("#apex-bar-chart"), options);
         chart.render();
 
 
-    </script>
-
-
-
-    <script>
 
         var ctx = document.getElementById('userBrowserChart');
         var myChart = new Chart(ctx, {
@@ -503,6 +484,7 @@
                 }
             }
         });
+
 
 
         var ctx = document.getElementById('userOsChart');
@@ -630,5 +612,87 @@
                 }
             }
         });
+
+        // apex-line chart
+        var options = {
+            chart: {
+                height: 450,
+                type: "area",
+                toolbar: {
+                    show: false
+                },
+                dropShadow: {
+                    enabled: true,
+                    enabledSeries: [0],
+                    top: -2,
+                    left: 0,
+                    blur: 10,
+                    opacity: 0.08
+                },
+                animations: {
+                    enabled: true,
+                    easing: 'linear',
+                    dynamicAnimation: {
+                        speed: 1000
+                    }
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{
+                    name: "Plus Transactions",
+                    data: [
+                        @foreach ($trxReport['date'] as $trxDate)
+                            {{ @$plusTrx->where('date', $trxDate)->first()->amount ?? 0 }},
+                        @endforeach
+                    ]
+                },
+                {
+                    name: "Minus Transactions",
+                    data: [
+                        @foreach ($trxReport['date'] as $trxDate)
+                            {{ @$minusTrx->where('date', $trxDate)->first()->amount ?? 0 }},
+                        @endforeach
+                    ]
+                }
+            ],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 90, 100]
+                }
+            },
+            xaxis: {
+                categories: [
+                    @foreach ($trxReport['date'] as $trxDate)
+                        "{{ $trxDate }}",
+                    @endforeach
+                ]
+            },
+            grid: {
+                padding: {
+                    left: 5,
+                    right: 5
+                },
+                xaxis: {
+                    lines: {
+                        show: false
+                    }
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                },
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#apex-line"), options);
+
+        chart.render();
     </script>
 @endpush

@@ -5,23 +5,23 @@
 
         <div class="col-xl-12">
             <div class="card">
-                <form action="{{ route('admin.subscriber.sendEmail') }}" method="POST">
+                <form action="{{ route('admin.subscriber.send.email') }}" method="POST">
                     @csrf
                     <div class="card-body">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="form-group col-md-12">
-                                <label class="font-weight-bold">@lang('Subject')</label>
-                                <input type="text" class="form-control" placeholder="@lang('Email subject')" name="subject" value="{{ old('subject') }}" />
+                                <label>@lang('Subject')</label>
+                                <input type="text" class="form-control" name="subject" required
+                                    value="{{ old('subject') }}" />
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="font-weight-bold">@lang('Email Body')</label>
-                                <textarea name="body" rows="10" class="form-control nicEdit" placeholder="@lang('Your email template')">{{ old('body') }}</textarea>
+                                <label>@lang('Body')</label>
+                                <textarea name="body" rows="10" class="form-control nicEdit">{{ old('body') }}</textarea>
                             </div>
-
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-block btn--primary "><i class="fa fa-fw fa-paper-plane"></i>@lang('Send Mail')</button>
+                        <button type="submit" class="btn btn--primary w-100 h-45">@lang('Submit')</button>
                     </div>
                 </form>
             </div>
@@ -30,5 +30,5 @@
 @endsection
 
 @push('breadcrumb-plugins')
-    <a href="{{ route('admin.subscriber.index') }}" class="btn btn-sm btn--primary box--shadow1 text--small"><i class="fa fa-fw fa-backward"></i> @lang('Go Back')</a>
+    <x-back route="{{ route('admin.subscriber.index') }}" />
 @endpush

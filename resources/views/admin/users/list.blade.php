@@ -7,50 +7,68 @@
                     <div class="table-responsive--md  table-responsive">
                         <table class="table table--light style--two">
                             <thead>
-                            <tr>
-                                <th scope="col">@lang('User')</th>
-                                <th scope="col">@lang('Username')</th>
-                                <th scope="col">@lang('Email')</th>
-                                <th scope="col">@lang('Phone')</th>
-                                <th scope="col">@lang('Joined At')</th>
-                                <th scope="col">@lang('Action')</th>
-                            </tr>
+                                <tr>
+                                    <th>@lang('User')</th>
+                                    <th>@lang('Email-Phone')</th>
+                                    <th>@lang('Country')</th>
+                                    <th>@lang('Joined At')</th>
+                                    <th>@lang('Balance')</th>
+                                    <th>@lang('Action')</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @forelse($users as $user)
-                            <tr>
-                                <td data-label="@lang('User')">
-                                    <div class="user">
-                                        <div class="thumb">
-                                            <img src="{{ getImage(imagePath()['profile']['user']['path'].'/'.$user->image,imagePath()['profile']['user']['size'])}}" alt="@lang('image')">
-                                        </div>
-                                        <span class="name">{{$user->fullname}}</span>
-                                    </div>
-                                </td>
-                                <td data-label="@lang('Username')"><a href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a></td>
-                                <td data-label="@lang('Email')">{{ $user->email }}</td>
-                                <td data-label="@lang('Phone')">{{ $user->mobile }}</td>
-                                <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td>
-                                <td data-label="@lang('Action')">
-                                    <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">
-                                        <i class="las la-desktop text--shadow"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @empty
-                                <tr>
-                                    <td class="text-muted text-center" colspan="100%">{{ __($empty_message) }}</td>
-                                </tr>
-                            @endforelse
+                                @forelse($users as $user)
+                                    <tr>
+                                        <td>
+                                            <span class="fw-bold">{{ $user->fullname }}</span>
+                                            <br>
+                                            <span class="small">
+                                                <a
+                                                    href="{{ route('admin.users.detail', $user->id) }}"><span>@</span>{{ __($user->username) }}</a>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ $user->email }}<br>{{ $user->mobile }}
+                                        </td>
+                                        <td>
+                                            <span class="fw-bold"
+                                                title="{{ @$user->address->country }}">{{ $user->country_code }}</span>
+                                        </td>
+                                        <td>
+                                            {{ showDateTime($user->created_at) }} <br>
+                                            {{ diffForHumans($user->created_at) }}
+                                        </td>
+                                        <td>
+                                            <span class="fw-bold">
+
+                                                {{ $general->cur_sym }}{{ showAmount($user->balance) }}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{ route('admin.users.detail', $user->id) }}"
+                                                class="btn btn-sm btn-outline--primary">
+                                                <i class="las la-desktop"></i> @lang('Details')
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td class="text-muted text-center" colspan="100%">{{ __($emptyMessage) }}</td>
+                                    </tr>
+                                @endforelse
 
                             </tbody>
                         </table><!-- table end -->
                     </div>
                 </div>
-                <div class="card-footer py-4">
-                    {{ paginateLinks($users) }}
-                </div>
-            </div><!-- card end -->
+                @if ($users->hasPages())
+                    <div class="card-footer py-4">
+                        {{ paginateLinks($users) }}
+                    </div>
+                @endif
+            </div>
         </div>
 
 
@@ -60,12 +78,5 @@
 
 
 @push('breadcrumb-plugins')
-    <form action="{{ route('admin.users.search', $scope ?? str_replace('admin.users.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
-        <div class="input-group has_append">
-            <input type="text" name="search" class="form-control" placeholder="@lang('Username or email')" value="{{ $search ?? '' }}">
-            <div class="input-group-append">
-                <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
-            </div>
-        </div>
-    </form>
+    <x-search-form placeholder="Username / Email" />
 @endpush

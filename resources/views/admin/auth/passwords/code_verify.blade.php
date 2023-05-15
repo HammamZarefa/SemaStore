@@ -1,107 +1,74 @@
 @extends('admin.layouts.master')
 @section('content')
-    <div class="page-wrapper default-version">
-        <div class="form-area bg_img" data-background="{{asset('assets/admin/images/1.jpg')}}">
-            <div class="form-wrapper">
-                <h4 class="logo-text mb-15"><strong>@lang('Recover Account')</strong></h4>
-                <form action="{{ route('admin.password.verify-code') }}" method="POST" class="cmn-form mt-30">
+    <div class="login-main" style="background-image: url('{{ asset('assets/viseradmin/images/login.jpg') }}')">
+        <div class="container custom-container d-flex justify-content-center">
+            <div class="login-area">
+                <div class="text-center mb-3">
+                    <h2 class="text-white mb-2">@lang('Verify Code')</h2>
+                    <p class="text-white mb-2">@lang('Please check your email and enter the verification code you got in your email.')</p>
+                </div>
+                <form action="{{ route('admin.password.verify.code') }}" method="POST" class="login-form w-100">
                     @csrf
-                    <div class="form-group">
-                        <div id="phoneInput">
-                            <div class="field-wrapper">
-                                <div class=" phone">
-                                    <input type="text" name="code[]" class="letter" pattern="[0-9]*" inputmode="numeric" maxlength="1">
-                                    <input type="text" name="code[]" class="letter" pattern="[0-9]*" inputmode="numeric" maxlength="1">
-                                    <input type="text" name="code[]" class="letter" pattern="[0-9]*" inputmode="numeric" maxlength="1">
-                                    <input type="text" name="code[]" class="letter" pattern="[0-9]*" inputmode="numeric" maxlength="1">
-                                    <input type="text" name="code[]" class="letter" pattern="[0-9]*" inputmode="numeric" maxlength="1">
-                                    <input type="text" name="code[]" class="letter" pattern="[0-9]*" inputmode="numeric" maxlength="1">
+
+                    <div class="code-box-wrapper d-flex w-100">
+                        <div class="form-group mb-3 flex-fill">
+                            <span class="text-white fw-bold">@lang('Verification Code')</span>
+                            <div class="verification-code">
+                                <input type="text" name="code" class="overflow-hidden" autocomplete="off">
+                                <div class="boxes">
+                                    <span>-</span>
+                                    <span>-</span>
+                                    <span>-</span>
+                                    <span>-</span>
+                                    <span>-</span>
+                                    <span>-</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group d-flex justify-content-between align-items-center">
-                        <a href="{{ route('admin.password.reset') }}" class="text-muted text--small">@lang('Try to send again')</a>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <a href="{{ route('admin.password.reset') }}" class="forget-text">@lang('Try to send again')</a>
                     </div>
-                    
-                    <div class="form-group">
-                        <button type="submit" class="submit-btn mt-25 b-radius--capsule">@lang('Verify Code') <i class="las la-sign-in-alt"></i></button>
-                    </div>
+                    <button type="submit" class="btn cmn-btn w-100 mt-4">@lang('Submit')</button>
                 </form>
+                <a href="{{ route('admin.login') }}" class="text-white mt-4"><i class="las la-sign-in-alt"
+                        aria-hidden="true"></i>@lang('Back to Login')</a>
             </div>
-        </div><!-- login-area end -->
+        </div>
     </div>
 @endsection
 
-
-@push('script-lib')
-    <script src="{{asset('assets/admin/js/jquery.inputLettering.js')}}"></script>
-@endpush
 @push('style')
-    <style>
-        #phoneInput .field-wrapper {
-            position: relative;
-            text-align: center;
-        }
-
-        #phoneInput .form-group {
-            min-width: 300px;
-            width: 50%;
-            margin: 4em auto;
-            display: flex;
-            border: 1px solid rgba(96, 100, 104, 0.3);
-        }
-
-        #phoneInput .letter {
-            height: 50px;
-            border-radius: 0;
-            text-align: center;
-            max-width: calc((100% / 10) - 1px);
-            flex-grow: 1;
-            flex-shrink: 1;
-            flex-basis: calc(100% / 10);
-            outline-style: none;
-            padding: 5px 0;
-            font-size: 18px;
-            font-weight: bold;
-            color: red;
-            border: 1px solid #0e0d35;
-        }
-
-        #phoneInput .letter + .letter {
-        }
-
-        @media (max-width: 480px) {
-            #phoneInput .field-wrapper {
-                width: 100%;
-            }
-
-            #phoneInput .letter {
-                font-size: 16px;
-                padding: 2px 0;
-                height: 35px;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/viseradmin/css/verification_code.css') }}">
 @endpush
+
 @push('script')
     <script>
-        $(function () {
-            "use strict";
+        (function($) {
+            'use strict';
+            $('[name=code]').on('input', function() {
 
-            $('#phoneInput').letteringInput({
-                inputClass: 'letter',
-                onLetterKeyup: function ($item, event) {
-                    console.log('$item:', $item);
-                    console.log('event:', event);
-                },
-                onSet: function ($el, event, value) {
-                    console.log('element:', $el);
-                    console.log('event:', event);
-                    console.log('value:', value);
+                $(this).val(function(i, val) {
+                    if (val.length >= 6) {
+                        $('form').find('button[type=submit]').html(
+                            '<i class="las la-spinner fa-spin"></i>');
+                        $('form').find('button[type=submit]').removeClass('disabled');
+                        $('form')[0].submit();
+                    } else {
+                        $('form').find('button[type=submit]').addClass('disabled');
+                    }
+                    if (val.length > 6) {
+                        return val.substring(0, val.length - 1);
+                    }
+                    return val;
+                });
+
+                for (let index = $(this).val().length; index >= 0; index--) {
+                    $($('.boxes span')[index]).html('');
                 }
             });
-        });
+
+        })(jQuery)
     </script>
 @endpush

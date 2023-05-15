@@ -6,13 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class GeneralSetting extends Model
 {
-    protected $guarded = ['id'];
+    protected $casts = ['mail_config' => 'object','sms_config' => 'object','global_shortcodes' => 'object'];
 
-    protected $casts = ['mail_config' => 'object'];
-
-    public function scopeSitename($query, $page_title)
+    public function scopeSiteName($query, $pageTitle)
     {
-        $page_title = empty($page_title) ? '' : ' - ' . $page_title;
-        return $this->sitename . $page_title;
+        $pageTitle = empty($pageTitle) ? '' : ' - ' . $pageTitle;
+        return $this->site_name . $pageTitle;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::saved(function(){
+            \Cache::forget('GeneralSetting');
+        });
     }
 }

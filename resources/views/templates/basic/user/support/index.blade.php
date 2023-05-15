@@ -1,63 +1,78 @@
-@extends($activeTemplate.'layouts.master')
-@section('content')
-    <div class="row">
-
-        <div class="col-lg-12">
-            <div class="card b-radius--10 ">
+@extends($activeTemplate . 'layouts.app')
+@section('panel')
+    <div class="row ">
+        <div class="col-md-12">
+            <div class="card b-radius--10">
                 <div class="card-body p-0">
                     <div class="table-responsive--sm table-responsive">
                         <table class="table table--light style--two">
                             <thead>
-                            <tr>
-                                <th scope="col">@lang('Subject')</th>
-                                <th scope="col">@lang('Status')</th>
-                                <th scope="col">@lang('Last Reply')</th>
-                                <th scope="col">@lang('Action')</th>
-                            </tr>
+                                <tr>
+                                    <th>@lang('Subject')</th>
+                                    <th>@lang('Status')</th>
+                                    <th>@lang('Priority')</th>
+                                    <th>@lang('Last Reply')</th>
+                                    <th>@lang('Action')</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @forelse($supports as $key => $support)
-                                <tr>
-                                    <td data-label="@lang('Subject')"> <a href="{{ route('ticket.view', $support->ticket) }}" class="font-weight-bold"> [Ticket#{{ $support->ticket }}] {{ __($support->subject) }} </a></td>
-                                    <td data-label="@lang('Status')">
-                                        @if($support->status == 0)
-                                            <span class="badge badge--success">@lang('Open')</span>
-                                        @elseif($support->status == 1)
-                                            <span class="badge badge--primary">@lang('Answered')</span>
-                                        @elseif($support->status == 2)
-                                            <span class="badge badge--warning">@lang('Customer Reply')</span>
-                                        @elseif($support->status == 3)
-                                            <span class="badge badge--dark">@lang('Closed')</span>
-                                        @endif
-                                    </td>
-                                    <td data-label="@lang('Last Reply')">{{ \Carbon\Carbon::parse($support->last_reply)->diffForHumans() }} </td>
+                                @forelse($supports as $support)
+                                    <tr>
+                                        <td class="break_line">
+                                            <a href="{{ route('ticket.view', $support->ticket) }}" class="fw-bold">
+                                                [@lang('Ticket')#{{ $support->ticket }}] {{ __($support->subject) }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @php echo $support->statusBadge; @endphp
+                                        </td>
+                                        <td>
+                                            @if ($support->priority == Status::PRIORITY_LOW)
+                                                <span class="badge badge--dark">@lang('Low')</span>
+                                            @elseif($support->priority == Status::PRIORITY_MEDIUM)
+                                                <span class="badge badge--success">@lang('Medium')</span>
+                                            @elseif($support->priority == Status::PRIORITY_HIGH)
+                                                <span class="badge badge--primary">@lang('High')</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($support->last_reply)->diffForHumans() }} </td>
 
-                                    <td data-label="@lang('Action')">
-                                        <a href="{{ route('ticket.view', $support->ticket) }}" class="btn btn--primary btn-sm">
-                                            <i class="fa fa-desktop m-0"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td class="text-muted text-center" colspan="100%">@lang('No result found!')</td>
-                                </tr>
-                            @endforelse
-
+                                        <td>
+                                            <a href="{{ route('ticket.view', $support->ticket) }}"
+                                                class="btn btn-outline--primary btn-sm">
+                                                <i class="fa fa-desktop"></i> @lang('Details')
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center">{{ __($emptyMessage) }}</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
-                        </table><!-- table end -->
+                        </table>
                     </div>
                 </div>
-                <div class="card-footer py-4">
-                    {{ paginateLinks($supports) }}
-                </div>
-            </div><!-- card end -->
+                @if ($supports->hasPages())
+                    <div class="card-footer py-4">
+                        @php echo paginateLinks($supports) @endphp
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
-
 @endsection
 
-@push('breadcrumb')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{route('ticket.open') }}"><i
-            class="fa fa-fw fa-plus"></i>@lang('New Ticket')</a>
+
+@push('breadcrumb-plugins')
+    <a href="{{ route('ticket.open') }}" class="btn btn-sm btn-outline--primary mb-2"> <i class="las la-plus"></i>
+        @lang('New Ticket')</a>
+@endpush
+
+@push('style')
+    <style>
+        .break_line {
+            white-space: initial !important;
+        }
+    </style>
 @endpush

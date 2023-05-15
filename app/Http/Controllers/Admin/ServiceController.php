@@ -3,171 +3,204 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Lib\CurlRequest;
+use App\Models\ApiProvider;
 use App\Models\Category;
-use App\Models\GeneralSetting;
 use App\Models\Service;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
-use phpDocumentor\Reflection\Types\Null_;
 
 class ServiceController extends Controller
 {
+
     public function index()
     {
-        $page_title = 'Services';
-        $empty_message = 'No Result Found';
+        $pageTitle  = "Manage Service";
         $categories = Category::active()->orderBy('name')->get();
-        $services = Service::with('category')->latest()->paginate(getPaginate());
-        return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'categories'));
+        $apiLists   = ApiProvider::active()->get();
+        $services   = Service::with('category', 'provider')->searchable(['name', 'category:name'])->whereHas('category', function ($query) {
+            $query->active();
+        })->orderBy('name')->paginate(getPaginate());
+        return view('admin.service.index', compact('pageTitle', 'categories', 'services', 'apiLists'));
+    }
+
+    public function add()
+    {
+        $pageTitle  = "Add Service";
+        $categories = Category::active()->orderBy('name')->get();
+        return view('admin.service.add', compact('pageTitle', 'categories'));
     }
 
     public function store(Request $request)
     {
+
+        $id = $request->id ?? 0;
         $request->validate([
-            'category' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'price_per_k' => 'required|numeric|gt:0',
-//            'min' => 'required|integer|gt:0|lt:'. $request->max,
-//            'max' => 'required|integer|gt:'. $request->min,
-            'details' => 'required|string',
-            'api_service_id' => 'nullable|integer|gt:0|unique:services,api_service_id'
+            'category'       => 'required',
+            'name'           => 'required',
+            'price_per_k'    => 'required|numeric|gt:0',
+            'min'            => 'required|integer|gt:0|lte:' . $request->max,
+            'max'            => 'required|integer|gte:' . $request->min,
+            'details'        => 'required',
+            'api_service_id' => 'nullable|integer|gt:0|unique:services,api_service_id,' . $id,
         ]);
 
-        $service = new Service();
-        $this->serviceAction($service,$request);
+        $category    = Category::active()->findOrFail($request->category);
 
-        $image = $request->file('image');
-        $path = imagePath()['service']['path'];
-        $size = imagePath()['service']['size'];
-        $filename = $request->image;
-        if ($request->hasFile('image')) {
-            try {
-                $filename = uploadImage($image, $path, $size, $filename);
-//                    dd($filename);
-            } catch (\Exception $exp) {
-                $notify[] = ['errors', 'Image could not be uploaded.'];
-                return back()->withNotify($notify);
-            }
-            $service->image=$filename;
+        if ($id) {
+            $service = Service::findOrFail($id);
+            $message = "Service updated successfully";
+        } else {
+            $service = new Service();
+            $message = "Service added successfully";
         }
+
+        $service->category_id     = $category->id;
+        $service->api_provider_id = $request->api_provider_id ?? 0;
+        $service->name            = $request->name;
+        $service->price_per_k     = $request->price_per_k;
+        $service->min             = $request->min;
+        $service->max             = $request->max;
+        $service->details         = $request->details;
+        $service->api_service_id  = $request->api_service_id;
         $service->save();
 
-        $notify[] = ['success', 'Service added!'];
+        $notify[] = ['success', $message];
         return back()->withNotify($notify);
     }
 
-    public function update(Request $request, $id)
+    public function edit($id)
     {
-        $request->validate([
-            'category' => 'required|integer',
-            'name' => 'required|string|max:191',
-            'price_per_k' => 'required|numeric|gt:0',
-            'min' => 'required|integer|gt:0|lt:'. $request->max,
-            'max' => 'required|integer|gt:'. $request->min,
-            'details' => 'required|string'
-        ]);
-
-        $service = Service::findOrFail($id);
-        $this->serviceAction($service,$request);
-        $image = $request->file('image');
-        $path = imagePath()['service']['path'];
-        $size = imagePath()['service']['size'];
-        $filename = $request->image;
-        if ($request->hasFile('image')) {
-            try {
-                $filename = uploadImage($image, $path, $size, $filename);
-//                    dd($filename);
-            } catch (\Exception $exp) {
-                $notify[] = ['errors', 'Image could not be uploaded.'];
-                return back()->withNotify($notify);
-            }
-            $service->image=$filename;
-        }
-        $service->save();
-
-        $notify[] = ['success', 'Service updated!'];
-        return back()->withNotify($notify);
-    }
-
-    private function serviceAction($service,$request){
-        $service->category_id = $request->category;
-        $service->name = $request->name;
-        $service->price_per_k = $request->price_per_k;
-        $service->min = $request->min;
-        $service->max = $request->max;
-        $service->details = $request->details;
-        if($service->category->type=="5SIM")
-        $service->api_service_params = $request->country  .'/any/'. $request->product;
-        $service->special_price=$request->special_price !=0 ? $request->special_price  : NULL;
-        $service->api_service_id=$request->api_service_id;
+        $pageTitle  = "Update Service";
+        $service    = Service::findOrFail($id);
+        $categories = Category::active()->orderBy('name')->get();
+        return view('admin.service.edit', compact('pageTitle', 'categories', 'service'));
     }
 
     public function status($id)
     {
-        $service = Service::findOrFail($id);
-        $service->status = ($service->status ? 0 : 1);
+        return Service::changeStatus($id);
+    }
+
+    public function apiServicesStore(Request $request)
+    {
+        $request->validate([
+            'category'        => 'required',
+            'name'            => 'required',
+            'price_per_k'     => 'required|numeric|gt:0',
+            'min'             => 'required|integer|gt:0|lte:' . $request->max,
+            'max'             => 'required|integer|gte:' . $request->min,
+            'details'         => 'required',
+            'api_provider_id' => 'numeric|gt:0',
+        ]);
+
+        $category = Category::where('name', $request->category)->first();
+
+        if (!$category) {
+            $category       = new Category();
+            $category->name = $request->category;
+            $category->save();
+        }
+
+        $apiService = Service::where('api_service_id', $request->api_service_id)->where('api_provider_id', $request->api_provider_id)->first();
+
+        if ($apiService) {
+            $notify[] = ['error', "This API service already listed"];
+            return back()->withNotify($notify);
+        }
+
+        $service                  = new Service();
+        $service->category_id     = $category->id;
+        $service->api_provider_id = $request->api_provider_id;
+        $service->name            = $request->name;
+        $service->price_per_k     = $request->price_per_k;
+        $service->min             = $request->min;
+        $service->max             = $request->max;
+        $service->details         = $request->details;
+        $service->api_service_id  = $request->api_service_id;
         $service->save();
 
-        $notify[] = ['success', 'Status updated!'];
+        $notify[] = ['success', 'Service added form API successfully'];
         return back()->withNotify($notify);
     }
 
     //Api services
-    public function apiServices()
+    public function apiServices($id)
     {
-        $page_title = 'API Services';
-        $empty_message = 'No Result Found';
-        $categories = Category::active()->orderBy('name')->get();
 
-        $general = GeneralSetting::first();
 
-        $url = $general->api_url;
-        $arr = [
-            'key' => $general->api_key,
-            'action' => "services",
+        $pageTitle  = "API Services";
+        $api        = ApiProvider::active()->findOrFail($id);
+        $existsServices = Service::where('api_provider_id', $api->id)->count();
+        $url        = $api->api_url;
+        $arr        = [
+            'key'    => $api->api_key,
+            'action' => 'services',
         ];
-        $response = json_decode(curlPostContent($general->api_url,$arr));
+        $response = CurlRequest::curlPostContent($url, $arr);
+        $response = json_decode($response);
 
-        if (@$response->error){
+        if (@$response->error) {
             $notify[] = ['info', 'Please enter your api credentials from API Setting Option'];
             $notify[] = ['error', $response->error];
             return back()->withNotify($notify);
         }
+        $data = [];
+        foreach ($response as $value) {
+            $value->api_id = $id;
+            array_push($data, $value);
+        }
 
-        $response = collect($response);
+        $response = collect($data);
+        $response = $response->skip($existsServices);
+        $services = $this->paginate($response, getPaginate(100), null, ['path' => route('admin.service.api', $id)]);
+        return view('admin.service.api_services', compact('pageTitle', 'services'));
+    }
 
-        $services = $this->paginate($response, getPaginate(), null, ['path' => route('admin.services.apiServices')]);
+    public function addService(Request $request)
+    {
 
-        return view('admin.services.apiServices', compact('page_title', 'services', 'empty_message', 'categories'));
+        $services = $request->services;
+        foreach ($services as $serviceValue) {
+            $api_service_id  = $serviceValue['api_service_id'];
+            $category        = $serviceValue['category'];
+            $api_provider_id = $serviceValue['api_provider_id'];
+            $checkService    = Service::where('api_service_id', $api_service_id)->where('api_provider_id', $api_provider_id)->first();
+
+            if ($checkService) {
+                continue;
+            }
+            $existCategory = Category::where('name', $category)->first();
+            if ($existCategory) {
+                $category_id = $existCategory->id;
+            }
+
+            if (!$existCategory) {
+                $categoryNew       = new Category();
+                $categoryNew->name = $category;
+                $categoryNew->save();
+                $category_id = $categoryNew->id;
+            }
+            $service                  = new Service();
+            $service->category_id     = $category_id;
+            $service->api_provider_id = $api_provider_id;
+            $service->name            = $serviceValue['name'];
+            $service->price_per_k     = $serviceValue['price_per_k'] * $serviceValue['incressTimes'];
+            $service->min             = $serviceValue['min'];
+            $service->max             = $serviceValue['max'];
+            $service->api_service_id  = $serviceValue['api_service_id'];
+            $service->save();
+        }
+
+        return response()->json(['success' => true, 'message' => 'All service added successfully']);
     }
 
     public function paginate($items, $perPage = 15, $page = null, $options = [])
     {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $page  = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
-    }
-
-
-    public function search(Request $request)
-    {
-
-        if ($request->search){
-            $search = $request->search;
-            $categories = Category::active()->orderBy('name')->get();
-            $services = Service::where('category_id', $search)->latest('id')->paginate(getPaginate());
-            $search=Category::find($search);
-            $page_title = "نتائج البحث عن {{$search['name']}}";
-        } else {
-            $page_title = 'All Services';
-            $search = '';
-            $services = Service::with('category')->latest()->paginate(getPaginate());
-            $categories = Category::active()->orderBy('name')->get();
-        }
-        $empty_message = 'No Result Found';
-        return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'search','categories'));
     }
 }

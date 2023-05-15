@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Gateway\paytm;
+namespace App\Http\Controllers\Gateway\Paytm;
 
 class PayTM{
     /*

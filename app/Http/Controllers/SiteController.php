@@ -2,176 +2,175 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Models\AdminNotification;
-use App\Models\Banner;
-use App\Models\Category;
 use App\Models\Frontend;
 use App\Models\Language;
 use App\Models\Page;
 use App\Models\Subscriber;
-use App\Models\SupportAttachment;
 use App\Models\SupportMessage;
 use App\Models\SupportTicket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Cookie;
 
 class SiteController extends Controller
 {
-    public function __construct(){
-        $this->activeTemplate = activeTemplate();
-    }
-
-    public function index(){
-//        $count = Page::where('tempname',$this->activeTemplate)->where('slug','home')->count();
-//        if($count == 0){
-//            $page = new Page();
-//            $page->tempname = $this->activeTemplate;
-//            $page->name = 'HOME';
-//            $page->slug = 'home';
-//            $page->save();
-//        }
-
-        $data['page_title'] = 'Home';
-        $data['sections'] = Page::where('tempname',$this->activeTemplate)->where('slug','home')->firstOrFail();
-        $data['categories']=Category::active()->orderBy('sort')->get();
-        $data['banner']=Banner::where('status',1)->orderBy('id')->get();
-        return view($this->activeTemplate . 'home', $data);
+    public function index()
+    {
+        $pageTitle = 'Home';
+        $sections  = Page::where('tempname', $this->activeTemplate)->where('slug', '/')->first();
+        return view($this->activeTemplate . 'home', compact('pageTitle', 'sections'));
     }
 
     public function pages($slug)
     {
-        $page = Page::where('tempname',$this->activeTemplate)->where('slug',$slug)->firstOrFail();
-        $data['page_title'] = $page->name;
-        $data['sections'] = $page;
-        return view($this->activeTemplate . 'pages', $data);
+        $page      = Page::where('tempname', $this->activeTemplate)->where('slug', $slug)->firstOrFail();
+        $pageTitle = $page->name;
+        $sections  = $page->secs;
+        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections'));
     }
 
+    public function subscribe(Request $request)
+    {
+        $rules = [
+            'email' => 'required|email|unique:subscribers,email',
+        ];
+        $message = [
+            "email.unique" => 'You are already subscribe',
+        ];
+        $validator = validator()->make($request->all(), $rules, $message);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->getMessages()]);
+        }
+
+        $subscribe        = new Subscriber();
+        $subscribe->email = $request->email;
+        $subscribe->save();
+
+        return response()->json(['success' => true, 'message' => 'Thanks for subscribe']);
+    }
 
     public function contact()
     {
-        $data['page_title'] = "Contact Us";
-        return view($this->activeTemplate . 'contact', $data);
+        $pageTitle = "Contact Us";
+        return view($this->activeTemplate . 'contact', compact('pageTitle'));
     }
-
 
     public function contactSubmit(Request $request)
     {
-        $ticket = new SupportTicket();
-        $message = new SupportMessage();
-
-        $imgs = $request->file('attachments');
-        $allowedExts = array('jpg', 'png', 'jpeg', 'pdf');
-
         $this->validate($request, [
-            'attachments' => [
-                'sometimes',
-                'max:4096',
-                function ($attribute, $value, $fail) use ($imgs, $allowedExts) {
-                    foreach ($imgs as $img) {
-                        $ext = strtolower($img->getClientOriginalExtension());
-                        if (($img->getSize() / 1000000) > 2) {
-                            return $fail("Images MAX  2MB ALLOW!");
-                        }
-                        if (!in_array($ext, $allowedExts)) {
-                            return $fail("Only png, jpg, jpeg, pdf images are allowed");
-                        }
-                    }
-                    if (count($imgs) > 5) {
-                        return $fail("Maximum 5 images can be uploaded");
-                    }
-                },
-            ],
-            'name' => 'required|max:191',
-            'email' => 'required|max:191',
-            'subject' => 'required|max:100',
+            'name'    => 'required',
+            'email'   => 'required',
+            'subject' => 'required|string|max:255',
             'message' => 'required',
         ]);
 
+        if (!verifyCaptcha()) {
+            $notify[] = ['error', 'Invalid captcha provided'];
+            return back()->withNotify($notify);
+        }
+
+        $request->session()->regenerateToken();
 
         $random = getNumber();
 
-        $ticket->user_id = auth()->id();
-        $ticket->name = $request->name;
-        $ticket->email = $request->email;
+        $ticket           = new SupportTicket();
+        $ticket->user_id  = auth()->id() ?? 0;
+        $ticket->name     = $request->name;
+        $ticket->email    = $request->email;
+        $ticket->priority = Status::PRIORITY_MEDIUM;
 
-
-        $ticket->ticket = $random;
-        $ticket->subject = $request->subject;
+        $ticket->ticket     = $random;
+        $ticket->subject    = $request->subject;
         $ticket->last_reply = Carbon::now();
-        $ticket->status = 0;
+        $ticket->status     = Status::TICKET_OPEN;
         $ticket->save();
 
-        $adminNotification = new AdminNotification();
-        $adminNotification->user_id = auth()->id() ? auth()->id() : 0;
-        $adminNotification->title = 'New support ticket has opened';
-        $adminNotification->click_url = urlPath('admin.ticket.view',$ticket->id);
+        $adminNotification            = new AdminNotification();
+        $adminNotification->user_id   = auth()->user() ? auth()->user()->id : 0;
+        $adminNotification->title     = 'A new support ticket has opened ';
+        $adminNotification->click_url = urlPath('admin.ticket.view', $ticket->id);
         $adminNotification->save();
 
-        $message->supportticket_id = $ticket->id;
-        $message->message = $request->message;
+        $message                    = new SupportMessage();
+        $message->support_ticket_id = $ticket->id;
+        $message->message           = $request->message;
         $message->save();
 
-        $path = imagePath()['ticket']['path'];
+        $notify[] = ['success', 'Ticket created successfully!'];
 
-        if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $image) {
-                try {
-                    $attachment = new SupportAttachment();
-                    $attachment->support_message_id = $message->id;
-                    $attachment->image = uploadImage($image, $path);
-                    $attachment->save();
+        return to_route('ticket.view', [$ticket->ticket])->withNotify($notify);
+    }
 
-                } catch (\Exception $exp) {
-                    $notify[] = ['error', 'Could not upload your ' . $image];
-                    return back()->withNotify($notify)->withInput();
-                }
+    public function policyPages($slug, $id)
+    {
 
-            }
-        }
-        $notify[] = ['success', 'ticket created successfully!'];
-
-        return redirect()->route('ticket.view', [$ticket->ticket])->withNotify($notify);
+        $policy    = Frontend::where('id', $id)->where('data_keys', 'privacy_policy.element')->firstOrFail();
+        $pageTitle = $policy->data_values->title;
+        return view($this->activeTemplate . 'policy', compact('policy', 'pageTitle'));
     }
 
     public function changeLanguage($lang = null)
     {
         $language = Language::where('code', $lang)->first();
-        if (!$language) $lang = 'en';
-        session()->put('lang', $lang);
-        return redirect()->back();
-    }
 
-    public function blogDetails($id,$slug){
-        $blog = Frontend::where('id',$id)->where('data_keys','blog.element')->firstOrFail();
-        $recent_blogs = Frontend::where('id','!=', $id)->where('data_keys', 'blog.element')->latest()->take(5)->get();
-        $page_title = $blog->data_values->title;
-        return view($this->activeTemplate.'blogDetails',compact('blog','page_title', 'recent_blogs'));
-    }
-
-    public function extraDetails($id,$slug){
-        $extra = Frontend::where('id',$id)->where('data_keys','extra.element')->firstOrFail();
-        $page_title = $extra->data_values->title;
-        return view($this->activeTemplate.'extraDetails',compact('extra','page_title'));
-    }
-
-    public function placeholderImage($size = null){
-        if ($size != 'undefined') {
-            $size = $size;
-            $imgWidth = explode('x',$size)[0];
-            $imgHeight = explode('x',$size)[1];
-            $text = $imgWidth . '×' . $imgHeight;
-        }else{
-            $imgWidth = 150;
-            $imgHeight = 150;
-            $text = 'Undefined Size';
+        if (!$language) {
+            $lang = 'en';
         }
-        $fontFile = realpath('assets/font') . DIRECTORY_SEPARATOR . 'RobotoMono-Regular.ttf';
-        $fontSize = round(($imgWidth - 50) / 8);
+        session()->put('lang', $lang);
+        return back();
+    }
+
+    public function blogDetails($id, $slug)
+    {
+
+        $blog         = Frontend::where('id', $id)->where('data_keys', 'blog.element')->firstOrFail();
+        $recent_blogs = Frontend::where('id', '!=', $id)->where('data_keys', 'blog.element')->latest()->take(5)->get();
+        $pageTitle    = $blog->data_values->title;
+        return view($this->activeTemplate . 'blog_details', compact('blog', 'pageTitle', 'recent_blogs'));
+    }
+
+    public function cookieAccept()
+    {
+        $general = gs();
+        Cookie::queue('gdpr_cookie', $general->site_name, 43200);
+    }
+
+    public function apiDocumentation()
+    {
+        $pageTitle = 'API Documentation';
+        return view($this->activeTemplate . 'api_documentation', compact('pageTitle'));
+    }
+
+    public function blog()
+    {
+        $pageTitle   = "Show Blog Post";
+        $blogElements         = Frontend::where('data_keys', 'blog.element')->latest('id')->paginate(getPaginate());
+        return view($this->activeTemplate . 'blog', compact('pageTitle', 'blogElements'));
+    }
+
+    public function cookiePolicy()
+    {
+        $pageTitle = 'Cookie Policy';
+        $cookie    = Frontend::where('data_keys', 'cookie.data')->first();
+        return view($this->activeTemplate . 'cookie', compact('pageTitle', 'cookie'));
+    }
+
+    public function placeholderImage($size = null)
+    {
+        $imgWidth  = explode('x', $size)[0];
+        $imgHeight = explode('x', $size)[1];
+        $text      = $imgWidth . '×' . $imgHeight;
+        $fontFile  = realpath('assets/font/RobotoMono-Regular.ttf');
+        $fontSize  = round(($imgWidth - 50) / 8);
+
         if ($fontSize <= 9) {
             $fontSize = 9;
         }
-        if($imgHeight < 100 && $fontSize > 30){
+
+        if ($imgHeight < 100 && $fontSize > 30) {
             $fontSize = 30;
         }
 
@@ -179,7 +178,7 @@ class SiteController extends Controller
         $colorFill = imagecolorallocate($image, 100, 100, 100);
         $bgFill    = imagecolorallocate($image, 175, 175, 175);
         imagefill($image, 0, 0, $bgFill);
-        $textBox = imagettfbbox($fontSize, 0, $fontFile, $text);
+        $textBox    = imagettfbbox($fontSize, 0, $fontFile, $text);
         $textWidth  = abs($textBox[4] - $textBox[0]);
         $textHeight = abs($textBox[5] - $textBox[1]);
         $textX      = ($imgWidth - $textWidth) / 2;
@@ -190,28 +189,16 @@ class SiteController extends Controller
         imagedestroy($image);
     }
 
-    //Subscribe
-    public function subscribe()
+    public function maintenance()
     {
-        $rules = [
-            'email' => 'required|email|unique:subscribers,email'
-        ];
+        $pageTitle = 'Maintenance Mode';
+        $general   = gs();
 
-        $validator = validator()->make(\request()->all(), $rules);
-        if ($validator->fails()){
-            return response()->json(['error' => $validator->errors()->getMessages()]);
+        if ($general->maintenance_mode == Status::DISABLE) {
+            return to_route('home');
         }
 
-        $subscribe = new Subscriber();
-        $subscribe->email = \request()->email;
-        $subscribe->save();
-
-        return response()->json(['success' => true,'message' => 'Thanks for subscribe!']);
-    }
-
-    public function apiDocumentation()
-    {
-        $page_title = 'API Documentation';
-        return view($this->activeTemplate.'apiDocumentation',compact('page_title'));
+        $maintenance = Frontend::where('data_keys', 'maintenance.data')->first();
+        return view($this->activeTemplate . 'maintenance', compact('pageTitle', 'maintenance'));
     }
 }

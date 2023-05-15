@@ -1,96 +1,138 @@
-@extends($activeTemplate.'layouts.master')
+@extends($activeTemplate . 'layouts.app')
 
-
-@section('content')
-    <div class="row">
-            @foreach($gatewayCurrency as $data)
-                <div class="col-md-3 col-sm-4  card-dep mb-4">
-                    <div class="card card-deposit">
-                        <h5 class="card-header text-center">{{__($data->name)}}
-                        </h5>
-                        <div class="card-body card-body-deposit">
-                            <img src="{{$data->methodImage()}}" class="card-img-top" alt="{{__($data->name)}}" class="w-100">
-                        </div>
-                        <div class="card-footer">
-                            <a href="javascript:void(0)" data-id="{{$data->id}}" data-resource="{{$data}}"
-                               data-min_amount="{{getAmount($data->min_amount)}}"
-                               data-max_amount="{{getAmount($data->max_amount)}}"
-                               data-base_symbol="{{$data->baseSymbol()}}"
-                               data-fix_charge="{{getAmount($data->fixed_charge)}}"
-                               data-percent_charge="{{getAmount($data->percent_charge)}}" class=" btn  btn--primary btn-block custom-success deposit" data-toggle="modal" data-target="#exampleModal">
-                                @lang('Deposit Now')</a>
-                        </div>
+@section('panel')
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <form action="{{ route('user.deposit.insert') }}" method="post">
+                @csrf
+                <input type="hidden" name="method_code">
+                <input type="hidden" name="currency">
+                <div class="card custom--card">
+                    <div class="card-header">
+                        <h5 class="card-title">@lang('Deposit')</h5>
                     </div>
-                </div>
-            @endforeach
-        </div>
-
-
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <strong class="modal-title method-name" id="exampleModalLabel"></strong>
-                    <a href="javascript:void(0)" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </a>
-                </div>
-                <form action="{{route('user.deposit.insert')}}" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        <p class="text-danger depositLimit"></p>
-                        <p class="text-danger depositCharge"></p>
+                    <div class="card-body">
                         <div class="form-group">
-                            <input type="hidden" name="currency" class="edit-currency" value="">
-                            <input type="hidden" name="method_code" class="edit-method-code" value="">
+                            <label class="form-label">@lang('Select Gateway')</label>
+                            <select class="form--control form-control " name="gateway" required>
+                                <option value="">@lang('Select One')</option>
+                                @foreach ($gatewayCurrency as $data)
+                                    <option value="{{ $data->method_code }}" @selected(old('gateway') == $data->method_code)
+                                        data-gateway="{{ $data }}">{{ $data->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label>@lang('Enter Amount'):</label>
+                            <label class="form-label">@lang('Amount')</label>
                             <div class="input-group">
-                                <input id="amount" type="text" class="form-control form-control-lg" onkeyup="this.value = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount" placeholder="0.00" required=""  value="{{old('amount')}}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text currency-addon">{{__($general->cur_text)}}</span>
-                                </div>
+                                <input type="number" step="any" name="amount" class="form-control form--control"
+                                    value="{{ old('amount') }}" autocomplete="off" required>
+                                <span class="input-group-text">{{ $general->cur_text }}</span>
                             </div>
                         </div>
+                        <div class="mt-3 preview-details d-none">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@lang('Limit')</span>
+                                    <span><span class="min fw-bold">0</span> {{ __($general->cur_text) }} - <span
+                                            class="max fw-bold">0</span> {{ __($general->cur_text) }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@lang('Charge')</span>
+                                    <span><span class="charge fw-bold">0</span> {{ __($general->cur_text) }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@lang('Payable')</span> <span><span class="payable fw-bold"> 0</span>
+                                        {{ __($general->cur_text) }}</span>
+                                </li>
+                                <li class="list-group-item justify-content-between d-none rate-element">
+
+                                </li>
+                                <li class="list-group-item justify-content-between d-none in-site-cur">
+                                    <span>@lang('In') <span class="method_currency"></span></span>
+                                    <span class="final_amo fw-bold">0</span>
+                                </li>
+                                <li class="list-group-item justify-content-center crypto_currency d-none">
+                                    <span>@lang('Conversion with') <span class="method_currency"></span>
+                                        @lang('and final value will Show on next step')</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="submit" class="btn btn--primary w-100 mt-3">@lang('Submit')</button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('Close')</button>
-                        <button type="submit" class="btn btn--primary">@lang('Confirm')</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-@stop
+@endsection
 
+@push('breadcrumb-plugins')
+    <x-back route="{{ route('user.deposit.history') }}" />
+@endpush
 
 
 @push('script')
     <script>
-        "use strict";
-        $(document).ready(function(){
-            $('.deposit').on('click', function () {
-                var id = $(this).data('id');
-                var result = $(this).data('resource');
-                var minAmount = $(this).data('min_amount');
-                var maxAmount = $(this).data('max_amount');
-                var baseSymbol = "{{__($general->cur_text)}}";
-                var fixCharge = $(this).data('fix_charge');
-                var percentCharge = $(this).data('percent_charge');
-
-                var depositLimit = `@lang('Deposit Limit'): ${minAmount} - ${maxAmount}  ${baseSymbol}`;
-                $('.depositLimit').text(depositLimit);
-                var depositCharge = `@lang('Charge'): ${fixCharge} ${baseSymbol}  ${(0 < percentCharge) ? ' + ' +percentCharge + ' % ' : ''}`;
-                $('.depositCharge').text(depositCharge);
-                $('.method-name').text(`@lang('Payment By ') ${result.name}`);
-                $('.currency-addon').text(baseSymbol);
-
-
-                $('.edit-currency').val(result.currency);
-                $('.edit-method-code').val(result.method_code);
+        (function($) {
+            "use strict";
+            $('select[name=gateway]').change(function() {
+                if (!$('select[name=gateway]').val()) {
+                    $('.preview-details').addClass('d-none');
+                    return false;
+                }
+                var resource = $('select[name=gateway] option:selected').data('gateway');
+                var fixed_charge = parseFloat(resource.fixed_charge);
+                var percent_charge = parseFloat(resource.percent_charge);
+                var rate = parseFloat(resource.rate)
+                if (resource.method.crypto == 1) {
+                    var toFixedDigit = 8;
+                    $('.crypto_currency').removeClass('d-none');
+                } else {
+                    var toFixedDigit = 2;
+                    $('.crypto_currency').addClass('d-none');
+                }
+                $('.min').text(parseFloat(resource.min_amount).toFixed(2));
+                $('.max').text(parseFloat(resource.max_amount).toFixed(2));
+                var amount = parseFloat($('input[name=amount]').val());
+                if (!amount) {
+                    amount = 0;
+                }
+                if (amount <= 0) {
+                    $('.preview-details').addClass('d-none');
+                    return false;
+                }
+                $('.preview-details').removeClass('d-none');
+                var charge = parseFloat(fixed_charge + (amount * percent_charge / 100)).toFixed(2);
+                $('.charge').text(charge);
+                var payable = parseFloat((parseFloat(amount) + parseFloat(charge))).toFixed(2);
+                $('.payable').text(payable);
+                var final_amo = (parseFloat((parseFloat(amount) + parseFloat(charge))) * rate).toFixed(
+                    toFixedDigit);
+                $('.final_amo').text(final_amo);
+                if (resource.currency != '{{ $general->cur_text }}') {
+                    var rateElement =
+                        `<span class="fw-bold">@lang('Conversion Rate')</span> <span><span  class="fw-bold">1 {{ __($general->cur_text) }} = <span class="rate">${rate}</span>  <span class="method_currency">${resource.currency}</span></span></span>`;
+                    $('.rate-element').html(rateElement)
+                    $('.rate-element').removeClass('d-none');
+                    $('.in-site-cur').removeClass('d-none');
+                    $('.rate-element').addClass('d-flex');
+                    $('.in-site-cur').addClass('d-flex');
+                } else {
+                    $('.rate-element').html('')
+                    $('.rate-element').addClass('d-none');
+                    $('.in-site-cur').addClass('d-none');
+                    $('.rate-element').removeClass('d-flex');
+                    $('.in-site-cur').removeClass('d-flex');
+                }
+                $('.method_currency').text(resource.currency);
+                $('input[name=currency]').val(resource.currency);
+                $('input[name=method_code]').val(resource.method_code);
+                $('input[name=amount]').on('input');
             });
-        });
+            $('input[name=amount]').on('input', function() {
+                $('select[name=gateway]').change();
+                $('.amount').text(parseFloat($(this).val()).toFixed(2));
+            });
+        })(jQuery);
     </script>
 @endpush

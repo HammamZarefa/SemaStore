@@ -3,8 +3,8 @@
 @section('content')
 
 
-    @if($sections->secs != null)
-        @foreach(json_decode($sections->secs) as $sec)
+    @if($sections != null)
+        @foreach(json_decode($sections) as $sec)
             @include($activeTemplate.'sections.'.$sec)
         @endforeach
     @endif

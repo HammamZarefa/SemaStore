@@ -2,182 +2,136 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Constants\Status;
 use App\Http\Controllers\Controller;
-use App\Models\GeneralSetting;
 use App\Models\Order;
 use App\Models\Transaction;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function allOrder(Request $request)
+    public function index()
     {
-        if ($request->user){
-            $user = User::findOrFail($request->user);
-            $page_title =  "{$user->username}: All orders";
-            $orders = Order::where('user_id', $request->user)->with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        } else {
-            $page_title = 'All Orders';
-            $orders = Order::with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        }
-
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message'));
+        $pageTitle = "All Orders";
+        $orders    = $this->orderData();
+        return view('admin.order.index', compact('pageTitle', 'orders'));
     }
 
-    public function pendingOrder(Request $request)
+    public function pending()
     {
-        if ($request->user){
-            $user = User::findOrFail($request->user);
-            $page_title =  "{$user->username}: Pending orders";
-            $orders = Order::where('user_id', $request->user)->pending()->with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        } else {
-            $page_title = 'Pending Orders';
-            $orders = Order::with(['category', 'user'])->pending()->latest('id')->paginate(getPaginate());
-        }
-
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message'));
+        $pageTitle = "Pending Orders";
+        $orders    = $this->orderData('pending');
+        return view('admin.order.index', compact('pageTitle', 'orders'));
     }
 
-    public function processingOrder(Request $request)
+    public function processing()
     {
-        if ($request->user){
-            $user = User::findOrFail($request->user);
-            $page_title =  "{$user->username}: Processing orders";
-            $orders = Order::where('user_id', $request->user)->processing()->with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        } else {
-            $page_title = 'Processing Orders';
-            $orders = Order::with(['category', 'user'])->processing()->latest('id')->paginate(getPaginate());
-        }
-
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message'));
+        $pageTitle = "Processing Orders";
+        $orders    = $this->orderData('processing');
+        return view('admin.order.index', compact('pageTitle', 'orders'));
     }
 
-    public function completedOrder(Request $request)
+    public function completed()
     {
-        if ($request->user){
-            $user = User::findOrFail($request->user);
-            $page_title =  "{$user->username}: Completed orders";
-            $orders = Order::where('user_id', $request->user)->completed()->with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        } else {
-            $page_title = 'Completed Orders';
-            $orders = Order::with(['category', 'user'])->completed()->latest('id')->paginate(getPaginate());
-        }
-
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message'));
+        $pageTitle = "Completed Orders";
+        $orders    = $this->orderData('completed');
+        return view('admin.order.index', compact('pageTitle', 'orders'));
     }
 
-    public function cancelledOrder(Request $request)
+    public function cancelled()
     {
-        if ($request->user){
-            $user = User::findOrFail($request->user);
-            $page_title =  "{$user->username}: Cancelled orders";
-            $orders = Order::where('user_id', $request->user)->cancelled()->with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        } else {
-            $page_title = 'Cancelled Orders';
-            $orders = Order::with(['category', 'user'])->cancelled()->latest('id')->paginate(getPaginate());
-        }
-
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message'));
+        $pageTitle = "Cancelled Orders";
+        $orders    = $this->orderData('cancelled');
+        return view('admin.order.index', compact('pageTitle', 'orders'));
     }
 
-    public function refundedOrder(Request $request)
+    public function refunded()
     {
-        if ($request->user){
-            $user = User::findOrFail($request->user);
-            $page_title =  "{$user->username}: Refunded orders";
-            $orders = Order::where('user_id', $request->user)->refunded()->with(['category', 'user'])->latest('id')->paginate(getPaginate());
-        } else {
-            $page_title = 'Refunded Orders';
-            $orders = Order::with(['category', 'user'])->refunded()->latest('id')->paginate(getPaginate());
-        }
-
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message'));
+        $pageTitle = "Refunded Orders";
+        $orders    = $this->orderData('refunded');
+        return view('admin.order.index', compact('pageTitle', 'orders'));
     }
 
-    //Search
-    public function search(Request $request)
+    protected function orderData($scope = null)
     {
-        if ($request->search){
-            $search = $request->search;
-            $page_title = "Search results for {{$search}}";
-
-            $orders = Order::where('id', $search)->orWhereHas('user', function ($user) use ($search){
-                $user->where('username', 'like', "%$search%");
-            })->with(['category', 'user'])->latest('id')->paginate(getPaginate());
+        if ($scope) {
+            $orders = Order::$scope();
         } else {
-            $page_title = 'All Orders';
-            $search = '';
-            $orders = Order::with(['category', 'user'])->latest('id')->paginate(getPaginate());
+            $orders = Order::query();
         }
-        $empty_message = 'No Result Found';
-        return view('admin.orders.index', compact('page_title', 'orders', 'empty_message', 'search'));
+        return $orders->searchable(['user:username', 'category:name', 'service:name'])->with(['category', 'user', 'service'])->orderBy('id', 'desc')->paginate(getPaginate());
     }
 
-    public function orderDetails($id)
+    public function details($id)
     {
-        $order = Order::findOrFail($id);
-
-        $page_title = 'Order Details';
-        return view('admin.orders.details', compact('page_title', 'order'));
+        $pageTitle = 'Order Details';
+        $order     = Order::findOrFail($id);
+        return view('admin.order.details', compact('pageTitle', 'order'));
     }
 
     public function update(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('user', 'category')->findOrFail($id);
 
         $request->validate([
-            'start_counter' => 'required|integer|gte:0|lte:' . $order->quantity,
-            'status' => 'required|integer|in:0,1,2,3,4'
+            'start_count' => 'required|integer|gte:0|lte:' . $order->quantity,
+            'status'      => 'required|integer|in:0,1,2,3,4',
         ]);
+        $order->start_counter = $request->start_count;
+        $order->remain        = ($order->quantity - $request->start_count);
+        $user                 = $order->user;
 
-        $order->start_counter = $request->start_counter;
-        $order->remain = ($order->quantity - $request->start_counter);
-
-        $user = User::findOrFail($order->user_id);
-
-        //Processing
-        if ($request->status == 1){
-            $order->status = 1;
+        if ($request->status == Status::ORDER_PROCESSING) {
+            $order->status = Status::ORDER_PROCESSING;
             $order->save();
 
-            //Send email to user
             notify($user, 'PROCESSING_ORDER', [
-                'service_name' => $order->service->name
+                'service_name'  => $order->service->name,
+                'username' => $order->user->username,
+                'price' => $order->price,
+                'full_name' => $order->user->fullname,
+                'category' => $order->category->name
+
             ]);
         }
 
-        //Completed
-        if ($request->status == 2){
-            $order->status = 2;
+        //Complete Order
+        if ($request->status == Status::ORDER_COMPLETED) {
+            $order->status = Status::ORDER_COMPLETED;
             $order->save();
-
             //Send email to user
             notify($user, 'COMPLETED_ORDER', [
-                'service_name' => $order->service->name
+                'service_name' => $order->service->name,
+                'username' => $order->user->username,
+                'price' => $order->price,
+                'full_name' => $order->user->fullname,
+                'category' =>  $order->category->name
             ]);
         }
 
         //Cancelled
-        if ($request->status == 3){
-            $order->status = 3;
+        if ($request->status == Status::ORDER_CANCELLED) {
+            $order->status = Status::ORDER_CANCELLED;
             $order->save();
 
             //Send email to user
             notify($user, 'CANCELLED_ORDER', [
-                'service_name' => $order->service->name
+                'service_name' => $order->service->name,
+                'username' => $order->user->username,
+                'full_name' => $order->user->fullname,
+                'price' => $order->price,
+                'category' => $order->category->name
             ]);
         }
 
         //Refunded
-        if ($request->status == 4){
-            $order->status = 4;
+        if ($request->status == Status::ORDER_REFUNDED) {
+            if ($order->status == Status::ORDER_COMPLETED || $order->status == Status::ORDER_CANCELLED) {
+                $notify[] = ['error', 'This order is not refundable'];
+                return back()->withNotify($notify);
+            }
+
+            $order->status = Status::ORDER_REFUNDED;
             $order->save();
 
             //Refund balance
@@ -185,28 +139,29 @@ class OrderController extends Controller
             $user->save();
 
             //Create Transaction
-            $transaction = new Transaction();
-            $transaction->user_id = $user->id;
-            $transaction->amount = getAmount($order->price);
-            $transaction->post_balance = getAmount($user->balance);
-            $transaction->trx_type = '+';
-            $transaction->details = 'Refund for Order ' . $order->service->name;
-            $transaction->trx = getTrx();
+            $transaction               = new Transaction();
+            $transaction->user_id      = $user->id;
+            $transaction->amount       = $order->price;
+            $transaction->post_balance = $user->balance;
+            $transaction->trx_type     = '+';
+            $transaction->remark       = "refund_order";
+            $transaction->details      = 'Refund for Order ' . $order->service->name;
+            $transaction->trx          = getTrx();
             $transaction->save();
 
             //Send email to user
-            $gnl = GeneralSetting::first();
+
             notify($user, 'REFUNDED_ORDER', [
                 'service_name' => $order->service->name,
-                'price' => getAmount($order->price),
-                'currency' => $gnl->cur_text,
+                'price'        => getAmount($order->price),
+                'currency'     => gs()->cur_text,
                 'post_balance' => getAmount($user->balance),
-                'trx' => $transaction->trx
+                'trx'          => $transaction->trx,
             ]);
         }
 
         $order->save();
-        $notify[] = ['success', 'Successfully updated!'];
+        $notify[] = ['success', 'Order successfully updated'];
         return back()->withNotify($notify);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laramin\Utility\VugiChugi;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -17,19 +18,8 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+
     protected $namespace = 'App\Http\Controllers';
-    protected $adminNamespace = 'App\Http\Controllers\Admin';
-
-    public const HOME = '/user/dashboard';
-
-    /**
-     * The controller namespace for the application.
-     *
-     * When present, controller route declarations will automatically be prefixed with this namespace.
-     *
-     * @var string|null
-     */
-    // protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -41,15 +31,33 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
+            Route::namespace($this->namespace)->middleware(VugiChugi::mdNm())->group(function () {
+                Route::prefix('api')
+                    ->middleware(['api', 'maintenance'])
+                    ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+                Route::middleware(['web', 'maintenance'])
+                    ->namespace('Gateway')
+                    ->prefix('ipn')
+                    ->name('ipn.')
+                    ->group(base_path('routes/ipn.php'));
+
+                Route::middleware(['web'])
+                    ->namespace('Admin')
+                    ->prefix('admin')
+                    ->name('admin.')
+                    ->group(base_path('routes/admin.php'));
+
+                Route::middleware(['web', 'maintenance'])
+                    ->prefix('user')
+                    ->group(base_path('routes/user.php'));
+
+                Route::middleware(['web', 'maintenance'])
+                    ->group(base_path('routes/web.php'));
+            });
         });
+
+        Route::get('maintenance-mode', 'App\Http\Controllers\SiteController@maintenance')->name('maintenance');
     }
 
     /**
@@ -60,7 +68,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }

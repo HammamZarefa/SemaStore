@@ -16,9 +16,9 @@ class Demo
     public function handle($request, Closure $next)
     {
         if ($request->isMethod('POST') || $request->isMethod('PUT') || $request->isMethod('DELETE')){
-            $notify[] = ['error', 'This is Demo version.  You can not change any thing'];
+            $notify[] = ['warning', 'You can not change anything over this demo'];
+            $notify[] = ['info', 'This version is for demonstration purposes only and few actions are blocked'];
             return back()->withNotify($notify);
-
         }
         return $next($request);
     }

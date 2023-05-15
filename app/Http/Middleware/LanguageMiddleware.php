@@ -29,6 +29,4 @@ class LanguageMiddleware
         $language = Language::where('is_default', 1)->first();
         return $language ? $language->code : 'en';
     }
-    
-    
 }

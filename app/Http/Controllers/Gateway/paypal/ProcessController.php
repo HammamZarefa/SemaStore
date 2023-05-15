@@ -1,43 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\Gateway\paypal;
+namespace App\Http\Controllers\Gateway\Paypal;
 
+use App\Constants\Status;
 use App\Models\Deposit;
-use App\Models\GeneralSetting;
 use App\Http\Controllers\Gateway\PaymentController;
 use App\Http\Controllers\Controller;
+use App\Lib\CurlRequest;
 
 class ProcessController extends Controller
 {
 
-    /*
-     * Paypal Gateway
-     */
     public static function process($deposit)
     {
-        $basic =  GeneralSetting::first();
-        $paypalAcc = json_decode($deposit->gateway_currency()->gateway_parameter);
-
+        $basic = gs();
+        $paypalAcc = json_decode($deposit->gatewayCurrency()->gateway_parameter);
         $val['cmd'] = '_xclick';
         $val['business'] = trim($paypalAcc->paypal_email);
-        $val['cbt'] = $basic->sitename;
+        $val['cbt'] = $basic->site_name;
         $val['currency_code'] = "$deposit->method_currency";
         $val['quantity'] = 1;
-        $val['item_name'] = "Payment To $basic->sitename Account";
+        $val['item_name'] = "Payment To $basic->site_name Account";
         $val['custom'] = "$deposit->trx";
-        $val['amount'] = round($deposit->final_amo,2);
-        $val['return'] = route(gatewayRedirectUrl());
+        $val['amount'] = round($deposit->final_amo, 2);
+        $val['return'] = route(gatewayRedirectUrl(true));
         $val['cancel_return'] = route(gatewayRedirectUrl());
-        $val['notify_url'] = route('ipn.'.$deposit->gateway->alias);
+        $val['notify_url'] = route('ipn.' . $deposit->gateway->alias);
         $send['val'] = $val;
         $send['view'] = 'user.payment.redirect';
         $send['method'] = 'post';
-        $send['url'] = 'https://secure.paypal.com/cgi-bin/webscr';
-        // $send['url'] = '	https://www.sandbox.paypal.com/'; // use for sandbod text
-
-
+        // $send['url'] = 'https://www.sandbox.paypal.com/'; // use for sandbod text
+        $send['url'] = 'https://www.paypal.com/cgi-bin/webscr';
         return json_encode($send);
     }
+
     public function ipn()
     {
         $raw_post_data = file_get_contents('php://input');
@@ -50,36 +46,24 @@ class ProcessController extends Controller
         }
 
         $req = 'cmd=_notify-validate';
-        if (function_exists('get_magic_quotes_gpc')) {
-            $get_magic_quotes_exists = true;
-        }
         foreach ($myPost as $key => $value) {
-            if ($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
-                $value = urlencode(stripslashes($value));
-            } else {
-                $value = urlencode($value);
-            }
+            $value = urlencode(stripslashes($value));
             $req .= "&$key=$value";
+            $details[$key] = $value;
         }
-        // $paypalURL = "https://ipnpb.sandbox.paypal.com/cgi-bin/webscr"; // use for sandbox text
+
+        // $paypalURL = "https://ipnpb.sandbox.paypal.com/cgi-bin/webscr?"; // use for sandbox text
         $paypalURL = "https://ipnpb.paypal.com/cgi-bin/webscr?";
-        $callUrl = $paypalURL . $req;
-        $verify = curlContent($callUrl);
-        if ($verify == "VERIFIED") {
-            //PAYPAL VERIFIED THE PAYMENT
-            $receiver_email = $_POST['receiver_email'];
-            $mc_currency = $_POST['mc_currency'];
-            $mc_gross = $_POST['mc_gross'];
-            $track = $_POST['custom'];
+        $url = $paypalURL . $req;
+        $response = CurlRequest::curlContent($url);
 
-            //GRAB DATA FROM DATABASE!!
-            $data = Deposit::where('trx', $track)->orderBy('id', 'DESC')->first();
+        if ($response == "VERIFIED") {
+            $deposit = Deposit::where('trx', $_POST['custom'])->orderBy('id', 'DESC')->first();
+            $deposit->detail = $details;
+            $deposit->save();
 
-            $paypalAcc = json_decode($data->gateway_currency()->gateway_parameter, true);
-
-            $amount = $data->final_amo;
-            if ($mc_gross == $amount && $data->status == '0') {
-                PaymentController::userDataUpdate($data->trx);
+            if ($_POST['mc_gross'] == round($deposit->final_amo, 2) && $deposit->status == Status::PAYMENT_INITIATE) {
+                PaymentController::userDataUpdate($deposit);
             }
         }
     }

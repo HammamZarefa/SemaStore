@@ -2,38 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
+use App\Lib\CurlRequest;
 use App\Models\GeneralSetting;
 use App\Models\Order;
-use Illuminate\Support\Facades\Http;
 
 class CronController extends Controller
 {
-    public function placeOrderToApi()
-    {
-        $apiOrders = Order::apiorder()->ordernotplaced()->get();
-        $general = GeneralSetting::first();
-        $general->last_cron = now();
-        $general->save();
+	public function placeOrderToApi()
+	{
+		$apiOrders          = Order::pending()->with('provider')->where('api_provider_id', '!=', Status::API_ORDER_NOT_PLACE)->where('order_placed_to_api', Status::API_ORDER_NOT_PLACE)->get();
+		$general            = GeneralSetting::first();
+		$general->last_cron = now();
+		$general->save();
 
+		foreach ($apiOrders as $order) {
+			$response = CurlRequest::curlPostContent($order->provider->api_url, [
+				'key'      => $order->provider->api_key,
+				'action'   => "add",
+				'service'  => $order->api_service_id,
+				'link'     => $order->link,
+				'quantity' => $order->quantity,
+			]);
+			$response = json_decode($response);
 
-        foreach ($apiOrders as $order) {
-            $response = Http::post($general->api_url, [
-                'key' => $general->api_key,
-                'action' => "add",
-                'service' => $order->api_service_id,
-                'link' => $order->link,
-                'quantity' => $order->quantity,
-            ]);
+			if ($response->error) {
+				echo response()->json(['error' => $response->error]) . '<br>';
+				continue;
+			}
 
-            if (array_key_exists('error', $response->json())){
-                return response()->json(['error' => $response->json()['error']]);
-            }
+			//Order placed
+			$order->status              = Status::ORDER_PROCESSING;
+			$order->order_placed_to_api = 1;
+			$order->api_order_id        = $response->order;
+			$order->save();
+		}
+	}
 
-            //Order placed
-            $order->order_placed_to_api = 1;
-            $order->api_order_id = $response->json()['order'];
-            $order->save();
-        }
+	public function serviceUpdate()
+	{
+		$orders             = Order::where('status', Status::ORDER_PROCESSING)->with('provider')->where('api_provider_id', '!=', 0)->where('order_placed_to_api', 1)->get();
+		$general            = GeneralSetting::first();
+		$general->last_cron = now();
+		$general->save();
 
-    }
+		foreach ($orders as $order) {
+			$response = CurlRequest::curlPostContent($order->provider->api_url, [
+				'key'    => $order->provider->api_key,
+				'action' => "status",
+				'order'  => $order->api_order_id,
+			]);
+			$response = json_decode($response);
+
+			if ($response->error) {
+				echo response()->json(['error' => $response->error]) . '<br>';
+				continue;
+			}
+
+			$order->start_counter = $response->start_count;
+			$order->remain        = $response->remains;
+
+			if ($response->status == 'Completed') {
+				$order->status = Status::ORDER_COMPLETED;
+			}
+
+			if ($response->status == 'Cancelled') {
+				$order->status = Status::ORDER_CANCELLED;
+			}
+
+			if ($response->status == 'Refunded') {
+				$order->status = Status::ORDER_REFUNDED;
+			}
+
+			$order->save();
+		}
+	}
 }

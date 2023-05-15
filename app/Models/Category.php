@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\GlobalStatus;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+    use Searchable, GlobalStatus;
 
     public function services()
     {
         return $this->hasMany(Service::class);
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 1);
     }
 }

@@ -8,41 +8,37 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.1",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^9.0",
-        "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.2",
+        "php": "^8.0.2",
         "coingate/coingate-php": "^3.0",
-        "intervention/image": "^2.5",
-        "mailjet/mailjet-apiv3-php": "^1.4",
-        "phpmailer/phpmailer": "^6.2",
         "ezyang/htmlpurifier": "^4.13",
-        "razorpay/razorpay": "^2.5",
-        "paypal/rest-api-sdk-php": "*",
+        "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.5",
+        "laramin/utility": "dev-main",
+        "laravel/framework": "^9.2",
+        "laravel/sanctum": "^2.14.1",
+        "laravel/tinker": "^2.7",
+        "laravel/ui": "^3.4",
+        "mailjet/mailjet-apiv3-php": "^1.4",
+        "messagebird/php-rest-api": "^1.20",
+        "mollie/laravel-mollie": "^2.14",
+        "phpmailer/phpmailer": "^6.2",
+        "razorpay/razorpay": "2.*",
         "sendgrid/sendgrid": "^7.6",
-        "stripe/stripe-php": "^7.72"
+        "stripe/stripe-php": "^7.72",
+        "textmagic/sdk": "dev-master",
+        "twilio/sdk": "^6.23",
+        "authorizenet/authorizenet": ">=1.9.3",
+        "vonage/client": "^2.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
-        "spatie/laravel-ignition": "^1.0",
+        "beyondcode/laravel-query-detector": "^1.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.2",
+        "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.3.3"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ignition": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -59,12 +55,13 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -72,5 +69,17 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

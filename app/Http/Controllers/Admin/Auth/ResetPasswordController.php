@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Admin\Auth;
 
+use App\Constants\Status;
+use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\AdminPasswordReset;
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
     /*
-        |--------------------------------------------------------------------------
-        | Password Reset Controller
-        |--------------------------------------------------------------------------
-        |
-        | This controller is responsible for handling password reset requests
-        | and uses a simple trait to include this behavior. You're free to
-        | explore this trait and override any methods you wish to tweak.
-        |
-        */
+    |--------------------------------------------------------------------------
+    | Password Reset Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling password reset requests
+    | and uses a simple trait to include this behavior. You're free to
+    | explore this trait and override any methods you wish to tweak.
+    |
+     */
 
     use ResetsPasswords;
 
@@ -33,7 +33,6 @@ class ResetPasswordController extends Controller
      */
     public $redirectTo = '/admin/dashboard';
 
-
     /**
      * Create a new controller instance.
      *
@@ -41,6 +40,7 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('admin.guest');
     }
 
@@ -55,50 +55,50 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token)
     {
-        $page_title = "Account Recovery";
-        $tk = AdminPasswordReset::where('token', $token)->where('status', 0)->first();
+        $pageTitle  = "Account Recovery";
+        $resetToken = AdminPasswordReset::where('token', $token)->where('status', Status::ENABLE)->first();
 
-        if (empty($tk)) {
-            $notify[] = ['error', 'Token Not Found!'];
-            return redirect()->route('admin.password.reset')->withNotify($notify);
+        if (!$resetToken) {
+            $notify[] = ['error', 'Verification code mismatch'];
+            return to_route('admin.password.reset')->withNotify($notify);
         }
-        $email = $tk->email;
-        return view('admin.auth.passwords.reset', compact('page_title', 'email', 'token'));
-    }
 
+        $email = $resetToken->email;
+        return view('admin.auth.passwords.reset', compact('pageTitle', 'email', 'token'));
+    }
 
     public function reset(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email',
-            'token' => 'required',
+            'email'    => 'required|email',
+            'token'    => 'required',
             'password' => 'required|confirmed|min:4',
         ]);
 
         $reset = AdminPasswordReset::where('token', $request->token)->orderBy('created_at', 'desc')->first();
-        $user = Admin::where('email', $reset->email)->first();
-        if ($reset->status == 1) {
+        $admin = Admin::where('email', $reset->email)->first();
+
+        if ($reset->status == Status::DISABLE) {
             $notify[] = ['error', 'Invalid code'];
-            return redirect()->route('admin.login')->withNotify($notify);
+            return to_route('admin.login')->withNotify($notify);
         }
 
-        $user->password = bcrypt($request->password);
-        $user->save();
-        $password = AdminPasswordReset::where('email', $user->email)->firstOrFail();
-        $password->status = 1;
-        $password->save();
+        $admin->password = Hash::make($request->password);
+        $admin->save();
+        $reset->status = Status::DISABLE;
+        $reset->save();
 
-        $userIpInfo = getIpInfo();
-        $userBrowser = osBrowser();
-        sendEmail($user, 'PASS_RESET_DONE', [
-            'operating_system' => $userBrowser['os_platform'],
-            'browser' => $userBrowser['browser'],
-            'ip' => $userIpInfo['ip'],
-            'time' => $userIpInfo['time']
-        ]);
+        $ipInfo  = getIpInfo();
+        $browser = osBrowser();
+        notify($admin, 'PASS_RESET_DONE', [
+            'operating_system' => $browser['os_platform'],
+            'browser'          => $browser['browser'],
+            'ip'               => $ipInfo['ip'],
+            'time'             => $ipInfo['time'],
+        ], ['email'], false);
 
-        $notify[] = ['success', 'Password Changed'];
-        return redirect()->route('admin.login')->withNotify($notify);
+        $notify[] = ['success', 'Password changed'];
+        return to_route('admin.login')->withNotify($notify);
     }
 
     /**
@@ -118,6 +118,6 @@ class ResetPasswordController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('admin');
+        return auth()->guard('admin');
     }
 }

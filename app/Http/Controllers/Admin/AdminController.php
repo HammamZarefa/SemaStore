@@ -2,113 +2,123 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Constants\Status;
 use App\Http\Controllers\Controller;
+use App\Lib\CurlRequest;
 use App\Models\AdminNotification;
 use App\Models\Deposit;
 use App\Models\Order;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserLogin;
+use App\Rules\FileTypeValidate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
 
-    public function search()
-    {
-
-        $extension='.blade.php';
-        $path = 'resources/views';
-        $names=['dashboard'];
-        $files = array_diff(scandir($path), array('..', '.'));
-        dd($files);
-        foreach($files as $f){
-            $abs_path = $path.'/'.$f;
-            if(is_dir($abs_path)){ //directory, recurse
-
-
-
-            } else {  //file, test if the name ends with $extension
-                $ext_length = strlen($extension);
-                if(substr($f, -$ext_length) === $extension){
-                    $names[] = $f;
-
-                }
-            }
-        }
-    }
-
-
     public function dashboard()
     {
-        $page_title = 'Dashboard';
+
+        $pageTitle = 'Dashboard';
 
         // User Info
         $widget['total_users'] = User::count();
-        $widget['verified_users'] = User::where('status', 1)->count();
-        $widget['email_unverified_users'] = User::where('ev', 0)->count();
-        $widget['sms_unverified_users'] = User::where('sv', 0)->count();
-        $widget['banned_users'] = User::where('status', 0)->count();
-
-        //2nd row
-        $widget['total_orders'] = Order::count();
-        $widget['pending_orders'] = Order::pending()->count();
-        $widget['processing_orders'] = Order::processing()->count();
-        $widget['completed_orders'] = Order::completed()->count();
-        $widget['cancelled_orders'] = Order::cancelled()->count();
-        $widget['refunded_orders'] = Order::refunded()->count();
-
-        // Monthly Deposit Report Graph
-        $report['months'] = collect([]);
-        $report['deposit_month_amount'] = collect([]);
-
-
-        $depositsMonth = Deposit::whereYear('created_at', '>=', Carbon::now()->subYear())
-            ->selectRaw("SUM( CASE WHEN status = 1 THEN amount END) as depositAmount")
-            ->selectRaw("DATE_FORMAT(created_at,'%M') as months")
-            ->orderBy('created_at')
-            ->groupBy(DB::Raw("MONTH(created_at)"))->get();
-
-        $depositsMonth->map(function ($aaa) use ($report) {
-            $report['months']->push($aaa->months);
-            $report['deposit_month_amount']->push(getAmount($aaa->depositAmount));
-        });
-
+        $widget['verified_users'] = User::where('status', Status::USER_ACTIVE)->where('ev', Status::VERIFIED)->where('sv', Status::VERIFIED)->count();
+        $widget['email_unverified_users'] = User::emailUnverified()->count();
+        $widget['mobile_unverified_users'] = User::mobileUnverified()->count();
+        $widget['total_order'] = Order::count();
+        $widget['pending_order'] = Order::pending()->count();
+        $widget['processing_order'] = Order::processing()->count();
+        $widget['completed_order'] = Order::completed()->count();
+        $widget['cancelled_order'] = Order::cancelled()->count();
+        $widget['refunded_order'] = Order::refunded()->count();
 
         // user Browsing, Country, Operating Log
-        $user_login_data = UserLogin::whereDate('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->get(['browser', 'os', 'country']);
+        $userLoginData = UserLogin::where('created_at', '>=', Carbon::now()->subDay(30))->get(['browser', 'os', 'country']);
 
-        $chart['user_browser_counter'] = $user_login_data->groupBy('browser')->map(function ($item, $key) {
+        $chart['user_browser_counter'] = $userLoginData->groupBy('browser')->map(function ($item, $key) {
             return collect($item)->count();
         });
-        $chart['user_os_counter'] = $user_login_data->groupBy('os')->map(function ($item, $key) {
+        $chart['user_os_counter'] = $userLoginData->groupBy('os')->map(function ($item, $key) {
             return collect($item)->count();
         });
-        $chart['user_country_counter'] = $user_login_data->groupBy('country')->map(function ($item, $key) {
+        $chart['user_country_counter'] = $userLoginData->groupBy('country')->map(function ($item, $key) {
             return collect($item)->count();
         })->sort()->reverse()->take(5);
 
+        $deposit['total_deposit_amount'] = Deposit::successful()->sum('amount');
+        $deposit['total_deposit_pending'] = Deposit::pending()->count();
+        $deposit['total_deposit_rejected'] = Deposit::rejected()->count();
+        $deposit['total_deposit_charge'] = Deposit::successful()->sum('charge');
 
-        $payment['total_deposit_amount'] = Deposit::where('status',1)->sum('amount');
-        $payment['total_deposit_charge'] = Deposit::where('status',1)->sum('charge');
-        $payment['total_deposit_pending'] = Deposit::where('status',2)->count();
-        $payment['total_deposit'] = Deposit::where('status',1)->count();
+        $trxReport['date'] = collect([]);
+        $plusTrx = Transaction::where('trx_type', '+')->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->selectRaw("SUM(amount) as amount, DATE_FORMAT(created_at,'%Y-%m-%d') as date")
+            ->orderBy('created_at')
+            ->groupBy('date')
+            ->get();
 
+        $plusTrx->map(function ($trxData) use ($trxReport) {
+            $trxReport['date']->push($trxData->date);
+        });
 
-        $latestUser = User::latest()->limit(6)->get();
-        $empty_message = 'User Not Found';
-        return view('admin.dashboard', compact('page_title', 'widget', 'report', 'chart','payment','latestUser','empty_message','depositsMonth'));
+        $minusTrx = Transaction::where('trx_type', '-')->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->selectRaw("SUM(amount) as amount, DATE_FORMAT(created_at,'%Y-%m-%d') as date")
+            ->orderBy('created_at')
+            ->groupBy('date')
+            ->get();
+
+        $minusTrx->map(function ($trxData) use ($trxReport) {
+            $trxReport['date']->push($trxData->date);
+        });
+
+        $trxReport['date'] = dateSorting($trxReport['date']->unique()->toArray());
+
+        // Monthly Deposit Graph
+        $report['months'] = collect([]);
+        $report['deposit_month_amount'] = collect([]);
+
+        $depositsMonth = Deposit::where('created_at', '>=', Carbon::now()->subYear())
+            ->where('status', Status::PAYMENT_SUCCESS)
+            ->selectRaw("SUM( CASE WHEN status = " . Status::PAYMENT_SUCCESS . " THEN amount END) as depositAmount")
+            ->selectRaw("DATE_FORMAT(created_at,'%M-%Y') as months")
+            ->orderBy('created_at')
+            ->groupBy('months')->get();
+
+        $depositsMonth->map(function ($depositData) use ($report) {
+            $report['months']->push($depositData->months);
+            $report['deposit_month_amount']->push(getAmount($depositData->depositAmount));
+        });
+
+        $months = $report['months'];
+
+        for ($i = 0; $i < $months->count(); ++$i) {
+            $monthVal = Carbon::parse($months[$i]);
+
+            if (isset($months[$i + 1])) {
+                $monthValNext = Carbon::parse($months[$i + 1]);
+
+                if ($monthValNext < $monthVal) {
+                    $temp = $months[$i];
+                    $months[$i] = Carbon::parse($months[$i + 1])->format('F-Y');
+                    $months[$i + 1] = Carbon::parse($temp)->format('F-Y');
+                } else {
+                    $months[$i] = Carbon::parse($months[$i])->format('F-Y');
+                }
+            }
+        }
+
+        return view('admin.dashboard', compact('pageTitle', 'widget', 'chart', 'deposit', 'report', 'depositsMonth', 'months', 'trxReport', 'plusTrx', 'minusTrx'));
     }
-
 
     public function profile()
     {
-        $page_title = 'Profile';
-        $admin = Auth::guard('admin')->user();
-        return view('admin.profile', compact('page_title', 'admin'));
+        $pageTitle = 'Profile';
+        $admin = auth('admin')->user();
+        return view('admin.profile', compact('pageTitle', 'admin'));
     }
 
     public function profileUpdate(Request $request)
@@ -116,17 +126,16 @@ class AdminController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png'
+            'image' => ['nullable', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
         ]);
-
-        $user = Auth::guard('admin')->user();
+        $user = auth('admin')->user();
 
         if ($request->hasFile('image')) {
             try {
-                $old = $user->image ?: null;
-                $user->image = uploadImage($request->image, imagePath()['profile']['admin']['path'], imagePath()['profile']['admin']['size'], $old);
+                $old = $user->image;
+                $user->image = fileUploader($request->image, getFilePath('adminProfile'), getFileSize('adminProfile'), $old);
             } catch (\Exception $exp) {
-                $notify[] = ['error', 'Image could not be uploaded.'];
+                $notify[] = ['error', 'Couldn\'t upload your image'];
                 return back()->withNotify($notify);
             }
         }
@@ -134,16 +143,15 @@ class AdminController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
-        $notify[] = ['success', 'Your profile has been updated.'];
-        return redirect()->route('admin.profile')->withNotify($notify);
+        $notify[] = ['success', 'Profile updated successfully'];
+        return to_route('admin.profile')->withNotify($notify);
     }
-
 
     public function password()
     {
-        $page_title = 'Password Setting';
-        $admin = Auth::guard('admin')->user();
-        return view('admin.password', compact('page_title', 'admin'));
+        $pageTitle = 'Password Setting';
+        $admin = auth('admin')->user();
+        return view('admin.password', compact('pageTitle', 'admin'));
     }
 
     public function passwordUpdate(Request $request)
@@ -153,30 +161,100 @@ class AdminController extends Controller
             'password' => 'required|min:5|confirmed',
         ]);
 
-        $user = Auth::guard('admin')->user();
+        $user = auth('admin')->user();
+
         if (!Hash::check($request->old_password, $user->password)) {
-            $notify[] = ['error', 'Password Do not match !!'];
-            return back()->withErrors(['Invalid old password.']);
+            $notify[] = ['error', 'Password doesn\'t match!!'];
+            return back()->withNotify($notify);
         }
+
         $user->password = bcrypt($request->password);
         $user->save();
-        $notify[] = ['success', 'Password Changed Successfully.'];
-        return redirect()->route('admin.password')->withNotify($notify);
+        $notify[] = ['success', 'Password changed successfully.'];
+        return to_route('admin.password')->withNotify($notify);
     }
 
-    public function notifications(){
-        $notifications = AdminNotification::orderBy('id','desc')->paginate(getPaginate());
-        $page_title = 'Notifications';
-        return view('admin.notifications',compact('page_title','notifications'));
+    public function notifications()
+    {
+        $notifications = AdminNotification::orderBy('id', 'desc')->with('user')->paginate(getPaginate());
+        $pageTitle = 'Notifications';
+        return view('admin.notifications', compact('pageTitle', 'notifications'));
     }
 
-
-    public function notificationRead($id){
+    public function notificationRead($id)
+    {
         $notification = AdminNotification::findOrFail($id);
-        $notification->read_status = 1;
+        $notification->is_read = Status::YES;
         $notification->save();
-        return redirect($notification->click_url);
+        $url = $notification->click_url;
+
+        if ($url == '#') {
+            $url = url()->previous();
+        }
+
+        return redirect($url);
     }
 
+    public function requestReport()
+    {
+        $pageTitle = 'Your Listed Report & Request';
+        $arr['app_name'] = systemDetails()['name'];
+        $arr['app_url'] = env('APP_URL');
+        $arr['purchase_code'] = env('PURCHASE_CODE');
+        $url = "https://license.viserlab.com/issue/get?" . http_build_query($arr);
+        $response = CurlRequest::curlContent($url);
+        $response = json_decode($response);
 
+        if ($response->status == 'error') {
+            return to_route('admin.dashboard')->withErrors($response->message);
+        }
+
+        $reports = $response->message[0];
+        return view('admin.reports', compact('reports', 'pageTitle'));
+    }
+
+    public function reportSubmit(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|in:bug,feature',
+            'message' => 'required',
+        ]);
+        $url = 'https://license.viserlab.com/issue/add';
+
+        $arr['app_name'] = systemDetails()['name'];
+        $arr['app_url'] = env('APP_URL');
+        $arr['purchase_code'] = env('PURCHASE_CODE');
+        $arr['req_type'] = $request->type;
+        $arr['message'] = $request->message;
+        $response = CurlRequest::curlPostContent($url, $arr);
+        $response = json_decode($response);
+
+        if ($response->status == 'error') {
+            return back()->withErrors($response->message);
+        }
+
+        $notify[] = ['success', $response->message];
+        return back()->withNotify($notify);
+    }
+
+    public function readAll()
+    {
+        AdminNotification::where('is_read', Status::NO)->update([
+            'is_read' => Status::YES,
+        ]);
+        $notify[] = ['success', 'Notifications read successfully'];
+        return back()->withNotify($notify);
+    }
+
+    public function downloadAttachment($fileHash)
+    {
+        $filePath = decrypt($fileHash);
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $general = gs();
+        $title = slug($general->site_name) . '- attachments.' . $extension;
+        $mimetype = mime_content_type($filePath);
+        header('Content-Disposition: attachment; filename="' . $title);
+        header("Content-Type: " . $mimetype);
+        return readfile($filePath);
+    }
 }

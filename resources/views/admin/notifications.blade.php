@@ -1,13 +1,26 @@
 @extends('admin.layouts.app')
-
 @section('panel')
-    <div class="row mb-none-30 justify-content-center">
-        <div class="col-lg-7 col-md-3 mb-30">
-            <div class="card b-radius--5">
-                <div class="card-body p-0">
-                    
+    <div class="notify__area">
+        @forelse($notifications as $notification)
+            <a class="notify__item @if ($notification->is_read == Status::NO) unread--notification @endif"
+                href="{{ route('admin.notification.read', $notification->id) }}">
+                <div class="notify__content">
+                    <h6 class="title">{{ __($notification->title) }}</h6>
+                    <span class="date"><i class="las la-clock"></i> {{ $notification->created_at->diffForHumans() }}</span>
+                </div>
+            </a>
+        @empty
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center">{{ __($emptyMessage) }}</h3>
                 </div>
             </div>
+        @endforelse
+        <div class="mt-3">
+            {{ paginateLinks($notifications) }}
         </div>
     </div>
 @endsection
+@push('breadcrumb-plugins')
+    <a href="{{ route('admin.notifications.readAll') }}" class="btn btn-sm btn-outline--primary">@lang('Mark All as Read')</a>
+@endpush

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Gateway\paystack;
+namespace App\Http\Controllers\Gateway\Paystack;
 
+use App\Constants\Status;
 use App\Models\Deposit;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Gateway\PaymentController;
 use Illuminate\Http\Request;
-use Auth;
 
 class ProcessController extends Controller
 {
@@ -16,17 +16,17 @@ class ProcessController extends Controller
 
     public static function process($deposit)
     {
-        $paystackAcc = json_decode($deposit->gateway_currency()->gateway_parameter);
+        $paystackAcc = json_decode($deposit->gatewayCurrency()->gateway_parameter);
 
         $alias = $deposit->gateway->alias;
 
 
         $send['key'] = $paystackAcc->public_key;
-        $send['email'] = Auth::user()->email;
+        $send['email'] = auth()->user()->email;
         $send['amount'] = $deposit->final_amo * 100;
         $send['currency'] = $deposit->method_currency;
         $send['ref'] = $deposit->trx;
-        $send['view'] = 'user.payment.'.$alias;
+        $send['view'] = 'user.payment.' . $alias;
         return json_encode($send);
     }
 
@@ -38,10 +38,9 @@ class ProcessController extends Controller
             'reference' => 'required',
             'paystack-trxref' => 'required',
         ]);
-
         $track = $request->reference;
-        $data = Deposit::where('trx', $track)->orderBy('id', 'DESC')->first();
-        $paystackAcc = json_decode($data->gateway_currency()->gateway_parameter);
+        $deposit = Deposit::where('trx', $track)->orderBy('id', 'DESC')->first();
+        $paystackAcc = json_decode($deposit->gatewayCurrency()->gateway_parameter);
         $secret_key = $paystackAcc->secret_key;
 
         $result = array();
@@ -51,23 +50,29 @@ class ProcessController extends Controller
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $secret_key]);
-        $r = curl_exec($ch);
+        $response = curl_exec($ch);
         curl_close($ch);
 
-        if ($r) {
-            $result = json_decode($r, true);
+        if ($response) {
+            $result = json_decode($response, true);
+
             if ($result) {
                 if ($result['data']) {
+
+                    $deposit->detail = $result['data'];
+                    $deposit->save();
+
                     if ($result['data']['status'] == 'success') {
 
-                        $am = $result['data']['amount'];
-                        $sam = round($data->final_amo, 2) * 100;
+                        $am = $result['data']['amount'] / 100;
+                        $sam = round($deposit->final_amo, 2);
 
-                        if ($am == $sam && $result['data']['currency'] == $data->method_currency  && $data->status == '0') {
-                            PaymentController::userDataUpdate($data->trx);
-                            $notify[] = ['success', 'Deposit Successful'];
+                        if ($am == $sam && $result['data']['currency'] == $deposit->method_currency  && $deposit->status == Status::PAYMENT_INITIATE) {
+                            PaymentController::userDataUpdate($deposit);
+                            $notify[] = ['success', 'Payment captured successfully'];
+                            return to_route(gatewayRedirectUrl(true))->withNotify($notify);
                         } else {
-                            $notify[] = ['error', 'Less Amount Paid. Please Contact With Admin'];
+                            $notify[] = ['error', 'Less amount paid. Please contact with admin.'];
                         }
                     } else {
                         $notify[] = ['error', $result['data']['gateway_response']];
@@ -81,6 +86,6 @@ class ProcessController extends Controller
         } else {
             $notify[] = ['error', 'Something went wrong while executing'];
         }
-        return redirect()->route(gatewayRedirectUrl())->withNotify($notify);
+        return to_route(gatewayRedirectUrl())->withNotify($notify);
     }
 }

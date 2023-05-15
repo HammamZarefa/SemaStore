@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Constants\Status;
 
 class GatewayCurrency extends Model
 {
     protected $casts = ['status' => 'boolean'];
-    protected $guarded = ['id'];
 
     // Relation
     public function method()
@@ -22,17 +22,11 @@ class GatewayCurrency extends Model
 
     public function scopeBaseCurrency()
     {
-        return $this->method->crypto == 1 ? 'USD' : $this->currency;
+        return $this->method->crypto == Status::ENABLE ? 'USD' : $this->currency;
     }
 
     public function scopeBaseSymbol()
     {
-        return $this->method->crypto == 1 ? '$' : $this->symbol;
+        return $this->method->crypto == Status::ENABLE ? '$' : $this->symbol;
     }
-
-    public function scopeMethodImage()
-    {
-        return ($this->image) ? getImage(imagePath()['gateway']['path'] .'/' . $this->image,'800x800') : (($this->method->image) ? getImage(imagePath()['gateway']['path'] . '/' . $this->method->image,'800x800'):  asset(imagePath()['image']['default']));
-    }
-
 }

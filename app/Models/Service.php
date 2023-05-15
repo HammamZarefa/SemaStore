@@ -2,24 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\GlobalStatus;
+use App\Traits\Searchable;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    use HasFactory;
+	use Searchable, GlobalStatus;
 
-    public function scopeActive($query)
-    {
-        return $query->where('status', 1);
-    }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class)->withDefault();
-    }
-    public function serials()
-    {
-        return $this->hasMany(Serial::class);
-    }
+	public function category()
+	{
+		return $this->belongsTo(Category::class)->withDefault();
+	}
+
+	public function provider()
+	{
+		return $this->belongsTo(ApiProvider::class, 'api_provider_id', 'id');
+	}
 }
