@@ -4,14 +4,23 @@
         <div class="col-lg-12">
             <div class="card b-radius--10 ">
                 <div class="card-header">
-                    <a href="{{ route('admin.services.apiServices') }}" class="btn btn-outline--primary float-sm-right">@lang('API Services')</a>
+                    <ul>
+                        @foreach($apiProviders as $provider)
+                            <li class="sidebar-menu-item">
+                                <a href="{{ route('admin.services.apiServices',$provider->id) }}"
+                                   class="btn btn-outline--primary float-sm-right">{{$provider->name}}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+
                 </div>
                 <div class="col-md-4 col-xl-3">
                     <div class="form-group">
-                        <select name="category" id="categorylist" class="form-control statusfield" onchange="categoryFilter()">
-                            <option value="-1" selected >@lang('المنتج')</option>
+                        <select name="category" id="categorylist" class="form-control statusfield"
+                                onchange="categoryFilter()">
+                            <option value="-1" selected>@lang('المنتج')</option>
                             @foreach($categories as $category)
-                                <option value="{{$category->name}}" >@lang($category->name)</option>
+                                <option value="{{$category->name}}">@lang($category->name)</option>
                             @endforeach
                         </select>
                     </div>
@@ -39,7 +48,9 @@
                                     <td data-label="@lang('Price Per 1k')">{{ $general->cur_sym . getAmount(@$item->price_per_k) }}</td>
                                     <td data-label="@lang('Min')">{{__(@$item->min)}}</td>
                                     <td data-label="@lang('Max')">{{__(@$item->max)}}</td>
-                                    <td data-label="@lang('image')"><img src="{{ getImage(imagePath()['service']['path'].'/'. $item->image,imagePath()['service']['size']) ?? ''}}"></td>
+                                    <td data-label="@lang('image')"><img
+                                            src="{{ getImage(imagePath()['service']['path'].'/'. $item->image,imagePath()['service']['size']) ?? ''}}">
+                                    </td>
                                     <td data-label="@lang('Status')">
                                         @if(@$item->status === 1)
                                             <span
@@ -52,15 +63,21 @@
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
-                                           data-url="{{ route('admin.services.update', $item->id)}}" data-name="{{ $item->name }}"
-                                        data-category="{{ $item->category_id }}"
-                                        data-price_per_k="{{ getAmount($item->price_per_k) }}"
-                                        data-min="{{ $item->min }}" data-max="{{ $item->max }}" data-details="{{ $item->details }}" data-api_service_id="{{ $item->api_service_id }}"
-                                        data-special_price="{{ getAmount($item->special_price)}}">
+                                           data-url="{{ route('admin.services.update', $item->id)}}"
+                                           data-name="{{ $item->name }}"
+                                           data-category="{{ $item->category_id }}"
+                                           data-price_per_k="{{ getAmount($item->price_per_k) }}"
+                                           data-min="{{ $item->min }}" data-max="{{ $item->max }}"
+                                           data-details="{{ $item->details }}"
+                                           data-api_service_id="{{ $item->api_service_id }}"
+                                           data-special_price="{{ getAmount($item->special_price)}}">
                                             <i class="la la-edit"></i>
                                         </a>
 
-                                        <a href="javascript:void(0)" class="icon-btn btn--{{ $item->status ? 'danger' : 'success' }} ml-1 statusBtn" data-original-title="@lang('Status')" data-toggle="tooltip" data-url="{{ route('admin.services.status', $item->id) }}">
+                                        <a href="javascript:void(0)"
+                                           class="icon-btn btn--{{ $item->status ? 'danger' : 'success' }} ml-1 statusBtn"
+                                           data-original-title="@lang('Status')" data-toggle="tooltip"
+                                           data-url="{{ route('admin.services.status', $item->id) }}">
                                             <i class="la la-eye{{ $item->status ? '-slash' : null }}"></i>
                                         </a>
 
@@ -95,7 +112,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
-                <form class="form-horizontal" method="post" action="{{ route('admin.services.store')}}" enctype="multipart/form-data">
+                <form class="form-horizontal" method="post" action="{{ route('admin.services.store')}}"
+                      enctype="multipart/form-data">
                     @csrf
 
                     <div class="modal-body">
@@ -107,7 +125,8 @@
                                 <option selected>@lang('Choose')...</option>
 
                                 @forelse($categories as $category)
-                                    <option value="{{ $category->id }}" id="{{$category->type}}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}"
+                                            id="{{$category->type}}">{{ $category->name }}</option>
                                 @empty
                                 @endforelse
 
@@ -126,7 +145,7 @@
                             <select class="form-control" id="country" name="country">
                                 <option disabled value="" selected hidden>@lang('Select Country')</option>
                                 @foreach(get5SimCountries() as $key=> $country)
-                                <option value="{{$key}}">{{$country}}</option>
+                                    <option value="{{$key}}">{{$country}}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('type'))
@@ -144,7 +163,8 @@
                             <label class="font-weight-bold ">@lang('Price Per 1k') <span
                                     class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="inlineFormInputGroupUsername2" name="price_per_k">
+                                <input type="text" class="form-control" id="inlineFormInputGroupUsername2"
+                                       name="price_per_k">
                                 <div class="input-group-append">
                                     <div class="input-group-text">{{ $general->cur_text }}</div>
                                 </div>
@@ -153,17 +173,21 @@
                         <div class="form-group">
                             <label class="font-weight-bold ">@lang('Special Price') <span></span>
 
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="inlineFormInputGroupUsername2" name="special_price">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">{{ $general->cur_text }}</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="inlineFormInputGroupUsername2"
+                                           name="special_price">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">{{ $general->cur_text }}</div>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                         <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg">
+                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1"
+                                   accept=".png, .jpg, .jpeg">
                             <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                            <small class="mt-2 text-facebook">@lang('Supported files'): <b>jpeg, jpg.</b> @lang('Image will be resized into') {{imagePath()['category']['size']}}px </small>
+                            <small class="mt-2 text-facebook">@lang('Supported files'): <b>jpeg,
+                                    jpg.</b> @lang('Image will be resized into') {{imagePath()['category']['size']}}px
+                            </small>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -216,7 +240,8 @@
                                 <option selected>@lang('Choose')...</option>
 
                                 @forelse($categories as $category)
-                                    <option value="{{ $category->id }}" id="{{$category->type}}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}"
+                                            id="{{$category->type}}">{{ $category->name }}</option>
                                 @empty
                                 @endforelse
 
@@ -250,15 +275,19 @@
                             </select>
                         </div>
                         <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg">
+                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1"
+                                   accept=".png, .jpg, .jpeg">
                             <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                            <small class="mt-2 text-facebook">@lang('Supported files'): <b>jpeg, jpg.</b> @lang('Image will be resized into') {{imagePath()['category']['size']}}px </small>
+                            <small class="mt-2 text-facebook">@lang('Supported files'): <b>jpeg,
+                                    jpg.</b> @lang('Image will be resized into') {{imagePath()['category']['size']}}px
+                            </small>
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold ">@lang('Price Per 1k') <span
                                     class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="inlineFormInputGroupUsername2" name="price_per_k">
+                                <input type="text" class="form-control" id="inlineFormInputGroupUsername2"
+                                       name="price_per_k">
                                 <div class="input-group-append">
                                     <div class="input-group-text">{{ $general->cur_text }}</div>
                                 </div>
@@ -266,12 +295,13 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold ">@lang('Special Price') <span></span>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="inlineFormInputGroupUsername2" name="special_price">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">{{ $general->cur_text }}</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="inlineFormInputGroupUsername2"
+                                           name="special_price">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">{{ $general->cur_text }}</div>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -307,7 +337,8 @@
     </div>
 
     {{-- Status MODAL --}}
-    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -332,7 +363,7 @@
 @push('breadcrumb-plugins')
     <span style="margin: 5px">
     <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i
-                class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
+            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
     </span>
 @endpush
 @push('breadcrumb-plugins')
@@ -356,7 +387,7 @@
 
 @push('style')
     <style>
-        .break_line{
+        .break_line {
             white-space: initial !important;
         }
     </style>
@@ -364,32 +395,31 @@
 
 @push('script')
     <script>
-        function showExtraField(){
+        function showExtraField() {
             var opti = document.getElementById('category').options;
-            opt=opti[opti.selectedIndex].id;
+            opt = opti[opti.selectedIndex].id;
             // opt=opt.options[opt.selectedIndex].id;
 
-            if (opt == "5SIM" ){
-                $('#extra').attr('style','display : block;');
+            if (opt == "5SIM") {
+                $('#extra').attr('style', 'display : block;');
                 $('#country').attr(require);
+            } else {
+                $('#extra').attr('style', 'display : none;')
             }
-            else {
-                    $('#extra').attr('style','display : none;')
-                }
 
-                console.log(opt)
-            }
-        function showExtraField1(){
+            console.log(opt)
+        }
+
+        function showExtraField1() {
             var opti = document.getElementById('category1').options;
-            opt=opti[opti.selectedIndex].id;
+            opt = opti[opti.selectedIndex].id;
             // opt=opt.options[opt.selectedIndex].id;
 
-            if (opt == "5SIM" ){
-                $('#extra1').attr('style','display : block;');
+            if (opt == "5SIM") {
+                $('#extra1').attr('style', 'display : block;');
                 $('#extra1').attr(require);
-            }
-            else {
-                $('#extra1').attr('style','display : none;')
+            } else {
+                $('#extra1').attr('style', 'display : none;')
             }
 
             console.log(opt)
@@ -407,9 +437,9 @@
                 var max = $(this).data('max');
                 var details = $(this).data('details');
                 var api_service_id = $(this).data('api_service_id');
-                var special_price=$(this).data('special_price');
+                var special_price = $(this).data('special_price');
                 $('.api_service_id').empty();
-                if(api_service_id){
+                if (api_service_id) {
                     $('.api_service_id').html(`<label class="font-weight-bold">@lang('Service Id (If order process through API)')</label>
                             <input type="text" name="api_service_id" value="${api_service_id}" class="form-control">`);
                 }

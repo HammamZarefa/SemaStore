@@ -22,4 +22,9 @@ class Service extends Model
     {
         return $this->hasMany(Serial::class);
     }
+
+    public function apiProvider()
+    {
+        return $this->belongsTo(ApiProvider::class);
+    }
 }
