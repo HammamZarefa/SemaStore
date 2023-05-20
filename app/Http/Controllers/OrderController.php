@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminNotification;
+use App\Models\ApiProvider;
 use App\Models\GeneralSetting;
 use App\Models\Order;
 use App\Models\Service;
@@ -71,6 +72,7 @@ class OrderController extends Controller
                     $order->status = 5;
                 }
             }
+
             $order->save();
             if ($service->category->type != '5SIM') {
                 //Create Transaction
@@ -83,9 +85,11 @@ class OrderController extends Controller
                 $transaction->trx = getTrx();
                 $transaction->save();
             }
-            if($service->api_service_id) {
-                $apiOrder = $this->apiOrder($service->api_service_id, $order->link, $order->quantity);
-                $order->api_order_id=$apiOrder['order'];
+            if ($service->api_service_id) {
+                $apiOrder = $this->apiOrder($service->api_service_id, $order->link, $order->quantity, $service->api_provider_id);
+                $order->api_order_id = $apiOrder['order'] ?? $apiOrder['order_id'];
+                $order->api_service_id = $service->api_service_id;
+                $order->order_placed_to_api = $service->api_provider_id;
                 $order->save();
             }
 
@@ -218,7 +222,6 @@ class OrderController extends Controller
             $transaction->details = 'Order for ' . $service->name;
             $transaction->trx = getTrx();
             $transaction->save();
-
             //Create admin notification
             $adminNotification = new AdminNotification();
             $adminNotification->user_id = $user->id;
@@ -318,22 +321,33 @@ class OrderController extends Controller
 
     }
 
-    public function apiOrder($service,$link,$qty)
+    public function apiOrder($service, $link, $qty, $provider)
     {
 
-        $general = GeneralSetting::first();
-        $url = $general->api_url;
-        $arr = [
-            'key' => $general->api_key,
-            'action' => "add",
-            'service' => $service,
-            'link' => $link,
-            'quantity' =>$qty
-        ];
-
-        $response = json_decode(curlPostContent($general->api_url,$arr));
-
-        if (@$response->error){
+        $apiProvider = ApiProvider::findorfail($provider);
+        $url = $apiProvider->api_url;
+        if ($provider == 1 || $provider == 3) {
+            $arr = [
+                'key' => $apiProvider->api_key,
+                'action' => "add",
+                'service' => $service,
+                'link' => $link,
+                'quantity' => $qty
+            ];
+            $response = json_decode(curlPostContent($apiProvider->api_url, $arr));
+        } elseif ($provider == 2) {
+            $arr = [
+                'product_id' => $service,
+                'alt' => $link,
+                'quantity' => $qty
+            ];
+            $header = array(
+                "Content-Type" => "application/json",
+                "api_key" => $apiProvider->api_key
+            );
+           $response = json_decode(curlPostContent($apiProvider->api_url.'/create-order', $arr, $header));
+        }
+        if (@$response->error) {
             $notify[] = ['info', 'Please enter your api credentials from API Setting Option'];
             $notify[] = ['error', $response->error];
             throw new \Exception($notify);

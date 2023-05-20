@@ -128,7 +128,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('serials/status/{id}', 'SerialController@status')->name('serials.status');
 
         //API service list
-        Route::get('api/services', 'ServiceController@apiServices')->name('services.apiServices');
+        Route::get('api/services/{id}', 'ServiceController@apiServices')->name('services.apiServices');
 
         //Order
         Route::get('orders', 'OrderController@allOrder')->name('orders.all');

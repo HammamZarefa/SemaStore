@@ -288,7 +288,7 @@ function curlContent($url)
 }
 
 //moveable
-function curlPostContent($url, $arr = null)
+function curlPostContent($url, $arr = null ,$header =null)
 {
     if ($arr) {
         $params = http_build_query($arr);
@@ -300,6 +300,8 @@ function curlPostContent($url, $arr = null)
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    if($header)
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     $result = curl_exec($ch);
     curl_close($ch);
     return $result;

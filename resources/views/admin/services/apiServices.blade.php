@@ -20,18 +20,19 @@
                             <tbody>
                             @forelse ($services as $item)
                                 <tr>
-                                    <td data-label="@lang('ID')"><strong>{{__(@$item->service)}}</strong></td>
+                                    <td data-label="@lang('ID')"><strong>{{__($id == 2 ? @$item->id  : @$item->service)}}</strong></td>
                                     <td data-label="@lang('Name')" class="break_line">{{__(@$item->name)}}</td>
                                     <td data-label="@lang('Category')" class="break_line">{{__(@$item->category)}}</td>
-                                    <td data-label="@lang('Rate')">{{ $general->cur_sym . getAmount(@$item->rate) }}</td>
+                                    <td data-label="@lang('Rate')">{{ $general->cur_sym . getAmount(@$item->rate ?? @$item->sale_price) }}</td>
                                     <td data-label="@lang('Min')">{{__(@$item->min)}}</td>
                                     <td data-label="@lang('Max')">{{__(@$item->max)}}</td>
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn ml-1 addBtn"
                                            data-original-title="@lang('Action')" data-toggle="tooltip"
                                            data-name="{{ @$item->name }}"
-                                           data-price_per_k="{{ getAmount(@$item->rate) }}"
-                                           data-min="{{ @$item->min }}" data-max="{{ @$item->max }}" data-api_service_id="{{ @$item->service }}">
+                                           data-price_per_k="{{ getAmount(@$item->rate ?? @$item->sale_price) }}"
+                                           data-min="{{ @$item->min ?? 1}}" data-max="{{ @$item->max ?? 1}}" data-api_service_id="{{__($id == 2 ? @$item->id  : @$item->service)}}"
+                                           data-desc="{{ @$item->desc }}">
                                             <i class="fa fa-fw fa-plus"></i>
                                             @lang('Add Service')
                                         </a>
@@ -68,15 +69,12 @@
                 </div>
                 <form class="form-horizontal" method="post" action="{{ route('admin.services.store')}}">
                     @csrf
-
                     <div class="modal-body">
-
                         <div class="form-group">
                             <label class="font-weight-bold ">@lang('Category') <span
                                     class="text-danger">*</span></label>
                             <select class="form-control" name="category" required>
                                 <option selected value="">@lang('Choose')...</option>
-
                                 @forelse($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @empty
@@ -84,7 +82,6 @@
 
                             </select>
                         </div>
-
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Name') <span
                                     class="text-danger">*</span></label>
@@ -124,7 +121,7 @@
                             <label class="font-weight-bold">@lang('Service Id (If order process through API)')</label>
                             <input type="text" name="api_service_id" class="form-control" readonly required>
                         </div>
-
+                        <input type="hidden" name="api_provider_id" value="{{$id}}">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -160,12 +157,14 @@
                 var min = $(this).data('min');
                 var max = $(this).data('max');
                 var api_service_id = $(this).data('api_service_id');
+                var desc = $(this).data('desc');
 
                 modal.find('input[name=name]').val(name);
                 modal.find('input[name=price_per_k]').val(price_per_k);
                 modal.find('input[name=min]').val(min);
                 modal.find('input[name=max]').val(max);
                 modal.find('input[name=api_service_id]').val(api_service_id);
+                modal.find('textarea[name=details]').val(desc);
                 modal.modal('show');
             });
         })(jQuery);
