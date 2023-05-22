@@ -290,10 +290,10 @@ function curlContent($url)
 //moveable
 function curlPostContent($url, $arr = null ,$header =null)
 {
-    if ($arr) {
+    if ($arr && !$header) {
         $params = http_build_query($arr);
     } else {
-        $params = '';
+        $params = $arr;
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);

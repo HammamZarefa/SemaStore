@@ -339,15 +339,16 @@ class OrderController extends Controller
             $arr = [
                 'product_id' => $service,
                 'alt' => $link,
-                'quantity' => $qty
+                'quantity' => $qty,
+                "api_key" => $apiProvider->api_key
             ];
             $header = array(
-                "Content-Type" => "application/json",
-                "api_key" => $apiProvider->api_key
+                "Content-Type" => "application/json"
+
             );
            $response = json_decode(curlPostContent($apiProvider->api_url.'/create-order', $arr, $header));
         }
-        if (@$response->error) {
+        if (@$response->error || @$response->result == 'error') {
             $notify[] = ['info', 'Please enter your api credentials from API Setting Option'];
             $notify[] = ['error', $response->error];
             throw new \Exception($notify);

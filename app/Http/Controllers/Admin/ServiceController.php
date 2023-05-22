@@ -126,7 +126,7 @@ class ServiceController extends Controller
         $empty_message = 'No Result Found';
         $categories = Category::active()->orderBy('name')->get();
         $general = ApiProvider::findOrFail($id);
-        if ($id == 1 || $id =3) {
+        if ($id == 1 || $id ==3) {
             $url = $general->api_url;
             $arr = [
                 'key' => $general->api_key,
