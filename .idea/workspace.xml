@@ -10,17 +10,13 @@
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Helpers/helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Helpers/helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Service.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Service.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/services/apiServices.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/services/apiServices.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/services/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/services/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -391,6 +387,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
@@ -445,6 +443,7 @@
       <workItem from="1674850782919" duration="7439000" />
       <workItem from="1674986936723" duration="2050000" />
       <workItem from="1677323198347" duration="9500000" />
+      <workItem from="1684774423704" duration="1704000" />
     </task>
     <servers />
   </component>

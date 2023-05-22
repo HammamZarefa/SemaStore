@@ -58,7 +58,6 @@ class UpdateApiOrderStatus extends Command
                 Order::where('api_order_id', $value->order)->update(['status' => $this->setStatus($value->status)]);
             }
         }
-
         $xporder = collect($updatableOrders)->where('order_placed_to_api', 2)->pluck('api_order_id');
         if ($xporder->isNotEmpty()) {
             $arr = [
