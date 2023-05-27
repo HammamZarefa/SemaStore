@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Models\ApiProvider;
 use App\Models\GeneralSetting;
 use App\Models\Order;
+use App\Models\Transaction;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UpdateApiOrderStatus extends Command
@@ -41,11 +43,12 @@ class UpdateApiOrderStatus extends Command
      */
     public function handle()
     {
-        $updatableOrders = Order::select('id', 'api_order_id','order_placed_to_api')->where('api_order', 1)
+        $updatableOrders = Order::select('id', 'api_order_id', 'order_placed_to_api')->where('api_order', 1)
             ->where('updated_at', '>=', now()->subMinutes(60)->toDateTimeString())->get();
         if (!$updatableOrders)
             die();
         $general = ApiProvider::where('status', 1)->get();
+
         $cashmmOrders = collect($updatableOrders)->where('order_placed_to_api', 1);
         if ($cashmmOrders->isNotEmpty()) {
             $arr = [
@@ -55,20 +58,31 @@ class UpdateApiOrderStatus extends Command
             ];
             $response = json_decode(curlPostContent($general[0]->api_url, $arr));
             foreach ($response as $id => $value) {
-                Order::where('api_order_id', $value->order)->update(['status' => $this->setStatus($value->status)]);
+                $order = Order::where('api_order_id', $value->order)->first();
+                if ($order && isset($value->status)) {
+                    $status = $this->setStatus($value->status);
+                    if ($status == 3)
+                        $status = 4;
+                    $this->changeStatus($order, $status);
+                }
             }
         }
-        $xporder = collect($updatableOrders)->where('order_placed_to_api', 2)->pluck('api_order_id');
-        if ($xporder->isNotEmpty()) {
-            $arr = [
-                'key' => $general[1]->api_key,
-                'action' => "orders",
-                'orders' => $xporder->pluck('api_order_id')->implode(',')
-            ];
-            $response = json_decode(curlPostContent($general[1]->api_url, $arr));
 
-            foreach ($response as $id => $value) {
-                Order::where('api_order_id', $id)->update(['status' => $this->setXpStatus($value->status)]);
+        $xporders = collect($updatableOrders)->where('order_placed_to_api', 2);
+        if ($xporders->isNotEmpty()) {
+            foreach ($xporders as $order) {
+                $arr = [
+                    'api_key' => $general[1]->api_key,
+                    'order_id' => $order->api_order_id
+                ];
+                Log::info($order->api_order_id);
+                $response = json_decode(curlPostContent($general[1]->api_url . '/order-details', $arr));
+                $order = Order::where('api_order_id', $order->api_order_id)->first();
+                if ($order && isset($response->items->status)) {
+                    $status = $this->setXpStatus($response->items->status);
+                    if ($status != $order->status)
+                        $this->changeStatus($order, $status);
+                }
             }
         }
 
@@ -99,6 +113,7 @@ class UpdateApiOrderStatus extends Command
             return 4;
         else return 0;
     }
+
     public function setXpStatus($status)
     {
         if ($status == "processing")
@@ -107,8 +122,40 @@ class UpdateApiOrderStatus extends Command
             return 2;
         elseif ($status == "canceled")
             return 3;
-        elseif ($status == "refunded")
+        elseif ($status == "reject")
             return 4;
         else return 0;
+    }
+
+    public function changeStatus($order, $status)
+    {
+        Log::info($status);
+        DB::beginTransaction();
+        try {
+            $user = $order->user;
+            if ($status == 4) {
+                if ($order->status != 4) {
+                    $user->balance += $order->price;
+                    $transaction = new Transaction();
+                    $transaction->user_id = $user->id;
+                    $transaction->amount = $order->price;
+                    $transaction->post_balance = getAmount($user->balance);
+                    $transaction->trx_type = '+';
+                    $transaction->details = 'استرجاع الرصيد بعد تحويل حالة الطلب الى مسترجع ' . $order->id;
+                    $transaction->trx = getTrx();
+                    $transaction->save();
+                    if ($user->save()) {
+                        $transaction->save();
+                    }
+                }
+            }
+            $order->status = $status;
+            $order->save();
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 }
