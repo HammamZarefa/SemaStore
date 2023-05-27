@@ -96,6 +96,8 @@ class OrderController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            $notify[] = ['error', 'حاول لاحقا او تواصل مع مدير الموقع.'.$e->getmessage()];
+            return back()->withNotify($notify);
         }
         //Create admin notification
         $adminNotification = new AdminNotification();
@@ -346,11 +348,10 @@ class OrderController extends Controller
                 "Content-Type" => "application/json"
 
             );
-           $response = json_decode(curlPostContent($apiProvider->api_url.'/create-order', $arr, $header));
+            $response = json_decode(curlPostContent($apiProvider->api_url.'/create-order', $arr, $header));
         }
         if (@$response->error || @$response->result == 'error') {
-            $notify[] = ['info', 'Please enter your api credentials from API Setting Option'];
-            $notify[] = ['error', $response->error];
+            $notify =$response->error ?? $response->message;
             throw new \Exception($notify);
         }
         return $response = collect($response);
