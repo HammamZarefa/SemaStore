@@ -106,7 +106,9 @@ class ServiceController extends Controller
             $service->api_service_params = $request->country . '/any/' . $request->product;
         $service->special_price = $request->special_price != 0 ? $request->special_price : NULL;
         $service->api_service_id = $request->api_service_id;
-        $service->api_provider_id = $request->api_provider_id;
+        if($request->api_provider_id)
+            $service->api_provider_id = $request->api_provider_id;
+      
     }
 
     public function status($id)
