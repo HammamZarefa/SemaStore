@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -392,15 +391,15 @@
   }
 }</component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\SAAD\app\Http\Controllers\Admin" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\SAAD\assets\templates\basic\images" />
       <recent name="G:\SAAD\resources\views\admin\banner" />
       <recent name="G:\SAAD\app\Http\Controllers\Admin" />
       <recent name="G:\SAAD\database\migrations" />
       <recent name="G:\SAAD\app\Models" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\SAAD\app\Http\Controllers\Admin" />
     </key>
   </component>
   <component name="RunManager">

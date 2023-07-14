@@ -33,7 +33,7 @@
                                             <span id="{{$item->id}}">
                                             @if($item->verify )
                                                 {{ $item->verify }}
-                                            @elseif($item->category->type=='5SIM')
+                                            @elseif($item->category->type=='5SIM' || $item->category->type=='NUMBER')
                                                 <i class="fa fa-refresh" onclick="checksms({{ $item->id }})" ></i>
                                                 @endif
                                             </span >

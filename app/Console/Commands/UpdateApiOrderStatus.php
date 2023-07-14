@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\OrderController;
 use App\Models\ApiProvider;
 use App\Models\GeneralSetting;
 use App\Models\Order;
@@ -95,7 +96,17 @@ class UpdateApiOrderStatus extends Command
             ];
             $response = json_decode(curlPostContent($general[2]->api_url, $arr));
             foreach ($response as $id => $value) {
-                Order::where('api_order_id', $value->order)->update(['status' => $this->setStatus($value->status)]);
+                $order = Order::where('api_order_id', $value->order)->first();
+                if ($order && isset($value->status)) {
+                    $status = $this->setStatus($value->status);
+                    if ($order->category->type == "NUMBER") {
+                        if ($status == 2 && isset($value->code))
+                            if ($status == 2 && isset($value->code))
+                                (new OrderController())->finishNumberOrder($order->id, ["smsCode" => $value->code]);
+                    } elseif ($status == 3)
+                        $status = 4;
+                    $this->changeStatus($order, $status);
+                }
             }
         }
         return 'success';
@@ -103,11 +114,12 @@ class UpdateApiOrderStatus extends Command
 
     public function setStatus($status)
     {
-        if ($status == "In progress")
+        $status = strtolower($status);
+        if ($status == "in progress")
             return 1;
-        elseif ($status == "Completed")
+        elseif ($status == "completed")
             return 2;
-        elseif ($status == "Canceled")
+        elseif ($status == "canceled")
             return 3;
         elseif ($status == "refunded")
             return 4;

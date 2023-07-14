@@ -88,7 +88,8 @@
                                 <option value="GAME">@lang('GAME')</option>
                                 <option value="CODE">@lang('CODE')</option>
                                 <option value="BALANCE">@lang('BALANCE')</option>
-                                <option value="5SIM">@lang('5SIM')</option>
+{{--                                <option value="5SIM">@lang('5SIM')</option>--}}
+                                <option value="NUMBER">@lang('NUMBER')</option>
                             </select>
                             @if($errors->has('type'))
                                 <div class="error text-danger">@lang($errors->first('type')) </div>
@@ -161,7 +162,8 @@
                                 <option value="GAME">@lang('GAME')</option>
                                 <option value="CODE">@lang('CODE')</option>
                                 <option value="BALANCE">@lang('BALANCE')</option>
-                                <option value="5SIM">@lang('5SIM')</option>
+{{--                                <option value="5SIM">@lang('5SIM')</option>--}}
+                                <option value="NUMBER">@lang('NUMBER')</option>
                             </select>
                             @if($errors->has('type'))
                                 <div class="error text-danger">@lang($errors->first('type')) </div>
