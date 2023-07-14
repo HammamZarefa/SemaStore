@@ -313,6 +313,8 @@ class ApiController extends Controller
             return response()->json($validator->errors()->getMessages());
         }
         $order = Order::where('api_order_id',$request->order)->first();
+        if($order->order_placed_to_api != 3)
+            return response()->json(['success' => 403]);
         if ($order && isset($request->status)) {
             $status = $this->setStatus($request->status);
             if ($order->category->type == "NUMBER") {
