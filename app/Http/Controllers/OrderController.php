@@ -23,7 +23,7 @@ class OrderController extends Controller
 //            'link' => 'required|string',
 //            'quantity' => 'required|integer|gte:' . $service->min . '|lte:' . $service->max,
         ]);
-        if ($service->category->type == 'CODE' || $service->category->type == '5SIM')
+        if (in_array($service->category->type, ['CODE', '5SIM', 'NUMBER']))
             $price = (Auth::user()->is_special ? ($service->special_price ? getAmount($service->special_price) : getAmount($service->price_per_k)) : getAmount($service->price_per_k));
         else
             $price = (Auth::user()->is_special ? ($service->special_price ? getAmount($service->special_price) : getAmount($service->price_per_k)) : getAmount($service->price_per_k)) * $request->quantity;
@@ -42,10 +42,9 @@ class OrderController extends Controller
         }
         DB::beginTransaction();
         try {
-            if ($service->category->type != '5SIM')
+            if ($service->category->type != '5SIM' && $service->category->type != 'NUMBER')
                 $user->balance -= $price;
             $user->save();
-
             //Make order
             $order = new Order();
             $order->user_id = $user->id;
@@ -74,7 +73,7 @@ class OrderController extends Controller
             }
 
             $order->save();
-            if ($service->category->type != '5SIM') {
+            if ($service->category->type != '5SIM' && $service->category->type != 'NUMBER') {
                 //Create Transaction
                 $transaction = new Transaction();
                 $transaction->user_id = $user->id;
@@ -90,13 +89,17 @@ class OrderController extends Controller
                 $order->api_order_id = $apiOrder['order'] ?? $apiOrder['order_id'];
                 $order->api_service_id = $service->api_service_id;
                 $order->order_placed_to_api = $service->api_provider_id;
+                if($service->category->type == 'NUMBER')
+                {
+                    $order->code = @$apiOrder['link'];
+                    $order->status = 5;
+                }
                 $order->save();
             }
-
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            $notify[] = ['error', 'حاول لاحقا او تواصل مع مدير الموقع.'.$e->getmessage()];
+            $notify[] = ['error', 'حاول لاحقا او تواصل مع مدير الموقع.' . $e->getmessage()];
             return back()->withNotify($notify);
         }
         //Create admin notification
@@ -294,18 +297,20 @@ class OrderController extends Controller
         return view(activeTemplate() . 'user.orders.order_history', compact('page_title', 'orders', 'empty_message'));
     }
 
-    public function finish5SImOrder($id, $result)
+    public function finishNumberOrder($id, $result)
     {
+        if(isset($result['sms'][0]['code']))
+            $result['smsCode'] =$result['sms'][0]['code'];
         $order = Order::find($id);
-        $user = auth()->user();
-        if ($user->balance < $order->price) {
-            $notify[] = ['error', 'Insufficient balance. Please deposit and try again!'];
-            return back()->withNotify($notify);
-        }
+        $user = auth()->user() ?? $order->user;
+//        if ($user->balance < $order->price) {
+//            $notify[] = ['error', 'Insufficient balance. Please deposit and try again!'];
+//            return back()->withNotify($notify);
+//        }
         $user->balance -= $order->price;
         $user->save();
         $order->status = 2;
-        $order->verify = $result['sms'][0]['code'];
+        $order->verify = $result['smsCode'];
         $order->save();
 
         //Create Transaction
@@ -317,7 +322,7 @@ class OrderController extends Controller
         $transaction->details = 'Order for ' . $order->service->name;
         $transaction->trx = getTrx();
         $transaction->save();
-        return $result['sms'][0]['code'];
+        return $result['smsCode'];
 //        $notify[] = ['success', 'Successfully placed your order!'];
 //        return back()->withNotify($notify);
 
@@ -348,10 +353,10 @@ class OrderController extends Controller
                 "Content-Type" => "application/json"
 
             );
-            $response = json_decode(curlPostContent($apiProvider->api_url.'/create-order', $arr, $header));
+            $response = json_decode(curlPostContent($apiProvider->api_url . '/create-order', $arr, $header));
         }
         if (@$response->error || @$response->result == 'error') {
-            $notify =$response->error ?? $response->message;
+            $notify = $response->error ?? $response->message;
             throw new \Exception($notify);
         }
         return $response = collect($response);

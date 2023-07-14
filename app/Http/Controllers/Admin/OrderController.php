@@ -209,4 +209,5 @@ class OrderController extends Controller
         $notify[] = ['success', 'Successfully updated!'];
         return back()->withNotify($notify);
     }
+
 }

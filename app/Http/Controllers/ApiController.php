@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminNotification;
+use App\Models\ApiProvider;
 use App\Models\Category;
 use App\Models\GeneralSetting;
 use App\Models\Order;
@@ -10,7 +11,9 @@ use App\Models\Service;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Requests;
 
@@ -19,7 +22,7 @@ class ApiController extends Controller
     public function process(Request $request)
     {
         $rules = [
-            'action' => 'required|string|in:services,add,status',
+            'action' => 'required|string|in:services,add,status,callback',
             'key' => 'required|string'
         ];
 
@@ -29,8 +32,11 @@ class ApiController extends Controller
             return response()->json($validator->errors()->getMessages());
         }
 
+        if ($request->action == "callback" && ApiProvider::where('api_key', $request->key)->exists()) {
+                return $this->callbackStatusUpdate($request);
+        }
         //Checking api key exist
-        if (!User::where('api_key', $request->key)->exists()) {
+        elseif (!User::where('api_key', $request->key)->exists()) {
             return response()->json(['error' => 'Invalid api key']);
         }
 
@@ -64,7 +70,7 @@ class ApiController extends Controller
 
     public function fivesim($params)
     {
-        $token=env('fivesim_token', 'null');
+        $token = env('fivesim_token', 'null');
         $ch = curl_init();
         $country = 'russia';
         $operator = 'any';
@@ -80,7 +86,7 @@ class ApiController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $result = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($httpcode!=200) {
+        if ($httpcode != 200) {
             return 0;
         }
         curl_close($ch);
@@ -94,39 +100,53 @@ class ApiController extends Controller
 
     public function checkSMS($orderID)
     {
-        $order=Order::find($orderID);
-        $id=$order->order_id_api;
-       $token= env('fivesim_token', 'null');
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://5sim.net/v1/user/check/' . $id);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        $order = Order::find($orderID);
+        $id = $order->order_id_api;
+        if ($order->api_service_id == 0) {
+            $token = env('fivesim_token', 'null');
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://5sim.net/v1/user/check/' . $id);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
 
-        $headers = array();
-        $headers[] = 'Authorization: Bearer ' . $token;
-        $headers[] = 'Accept: application/json';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $headers = array();
+            $headers[] = 'Authorization: Bearer ' . $token;
+            $headers[] = 'Accept: application/json';
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-        }
-        curl_close($ch);
-        $result = json_decode($result, True);
-        if (isset($result['sms'][0])) {
-            $code = $result['sms'][0]['code'];
-            if (isset($code)) {
-             return   $this->finishOrder($id, $orderID);
+            $result = curl_exec($ch);
+            if (curl_errno($ch)) {
+                echo 'Error:' . curl_error($ch);
             }
+            curl_close($ch);
+            $result = json_decode($result, True);
+            if (isset($result['sms'][0])) {
+                $code = $result['sms'][0]['code'];
+                if (isset($code)) {
+                    return $this->finishOrder($id, $orderID);
+                }
+            } else return '0';
+        } else {
+            $apiProvider = ApiProvider::findorfail($order->order_placed_to_api ?? 3);
+            $arr = [
+                'key' => $apiProvider->api_key,
+                'action' => "smscode",
+                'order' => $order->api_order_id
+            ];
+            $response = json_decode(curlPostContent($apiProvider->api_url, $arr), 1);
+            if (isset($response['smsCode'])) {
+                $code = $response['smsCode'];
+                if (isset($code)) {
+                    $res = (new OrderController())->finishNumberOrder($orderID, $response);
+                }
+            } else return '0';
         }
-        else return '0';
-
     }
 
-    public function finishOrder($id,$orderid)
+    public function finishOrder($id, $orderid)
     {
-       $token= env('fivesim_token', 'null');
+        $token = env('fivesim_token', 'null');
         $ch = curl_init();
         $finishOrderUrl = 'https://5sim.net/v1/user/finish/' . $id;
         curl_setopt($ch, CURLOPT_URL, $finishOrderUrl);
@@ -145,7 +165,7 @@ class ApiController extends Controller
         }
 
         $result = json_decode($result, True);
-       $res= (new OrderController())->finish5SImOrder($orderid,$result);
+        $res = (new OrderController())->finishNumberOrder($orderid, $result);
         return $res;
     }
 
@@ -268,25 +288,86 @@ class ApiController extends Controller
         return response()->json($order);
     }
 
-    public function getPlayer($api,$id)
+    public function getPlayer($api, $id)
     {
-        $category=Category::find($api);
-//       $url="http://sim90.com/api/getPlayerName/".$category->slug."/".$playerid;
-        $key=env('player_key', 'null');
-        $url="http://www.m7-system.com:8080/match?key=".$key."&id=".$id."&product=".$category->slug;
-//       $token='76|HZ04dcna7KKEjEChTE9Ydhzuk1xzGTJhbo2vkLnK';
-//        $getPlayer = Http::withToken($token)->get($url);
-        $getPlayer=Http::get($url);
-        return   $result = json_decode($getPlayer, True);
+        $category = Category::find($api);
 
+        $key = env('player_key', 'null');
+        $url = "http://www.m7-system.com:8080/match?key=" . $key . "&id=" . $id . "&product=" . $category->slug;
 
+        $getPlayer = Http::get($url);
+        return $result = json_decode($getPlayer, True);
 
-//        $category=Category::find($api);
-//        $url="http://sim90.com/api/getPlayerName/".$category->slug."/".$id;
-//        $token='76|HZ04dcna7KKEjEChTE9Ydhzuk1xzGTJhbo2vkLnK';
-//        $getPlayer = Http::withToken($token)->get($url);
-//        return   $result = json_decode($getPlayer, True);
-//
-//        //        [freefire,pubg,likee,bego,ahlanChat,pubgLite,yalla]
+    }
+
+    public function callbackStatusUpdate($request)
+    {
+        $rules = [
+            'order' => 'required',
+            'status' => 'required',
+            'link' => 'string',
+            'code' => 'string'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->getMessages());
+        }
+        $order = Order::where('api_order_id',$request->order)->first();
+        if ($order && isset($request->status)) {
+            $status = $this->setStatus($request->status);
+            if ($order->category->type == "NUMBER") {
+                if ($status == 2 && isset($request->code))
+                    if ($status == 2 && isset($request->code))
+                        (new OrderController())->finishNumberOrder($order->id, ["smsCode" => $request->code]);
+            } elseif ($status == 3)
+                $status = 4;
+            $this->changeStatus($order, $status);
+        }
+        return response()->json(['success' => "true"]);
+    }
+    public function setStatus($status)
+    {
+        $status = strtolower($status);
+        if ($status == "in progress")
+            return 1;
+        elseif ($status == "completed")
+            return 2;
+        elseif ($status == "canceled")
+            return 3;
+        elseif ($status == "refunded")
+            return 4;
+        else return 0;
+    }
+
+    public function changeStatus($order, $status)
+    {
+        Log::info($status);
+        DB::beginTransaction();
+        try {
+            $user = $order->user;
+            if ($status == 4) {
+                if ($order->status != 4) {
+                    $user->balance += $order->price;
+                    $transaction = new Transaction();
+                    $transaction->user_id = $user->id;
+                    $transaction->amount = $order->price;
+                    $transaction->post_balance = getAmount($user->balance);
+                    $transaction->trx_type = '+';
+                    $transaction->details = 'استرجاع الرصيد بعد تحويل حالة الطلب الى مسترجع ' . $order->id;
+                    $transaction->trx = getTrx();
+                    $transaction->save();
+                    if ($user->save()) {
+                        $transaction->save();
+                    }
+                }
+            }
+            $order->status = $status;
+            $order->save();
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 }
