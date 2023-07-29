@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/balance_coupon/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/add_coupon.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Commands/UpdateApiOrderStatus.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/UpdateApiOrderStatus.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/partials/sidenav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/partials/sidenav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/partials/sidenav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/partials/sidenav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/user/orders/order_history.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/orders/order_history.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -380,23 +388,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Projects/SemaStore/resources/views/templates/basic/user",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\SemaStore\resources\views\templates\basic\user" />
+      <recent name="C:\Projects\SemaStore\resources\views\admin\balance_coupon" />
       <recent name="G:\SAAD\assets\templates\basic\images" />
       <recent name="G:\SAAD\resources\views\admin\banner" />
       <recent name="G:\SAAD\app\Http\Controllers\Admin" />
-      <recent name="G:\SAAD\database\migrations" />
-      <recent name="G:\SAAD\app\Models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="G:\SAAD\app\Http\Controllers\Admin" />
@@ -442,6 +452,8 @@
       <workItem from="1684774423704" duration="1704000" />
       <workItem from="1685748399329" duration="31000" />
       <workItem from="1687062770289" duration="684000" />
+      <workItem from="1690620266224" duration="399000" />
+      <workItem from="1690620777654" duration="7806000" />
     </task>
     <servers />
   </component>

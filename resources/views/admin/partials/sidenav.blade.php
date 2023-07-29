@@ -341,6 +341,13 @@
                         <span class="menu-title">@lang('اكواد وارقام البطاقات') </span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item  {{menuActive('admin.coupon.index')}}">
+                    <a href="{{route('admin.coupon.index')}}" class="nav-link"
+                       data-default-url="{{ route('admin.coupon.index') }}">
+                        <i class="menu-icon la la-ticket"></i>
+                        <span class="menu-title">@lang('Balance coupon') </span>
+                    </a>
+                </li>
 
 
                 {{--////////////////////////////////////--}}

@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Lib\GoogleAuthenticator;
 use App\Models\AdminNotification;
+use App\Models\BalanceCoupon;
 use App\Models\Category;
+use App\Models\Deposit;
 use App\Models\GeneralSetting;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
 use Validator;
@@ -21,6 +24,7 @@ class UserController extends Controller
     {
         $this->activeTemplate = activeTemplate();
     }
+
     public function home()
     {
         $page_title = 'Dashboard';
@@ -43,7 +47,7 @@ class UserController extends Controller
     {
         $data['page_title'] = "Profile Setting";
         $data['user'] = Auth::user();
-        return view($this->activeTemplate. 'user.profile-setting', $data);
+        return view($this->activeTemplate . 'user.profile-setting', $data);
     }
 
     public function submitProfile(Request $request)
@@ -56,9 +60,9 @@ class UserController extends Controller
             'zip' => 'sometimes|required|max:40',
             'city' => 'sometimes|required|max:50',
             'image' => 'mimes:png,jpg,jpeg'
-        ],[
-            'firstname.required'=>'First Name Field is required',
-            'lastname.required'=>'Last Name Field is required'
+        ], [
+            'firstname.required' => 'First Name Field is required',
+            'lastname.required' => 'Last Name Field is required'
         ]);
 
 
@@ -160,7 +164,7 @@ class UserController extends Controller
         $prevcode = $user->tsc;
         $prevqr = $ga->getQRCodeGoogleUrl($user->username . '@' . $gnl->sitename, $prevcode);
         $page_title = 'Two Factor';
-        return view($this->activeTemplate.'user.twofactor', compact('page_title', 'secret', 'qrCodeUrl', 'prevcode', 'prevqr'));
+        return view($this->activeTemplate . 'user.twofactor', compact('page_title', 'secret', 'qrCodeUrl', 'prevcode', 'prevqr'));
     }
 
     public function create2fa(Request $request)
@@ -248,13 +252,74 @@ class UserController extends Controller
         $categories = Category::active()->orderBy('sort')->get();
         return view(activeTemplate() . 'user.services.services', compact('page_title', 'categories', 'empty_message'));
     }
+
     //Services
     public function service($id)
     {
-        $category=Category::find($id);
+        $category = Category::find($id);
         $page_title = $category->name;
         $empty_message = "No result found";
-        $services = Service::where("category_id",$id)->active()->orderBy('name')->get();
-        return view(activeTemplate() . 'user.services.service', compact('page_title', 'services', 'empty_message','category'));
+        $services = Service::where("category_id", $id)->active()->orderBy('name')->get();
+        return view(activeTemplate() . 'user.services.service', compact('page_title', 'services', 'empty_message', 'category'));
+    }
+
+    public function chargeViaCoupon()
+    {
+        $page_title = 'Coupon Balance';
+        return view(activeTemplate() . 'user.add_coupon',
+            compact('page_title'));
+    }
+
+    public function applyBalanceCoupon(Request $request)
+    {
+        $this->validate($request, ['code' => 'required']);
+
+        $user = Auth::user();
+        $coupon = BalanceCoupon::where('code', $request['code'])->first();
+        if ($coupon != null && $coupon->is_sold != 1 && $coupon->status != 0) {
+            $balance = $coupon->balance;
+        } else
+        {
+            $notify[] = ['error', trans('Coupon Is Not Found.')];
+            return back()->withNotify($notify);
+        }
+
+        DB::beginTransaction();
+        try {
+            $user->balance += (float)$balance;
+            $user->save();
+            $coupon->is_sold = 1;
+            $coupon->user_id = $user->id;
+            $coupon->save();
+            $transaction = new Transaction();
+            $transaction->user_id = $user->id;
+            $transaction->amount = $balance;
+            $transaction->post_balance = getAmount($user->balance);
+            $transaction->trx_type = '+';
+            $transaction->details = 'add balance via coupon';
+            $transaction->trx = getTrx();
+            $transaction->save();
+            $data = new Deposit();
+            $data->user_id = $user->id;
+            $data->method_code = 'coupon';
+            $data->method_currency = strtoupper('USD');
+            $data->amount = $balance;
+            $data->charge = 0;
+            $data->rate = 0;
+            $data->final_amo = $balance;
+            $data->btc_amo = 0;
+            $data->btc_wallet = "";
+            $data->trx = getTrx();
+            $data->try = 0;
+            $data->status = 1;
+            $data->save();
+            DB::commit();
+            $notify[] = ['success', trans('Balance Is Updated Successfully.')];
+            return back()->withNotify($notify);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $notify[] = ['error', trans("يرجى التواصل مع مدير الموقع")];
+            return back()->with()->withInput($notify);
+        }
     }
 }
