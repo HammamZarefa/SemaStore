@@ -45,7 +45,7 @@ class UpdateApiOrderStatus extends Command
     public function handle()
     {
         $updatableOrders = Order::select('id', 'api_order_id', 'order_placed_to_api')->where('api_order', 1)
-            ->where('updated_at', '>=', now()->subMinutes(60)->toDateTimeString())->get();
+            ->where('updated_at', '>=', now()->subMinutes(12)->toDateTimeString())->get();
         if (!$updatableOrders)
             die();
         $general = ApiProvider::where('status', 1)->get();

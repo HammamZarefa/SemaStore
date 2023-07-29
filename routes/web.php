@@ -82,7 +82,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('notification/read/{id}','AdminController@notificationRead')->name('notification.read');
         Route::get('notifications','AdminController@notifications')->name('notifications');
 
-
+        Route::resource('coupon', 'BalanceCouponController');
         // Users Manager
         Route::get('users', 'ManageUsersController@allUsers')->name('users.all');
         Route::get('users/active', 'ManageUsersController@activeUsers')->name('users.active');
@@ -157,9 +157,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('banner/edit/{id}', 'BannerController@update')->name('banner.update');
         Route::post('banner/destroy/{id}','BannerController@destroy')->name('banner.destroy');
 
-
-
-
         // Deposit Gateway
         Route::name('gateway.')->prefix('gateway')->group(function(){
             // Automatic Gateway
@@ -170,8 +167,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::post('automatic/activate', 'GatewayController@activate')->name('automatic.activate');
             Route::post('automatic/deactivate', 'GatewayController@deactivate')->name('automatic.deactivate');
 
-
-
             // Manual Methods
             Route::get('manual', 'ManualGatewayController@index')->name('manual.index');
             Route::get('manual/new', 'ManualGatewayController@create')->name('manual.create');
@@ -181,7 +176,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::post('manual/activate', 'ManualGatewayController@activate')->name('manual.activate');
             Route::post('manual/deactivate', 'ManualGatewayController@deactivate')->name('manual.deactivate');
         });
-
 
         // DEPOSIT SYSTEM
         Route::name('deposit.')->prefix('deposit')->group(function(){
@@ -362,6 +356,9 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::post('deposit/manual', 'Gateway\PaymentController@manualDepositUpdate')->name('deposit.manual.update');
             Route::get('deposit/history', 'UserController@depositHistory')->name('deposit.history');
 
+            //Coupon
+            Route::get('coupon', 'UserController@chargeViaCoupon')->name('coupon.add');
+            Route::post('coupon', 'UserController@applyBalanceCoupon')->name('coupon.apply');
             // Transactions
             Route::get('/transaction/history', 'UserController@transactionHistory')->name('transaction.history');
 

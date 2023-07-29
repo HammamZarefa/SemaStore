@@ -1,5 +1,6 @@
-<div class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}"
-     data-background="{{getImage('assets/admin/images/sidebar/2.jpg','400x800')}}">
+<div
+    class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}"
+    data-background="{{getImage('assets/admin/images/sidebar/2.jpg','400x800')}}">
     <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
     <div class="sidebar__inner">
         <div class="sidebar__logo">
@@ -28,10 +29,10 @@
                 </li>
 
                 {{--<li class="sidebar-menu-item {{menuActive('user.mass.order')}}">--}}
-                    {{--<a href="{{route('user.mass.order')}}" class="nav-link ">--}}
-                        {{--<i class="menu-icon la la-cart-plus"></i>--}}
-                        {{--<span class="menu-title">@lang('Mass Order')</span>--}}
-                    {{--</a>--}}
+                {{--<a href="{{route('user.mass.order')}}" class="nav-link ">--}}
+                {{--<i class="menu-icon la la-cart-plus"></i>--}}
+                {{--<span class="menu-title">@lang('Mass Order')</span>--}}
+                {{--</a>--}}
                 {{--</li>--}}
 
                 <li class="sidebar-menu-item {{menuActive('user.order*')}}">
@@ -41,33 +42,39 @@
                     </a>
                 </li>
 
-{{--                Deposit--}}
+                {{--                Deposit--}}
                 <li class="sidebar-menu-item sidebar-dropdown">
-                    {{--<a href="javascript:void(0)" class="{{menuActive('user.deposit*',3)}}">--}}
-                        {{--<i class="menu-icon la la-bank"></i>--}}
-                        {{--<span class="menu-title">@lang('Deposit')</span>--}}
+                {{--<a href="javascript:void(0)" class="{{menuActive('user.deposit*',3)}}">--}}
+                {{--<i class="menu-icon la la-bank"></i>--}}
+                {{--<span class="menu-title">@lang('Deposit')</span>--}}
 
-                    {{--</a>--}}
-                    {{--<div class="sidebar-submenu {{menuActive('user.deposit*',2)}} ">--}}
-                        {{--<ul>--}}
+                {{--</a>--}}
+                {{--<div class="sidebar-submenu {{menuActive('user.deposit*',2)}} ">--}}
+                {{--<ul>--}}
 
-                            <li class="sidebar-menu-item {{menuActive('user.deposit')}} ">
-                                <a href="{{route('user.deposit')}}" class="nav-link">
-                                    <i class="menu-icon la la-bank"></i>
-                                    <span class="menu-title">@lang('Deposit Money')</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item {{menuActive('user.deposit.history')}} ">
-                                <a href="{{route('user.deposit.history')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Deposit Log')</span>
-                                </a>
-                            </li>
-                        {{--</ul>--}}
-                    {{--</div>--}}
+                <li class="sidebar-menu-item {{menuActive('user.deposit')}} ">
+                    <a href="{{route('user.deposit')}}" class="nav-link">
+                        <i class="menu-icon la la-bank"></i>
+                        <span class="menu-title">@lang('Deposit Money')</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item {{menuActive('user.coupon.add')}} ">
+                    <a href="{{route('user.coupon.add')}}" class="nav-link">
+                        <i class="menu-icon la la-bank"></i>
+                        <span class="menu-title">@lang('شحن رصيد')</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item {{menuActive('user.deposit.history')}} ">
+                    <a href="{{route('user.deposit.history')}}" class="nav-link">
+                        <i class="menu-icon las la-dot-circle"></i>
+                        <span class="menu-title">@lang('Deposit Log')</span>
+                    </a>
+                </li>
+                {{--</ul>--}}
+                {{--</div>--}}
                 </li>
 
-{{--                Transactions--}}
+                {{--                Transactions--}}
                 <li class="sidebar-menu-item {{menuActive('user.transaction.history')}}">
                     <a href="{{route('user.transaction.history')}}" class="nav-link ">
                         <i class="menu-icon la la-exchange-alt"></i>
@@ -75,7 +82,7 @@
                     </a>
                 </li>
 
-{{--                Ticket--}}
+                {{--                Ticket--}}
                 <li class="sidebar-menu-item {{menuActive('ticket*')}}">
                     <a href="{{route('ticket')}}" class="nav-link ">
                         <i class="menu-icon la la-life-ring"></i>
@@ -84,12 +91,12 @@
                 </li>
 
 
-{{--                API--}}
+                {{--                API--}}
                 {{--<li class="sidebar-menu-item {{menuActive('user.api')}}">--}}
-                    {{--<a href="{{route('user.api')}}" class="nav-link ">--}}
-                        {{--<i class="menu-icon la la-globe"></i>--}}
-                        {{--<span class="menu-title">@lang('API')</span>--}}
-                    {{--</a>--}}
+                {{--<a href="{{route('user.api')}}" class="nav-link ">--}}
+                {{--<i class="menu-icon la la-globe"></i>--}}
+                {{--<span class="menu-title">@lang('API')</span>--}}
+                {{--</a>--}}
                 {{--</li>--}}
 
             </ul>
