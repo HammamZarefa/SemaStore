@@ -94,25 +94,10 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             try {
                 $filename = uploadImage($image, $path, $size, $filename);
-//                    dd($filename);
             } catch (\Exception $exp) {
                 $notify[] = ['errors', 'Image could not be uploaded.'];
                 return back()->withNotify($notify);
             }
-
-//            $filename = time() . '_' . $category->name . '.jpg';
-//            $location = 'assets/images/category/' . $filename;
-//            $in['image'] = $filename;
-//            $path = './assets/images/category/';
-//            $link = $path . $category->image;
-//            if (file_exists($link)) {
-//                @unlink($link);
-//            }
-////            $size = imagePath()['category']['size'];
-////            $image = Image::make($image);
-////            $size = explode('x', strtolower($size));
-////            $image->resize($size[0], $size[1]);
-//            $image->store($path);
             $category->image=$filename;
         }
         $category->save();
