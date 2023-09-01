@@ -7,7 +7,7 @@ Route::get('/clear', function(){
 });
 
 //Cron Controller
-Route::get('cron', 'CronController@placeOrderToApi')->name('cron');
+Route::get('cron', 'CronController@updateOrderApiStatus')->name('cron');
 
 /*
 |--------------------------------------------------------------------------

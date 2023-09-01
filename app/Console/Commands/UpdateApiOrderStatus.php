@@ -44,7 +44,6 @@ class UpdateApiOrderStatus extends Command
      */
     public function handle()
     {
-        Log::info('1');
         $updatableOrders = Order::select('id', 'api_order_id', 'order_placed_to_api')->where('api_order', 1)
             ->where('updated_at', '>=', now()->subMinutes(12)->toDateTimeString())->get();
         if (!$updatableOrders)
