@@ -128,7 +128,7 @@ class ApiController extends Controller
                 }
             } else return '0';
         } else {
-            $apiProvider = ApiProvider::findorfail($order->order_placed_to_api ?? 3);
+            $apiProvider = ApiProvider::findorfail($order->order_placed_to_api);
             $arr = [
                 'key' => $apiProvider->api_key,
                 'action' => "smscode",
@@ -137,7 +137,7 @@ class ApiController extends Controller
             $response = json_decode(curlPostContent($apiProvider->api_url, $arr), 1);
             if (isset($response['smsCode'])) {
                 $code = $response['smsCode'];
-                if (isset($code)) {
+                if (isset($code) && $code !='') {
                     $res = (new OrderController())->finishNumberOrder($orderID, $response);
                 }
             } else return '0';
