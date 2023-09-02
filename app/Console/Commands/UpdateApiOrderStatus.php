@@ -100,8 +100,8 @@ class UpdateApiOrderStatus extends Command
                 if ($order && isset($value->status)) {
                     $status = $this->setStatus($value->status);
                     if ($order->category->type == "NUMBER") {
+                        Log::info($value->code);
                         if ($status == 2 && isset($value->code))
-                            if ($status == 2 && isset($value->code))
                                 (new OrderController())->finishNumberOrder($order->id, ["smsCode" => $value->code]);
                     } elseif ($status == 3)
                         $status = 4;
