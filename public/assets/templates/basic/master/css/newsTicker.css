@@ -1,0 +1,41 @@
+/* Styles for the News Ticker on the front end */
+.news-ticker-container {
+    width: 100%;
+    height: 50px;
+    background-color: #f8f9fa;
+    overflow: hidden;
+}
+
+.news-item {
+    font-size: 16px;
+    color: #343a40;
+    margin: 10px;
+    padding: 5px;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.news-ticker-container {
+    animation: scroll 10s linear infinite;
+}
+
+/* Styles for the News Ticker management section in the dashboard */
+.news-ticker-form {
+    width: 100%;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.news-item-preview {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ced4da;
+    margin-top: 10px;
+}
