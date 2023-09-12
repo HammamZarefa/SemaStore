@@ -1,0 +1,4 @@
+/* Rest of the existing CSS rules */
+
+/* Include newsTicker.css */
+@import url("./newsTicker.css");
