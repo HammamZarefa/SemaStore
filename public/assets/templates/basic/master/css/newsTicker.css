@@ -1,0 +1,62 @@
+
+.tickerheader {
+    background-color: #f05234;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.ticker-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.ticker {
+    display: flex;
+    animation: ticker-move 20s linear infinite;
+}
+
+.ticker-item {
+    flex-shrink: 0;
+    padding: 0 20px;
+    white-space: nowrap;
+    font-size: 18px;
+}
+
+/* Standard animation duration for desktop */
+@keyframes ticker-move {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Media query for screens with a maximum width of 768px (typical for mobile devices) */
+@media (max-width: 768px) {
+    .ticker {
+        animation: ticker-move-mobile 10s linear infinite; /* Customize the animation duration for mobile */
+    }
+}
+
+/* Custom animation duration for mobile */
+@keyframes ticker-move-mobile {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+.stickytitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    position: sticky; /* Make the title sticky */
+    top: 0; /* Stick to the top of the header */
+    background-color: #f05234; /* Match the background color */
+    z-index: 1;
+}
+

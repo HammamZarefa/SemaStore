@@ -528,6 +528,12 @@
                         </form>
                     </div>
                 </li>
+                <li class="sidebar-menu-item">
+                    <a href="{{route('admin.news.index')}}" class="nav-link ">
+                        <i class="menu-icon la la-list"></i>
+                        <span class="menu-title">@lang('Manage News')</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
