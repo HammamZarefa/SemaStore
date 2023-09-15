@@ -182,7 +182,7 @@
                             <li class="d-flex align-items-center"><i class="fab fa-whatsapp ml-2 mr-2"></i><h4 class="mb-0">واتساب :<a href="https://wa.me/+352681117797" target="_blank">+352681117797</a></h4></li>
                             <li class="d-flex align-items-center"><i class="far fa-address-book ml-2 mr-2"></i><h4 class="mb-0">العنوان : syria-sarmada</h4></li>
                         </ul>
-                           
+
                         </div>
 					</div>
 					<div class="column col-lg-3 col-md-6 col-sm-6 col-12 s-c">
@@ -213,7 +213,7 @@
                             <li><i class="fab fa-product-hunt"></i><a href="">@lang('الباقات')</a></li>
                             <li><i class="fas fa-user"></i><a href="">@lang('المللف الشخصي')</a></li>
                         </ul>
-					</div>	
+					</div>
 				</div>
 				<div class="row grid-col-3 grids-content1 bottom-border">
 					<div class="columns text-center copyright-grid col-md-6 ">

@@ -8,6 +8,7 @@ use App\Models\Extension;
 use App\Models\Frontend;
 use App\Models\GeneralSetting;
 use App\Models\Language;
+use App\Models\News;
 use App\Models\Order;
 use App\Models\Page;
 use App\Models\SupportTicket;
@@ -42,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         $viewShare['activeTemplate'] = $activeTemplate;
         $viewShare['activeTemplateTrue'] = activeTemplate(true);
         $viewShare['language'] = Language::all();
+        $viewShare['news'] =  News::all();
         $viewShare['pages'] = Page::where('tempname',$activeTemplate)->where('slug','!=','home')->get();
         view()->share($viewShare);
 
