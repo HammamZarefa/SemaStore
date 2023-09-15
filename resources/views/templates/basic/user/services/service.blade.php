@@ -9,6 +9,30 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
+
+    .flicker-animation {
+        animation: flicker 1s infinite;
+        color: #2d2e2e;
+        text-align: center;
+    }
+
+    @keyframes ticker-animation {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    @keyframes flicker {
+        0%, 80%, 100% {
+            opacity: 1;
+        }
+        40%, 60% {
+            opacity: 0.2;
+        }
+    }
 </style>
 @section('content')
     <div class="row">
@@ -32,12 +56,15 @@
                                            data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                            data-price_per_k="{{Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k)}}"
                                            data-min="{{ $item->min }}" data-max="{{ $item->max }}"
-                                           data-category="{{$category->id}}">
-                                            <img src="{{$item->image ? getImage(imagePath()['service']['path'].'/'. $item->image,imagePath()['service']['size']) : getImage(imagePath()['category']['path'].'/'. $category->image,imagePath()['category']['size'])}}"
-                                                 class="card-img-top" alt="...">
+                                           data-category="{{$category->id}}"
+                                           data-description="{{$item->details}}">
+                                            <img
+                                                src="{{$item->image ? getImage(imagePath()['service']['path'].'/'. $item->image,imagePath()['service']['size']) : getImage(imagePath()['category']['path'].'/'. $category->image,imagePath()['category']['size'])}}"
+                                                class="card-img-top" alt="...">
                                             <div class="card-body text-center">
                                                 <h5 class="card-title mb-0">{{__($item->name)}}</h5>
-                                                <div class="card-text text-black-50 mb-2">{{ $general->cur_sym . (Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k) )}}</div>
+                                                <div
+                                                    class="card-text text-black-50 mb-2">{{ $general->cur_sym . (Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k) )}}</div>
                                                 @if($item->details)
                                                     <a href="javascript:void(0)"
                                                        class="icon-btn btn--info detailsBtn S m-2"
@@ -50,7 +77,9 @@
                                                    data-original-title="@lang('Buy')" data-toggle="tooltip"
                                                    data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                                    data-price_per_k="{{Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k)}}"
-                                                   data-min="{{ $item->min }}" data-max="{{ $item->max }}
+                                                   data-min="{{ $item->min }}" data-max="{{ $item->max }}"
+                                                   data-category="{{$category->id}}"
+                                                   data-description="{{$item->details}}
                                                 {{--@if(isset($category->custom_additional_field_name))--}}
 
                                                 {{--@endif--}}
@@ -79,9 +108,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel"><i
-                                    class="fa fa-share-square"></i> @lang('Details')</h4>
+                                class="fa fa-share-square"></i> @lang('Details')</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">×</span></button>
+                                aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body">
                         <div id="details">
@@ -101,9 +130,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel"><i
-                                    class="fa fa-fw fa-share-square"></i>@lang('Place a new order')</h4>
+                                class="fa fa-fw fa-share-square"></i>@lang('Place a new order')</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">×</span></button>
+                                aria-hidden="true">×</span></button>
                     </div>
                     <form method="post">
                         @csrf
@@ -140,7 +169,7 @@
                                         <label for="link"
                                                class="font-weight-bold">{{$category->field_name}}
                                             <span
-                                                    class="text-danger">*</span></label>
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control has-error bold" id="link" name="link"
                                                required>
                                     </div>
@@ -151,19 +180,18 @@
                                         <div class="col-sm-8 m-1 text-right">
                                             <label for="link"
                                                    class="font-weight-bold">{{$field}} <span
-                                                        class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                             <input type="text" class="form-control has-error bold"
                                                    name="custom[{{$field}}]"
                                                    required>
                                         </div>
                                     @endforeach
 
-                                <!-- <div class="col-sm-2">
+                                    <!-- <div class="col-sm-2">
                                             <a href="#" id="get_player_name" class="pull-right mr-2" >
                                                 <i class="fa fa-cart-plus"></i>
                                             </a>
                                         </div> -->
-
 
                                 @endif
                             </div>
@@ -177,8 +205,8 @@
                                         <input type="number" id="quantity" name="quantity"
                                                class="form-control group-input" required
                                                @if($category->type == '5SIM' || $category->type=='CODE')
-                                               readonly
-                                                @endif
+                                                   readonly
+                                            @endif
                                         >
                                     </div>
                                 </div>
@@ -211,7 +239,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div>
+                                <h4 class="flicker-animation" id="desc"></h4>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -223,7 +253,6 @@
             </div>
         </div>
     </div>
-
 
 @endsection
 
@@ -241,8 +270,7 @@
             var player_number = $('#player_number').val();
             if (player_number == "") {
                 $('.vald-player-number').removeClass('hidden');
-            }
-            else {
+            } else {
                 $.ajax({
                     url: '/user/player/' + id + '/' + player_number,
                     type: "GET",
@@ -272,6 +300,7 @@
                 var price_per_k = $(this).data('price_per_k');
                 var min = $(this).data('min');
                 var max = $(this).data('max');
+                var desc = $(this).data('description');
                 modal.find('input[name=quantity]').val(1);
                 modal.find('input[name=price]').val("{{ $general->cur_sym }}" + price_per_k.toFixed(3));
                 console.log(modal.find('input[name=quantity]').val(1))
@@ -295,6 +324,8 @@
                 modal.find('input[name=quantity]').attr('min', min).attr('max', max);
                 modal.find('input[name=min]').val(min);
                 modal.find('input[name=max]').val(max);
+                $("#desc").empty();
+                $("#desc").append(desc);
                 modal.modal('show');
             });
 
@@ -312,7 +343,7 @@
             $('button[type=submit], input[type=submit]', $(this)).blur().addClass('disabled is-submited');
         });
 
-        $(document).on('click', 'button[type=submit].is-submited, input[type=submit].is-submited', function(e) {
+        $(document).on('click', 'button[type=submit].is-submited, input[type=submit].is-submited', function (e) {
             e.preventDefault();
         });
     </script>

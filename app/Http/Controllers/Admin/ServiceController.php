@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreServiceRequest;
 use App\Models\ApiProvider;
 use App\Models\Category;
 use App\Models\GeneralSetting;
@@ -12,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\Types\Null_;
 
 class ServiceController extends Controller
@@ -22,22 +24,12 @@ class ServiceController extends Controller
         $empty_message = 'No Result Found';
         $categories = Category::active()->orderBy('name')->get();
         $services = Service::with('category')->latest()->paginate(getPaginate());
-        $apiProviders =ApiProvider::where('status',1)->get();
-        return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'categories','apiProviders'));
+        $apiProviders = ApiProvider::where('status', 1)->get();
+        return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'categories', 'apiProviders'));
     }
 
-    public function store(Request $request)
+    public function store(StoreServiceRequest $request)
     {
-        $request->validate([
-            'category' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'price_per_k' => 'required|numeric|gt:0',
-//            'min' => 'required|integer|gt:0|lt:'. $request->max,
-//            'max' => 'required|integer|gt:'. $request->min,
-            'details' => 'required|string',
-            'api_service_id' => 'nullable|integer|gt:0|unique:services,api_service_id'
-        ]);
-
         $service = new Service();
         $this->serviceAction($service, $request);
 
@@ -63,14 +55,6 @@ class ServiceController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'category' => 'required|integer',
-            'name' => 'required|string|max:191',
-            'price_per_k' => 'required|numeric|gt:0',
-            'min' => 'required|integer|gt:0|lt:' . $request->max,
-            'max' => 'required|integer|gt:' . $request->min,
-            'details' => 'required|string'
-        ]);
 
         $service = Service::findOrFail($id);
         $this->serviceAction($service, $request);
@@ -106,9 +90,9 @@ class ServiceController extends Controller
             $service->api_service_params = $request->country . '/any/' . $request->product;
         $service->special_price = $request->special_price != 0 ? $request->special_price : NULL;
         $service->api_service_id = $request->api_service_id;
-        if($request->api_provider_id)
+        if ($request->api_provider_id)
             $service->api_provider_id = $request->api_provider_id;
-      
+
     }
 
     public function status($id)
@@ -128,7 +112,7 @@ class ServiceController extends Controller
         $empty_message = 'No Result Found';
         $categories = Category::active()->orderBy('name')->get();
         $general = ApiProvider::findOrFail($id);
-        if ($id == 1 || $id ==3) {
+        if ($id == 1 || $id == 3) {
             $url = $general->api_url;
             $arr = [
                 'key' => $general->api_key,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function(){
@@ -17,8 +18,8 @@ Route::get('cron', 'CronController@updateOrderApiStatus')->name('cron');
 
 
 Route::namespace('Gateway')->prefix('ipn')->name('ipn.')->group(function () {
-    Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');
-    Route::get('paypal_sdk', 'paypal_sdk\ProcessController@ipn')->name('paypal_sdk');
+//    Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');
+//    Route::get('paypal_sdk', 'paypal_sdk\ProcessController@ipn')->name('paypal_sdk');
     Route::post('perfect_money', 'perfect_money\ProcessController@ipn')->name('perfect_money');
     Route::post('stripe', 'stripe\ProcessController@ipn')->name('stripe');
     Route::post('stripe_js', 'stripe_js\ProcessController@ipn')->name('stripe_js');
@@ -147,8 +148,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('subscriber/send-email', 'SubscriberController@sendEmailForm')->name('subscriber.sendEmail');
         Route::post('subscriber/remove', 'SubscriberController@remove')->name('subscriber.remove');
         Route::post('subscriber/send-email', 'SubscriberController@sendEmail')->name('subscriber.sendEmail');
-
-
+//Manage News
+        Route::resource('news', NewsController::class);
 // Manage Banner
         Route::get('banner',  'BannerController@index')->name('banner');
         Route::get('banner/create', 'BannerController@create')->name('banner.create');
