@@ -15,9 +15,9 @@
                                 <th scope="col">@lang('Service')</th>
                                 <th scope="col">@lang('Quantity')</th>
                                 <th scope="col">@lang('Price')</th>
-                                <th scope="col">@lang('Remains')</th>
+                                <th scope="col">@lang('Link')</th>
                                 <th scope="col">@lang('Status')</th>
-                                {{--<th scope="col">@lang('API Order')</th>--}}
+                                <th scope="col">@lang('API Order')</th>
                                 <th scope="col">@lang('Date')</th>
                                 <th scope="col">@lang('Action')</th>
                             </tr>
@@ -32,7 +32,7 @@
                                     <td data-label="@lang('Service')">{{ __($item->service->name) }}</td>
                                     <td data-label="@lang('Quantity')">{{ $item->quantity }}</td>
                                     <td data-label="@lang('Price')">{{ $item->price }}</td>
-                                    <td data-label="@lang('Remains')">{{ $item->remain }}</td>
+                                    <td style="white-space: normal;" data-label="@lang('Link')">{{ $item->link }}</td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status === 0)
                                             <span
@@ -54,12 +54,9 @@
                                                 class="text--small badge font-weight-normal badge--dark">@lang('Waiting Code')</span>
                                         @endif
                                     </td>
-                                    {{--<td data-label="@lang('API Order')">--}}
-                                        {{--@if($item->api_order)--}}
-                                            {{--<span--}}
-                                                {{--class="text--small badge font-weight-normal badge--primary">@lang('Api')</span>--}}
-                                        {{--@endif--}}
-                                    {{--</td>--}}
+                                    <td data-label="@lang('API Order')">
+                                        {{$item->api_order_id}}
+                                    </td>
                                     <td data-label="@lang('Date')">{{ showDateTime($item->created_at) }}</td>
                                     <td data-label="@lang('Action')">
                                         <a href="{{ route('admin.orders.details', $item->id) }}" class="icon-btn btn--primary ml-1">
