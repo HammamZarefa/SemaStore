@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Notifications\ExceptionNotification;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -35,7 +36,10 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            if (config('services.telegram-bot-api.token') && config('services.telegram-bot-api.chat_id')) {
+                $notification = new ExceptionNotification($e->getMessage(),$e->getLine(),$e->getFile());
+                auth()->user()->notify($notification);
+            }
         });
     }
 }
