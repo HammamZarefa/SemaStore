@@ -205,7 +205,7 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Details')</label>
-                            <textarea class="form-control" name="details" required></textarea>
+                            <textarea rows="6" class="form-control nicEdit" style="width: 500px" name="details" required></textarea>
                         </div>
 
                     </div>
@@ -294,7 +294,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="font-weight-bold ">@lang('Special Price') <span></span>
+                            <label class="font-weight-bold ">@lang('Special Price') <span></span></label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="inlineFormInputGroupUsername2"
                                            name="special_price">
@@ -319,7 +319,7 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Details')</label>
-                            <textarea class="form-control" name="details" required></textarea>
+                            <textarea rows="6"  class="form-control border-radius-5 nicEdit" style="width: 500px"  name="details" required></textarea>
                         </div>
                         <div class="form-group api_service_id">
 
