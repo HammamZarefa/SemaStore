@@ -205,7 +205,7 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Details')</label>
-                            <textarea rows="6" class="form-control nicEdit" style="width: 500px" name="details" required></textarea>
+                            <textarea rows="6" class="form-control nicEdit" style="width: 500px" name="details" ></textarea>
                         </div>
 
                     </div>
