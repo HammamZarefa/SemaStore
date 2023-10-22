@@ -27,6 +27,7 @@ class UserController extends Controller
 
     public function home()
     {
+    
         $page_title = 'Dashboard';
         $user = \auth()->user();
 
