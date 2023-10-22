@@ -182,7 +182,7 @@
                                                    class="font-weight-bold">{{$field}} <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control has-error bold"
-                                                   name="custom[{{$field}}]"
+                                                   name="link"
                                                    required>
                                         </div>
                                     @endforeach

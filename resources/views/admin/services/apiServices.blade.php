@@ -5,7 +5,7 @@
             <div class="card b-radius--10 ">
                 <div class="card-body p-0">
                     <div class="table-responsive--sm table-responsive">
-                        <table class="table table--light tabstyle--two">
+                        <table class="table table--light tabstyle--two custom-data-table">
                             <thead>
                             <tr>
                                 <th scope="col">@lang('ID')</th>

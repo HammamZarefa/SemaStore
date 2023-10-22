@@ -138,7 +138,7 @@ class ServiceController extends Controller
             $response = collect($response);
         elseif ($id == 2)
             $response = collect($response->products);
-        $services = $this->paginate($response, getPaginate(), null, ['path' => route('admin.services.apiServices', $id)]);
+        $services = $this->paginate($response, 1000, null, ['path' => route('admin.services.apiServices', $id)]);
         return view('admin.services.apiServices', compact('page_title', 'services', 'empty_message', 'categories', 'id'));
     }
 
