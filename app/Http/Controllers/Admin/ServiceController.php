@@ -23,7 +23,7 @@ class ServiceController extends Controller
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $categories = Category::active()->orderBy('name')->get();
-        $services = Service::with('category')->latest()->paginate(getPaginate());
+        $services = Service::with('category')->get();
         $apiProviders = ApiProvider::where('status', 1)->get();
         return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'categories', 'apiProviders'));
     }
@@ -152,7 +152,6 @@ class ServiceController extends Controller
 
     public function search(Request $request)
     {
-
         if ($request->search) {
             $search = $request->search;
             $categories = Category::active()->orderBy('name')->get();
