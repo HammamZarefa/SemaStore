@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/services/apiServices.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/services/apiServices.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/services/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/services/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/user/services/service.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/services/service.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -510,7 +510,8 @@
       <workItem from="1696887249890" duration="1468000" />
       <workItem from="1697568245538" duration="1380000" />
       <workItem from="1697998095497" duration="832000" />
-      <workItem from="1698000825507" duration="1278000" />
+      <workItem from="1698000825507" duration="2519000" />
+      <workItem from="1698443115087" duration="950000" />
     </task>
     <servers />
   </component>

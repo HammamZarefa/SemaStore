@@ -290,12 +290,13 @@ class ApiController extends Controller
 
     public function getPlayer($api, $id)
     {
-        $category = Category::find($api);
-
-        $key = env('player_key', 'null');
-        $url = "http://www.m7-system.com:8080/match?key=" . $key . "&id=" . $id . "&product=" . $category->slug;
-
-        $getPlayer = Http::get($url);
+//        $category = Category::find($api);
+//
+//        $key = env('player_key', 'null');
+//        $url = "http://www.m7-system.com:8080/match?key=" . $key . "&id=" . $id . "&product=" . $category->slug;
+//
+//        $getPlayer = Http::get($url);
+        $getPlayer ='';
         return $result = json_decode($getPlayer, True);
 
     }
