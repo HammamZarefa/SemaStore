@@ -89,6 +89,19 @@
                         <span class="menu-title">@lang('Support Ticket')</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item {{menuActive('level*')}}" style="background-color: #2d2e2e;color: #f05234">
+                    <a class="nav-link " >
+                        <i class="menu-icon la la-pizza-slice"></i>
+                        <span class="menu-title" style="color:#f05234 ">انت في الشريحة {{getLevelName(auth()->user()->level)}}</span>
+                    </a>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: {{auth()->user()->nextLevel()['progress']}}%;
+                             background: linear-gradient(to right, #4f5761,#f05335,  #fef8f7);"
+                             aria-valuenow="{{auth()->user()->nextLevel()['progress']}}"
+                             aria-valuemin="0" aria-valuemax="100">{{auth()->user()->nextLevel()['progress']}}%</div>
+                    </div>
+                </li>
 
 
                 {{--                API--}}

@@ -5,11 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/LevelController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2023_11_18_102752_create_levels_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2023_11_18_104254_add_level_relationship_to_users_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2023_11_18_110012_create_level_audits_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/levels/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SAAD.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SAAD.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ServiceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/services/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/services/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Helpers/helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Helpers/helpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/ar.json" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/ar.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/partials/sidenav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/partials/sidenav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/serials/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/serials/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/detail.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/list.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/partials/sidenav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/partials/sidenav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/partials/topnav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/partials/topnav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -273,6 +291,7 @@
       <path value="$PROJECT_DIR$/vendor/facade/ignition" />
       <path value="$PROJECT_DIR$/vendor/facade/ignition-contracts" />
       <path value="$PROJECT_DIR$/vendor/laravel-notification-channels/telegram" />
+      <path value="$PROJECT_DIR$/vendor/hammam-zarefa/rapid-ranker" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -409,7 +428,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Projects/Fashion share&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Projects/SemaStore/resources/views/admin&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -419,8 +438,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Projects\SemaStore\assets\templates\basic\master\css" />
       <recent name="C:\Projects\SemaStore\resources\views\admin" />
+      <recent name="C:\Projects\SemaStore\assets\templates\basic\master\css" />
       <recent name="C:\Projects\SemaStore\public\assets\templates\basic\images" />
       <recent name="C:\Projects\SemaStore\assets\templates\basic\images" />
       <recent name="C:\Projects\SemaStore\public\assets\images" />
@@ -512,6 +531,10 @@
       <workItem from="1697998095497" duration="832000" />
       <workItem from="1698000825507" duration="2519000" />
       <workItem from="1698443115087" duration="950000" />
+      <workItem from="1700934318393" duration="7248000" />
+      <workItem from="1701001468833" duration="601000" />
+      <workItem from="1701367690967" duration="9342000" />
+      <workItem from="1702233595667" duration="2985000" />
     </task>
     <servers />
   </component>

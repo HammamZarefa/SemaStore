@@ -154,6 +154,7 @@
       <path value="$PROJECT_DIR$/vendor/facade/ignition" />
       <path value="$PROJECT_DIR$/vendor/facade/ignition-contracts" />
       <path value="$PROJECT_DIR$/vendor/laravel-notification-channels/telegram" />
+      <path value="$PROJECT_DIR$/vendor/hammam-zarefa/rapid-ranker" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />

@@ -112,7 +112,7 @@
 
                             </select>
                         </div>
-                        
+
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Codes') <span
                                         class="text-danger">*</span></label>

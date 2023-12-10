@@ -96,6 +96,7 @@ class OrderController extends Controller
                 }
                 $order->save();
             }
+            $user->addPoints($order->price);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

@@ -13,6 +13,7 @@
                                 <th scope="col">@lang('Email')</th>
                                 <th scope="col">@lang('Phone')</th>
                                 <th scope="col">@lang('Joined At')</th>
+                                <th scope="col">@lang('Level')</th>
                                 <th scope="col">@lang('Action')</th>
                             </tr>
                             </thead>
@@ -31,6 +32,7 @@
                                 <td data-label="@lang('Email')">{{ $user->email }}</td>
                                 <td data-label="@lang('Phone')">{{ $user->mobile }}</td>
                                 <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td>
+                                <td data-label="@lang('Level')">{{ $user->level }}</td>
                                 <td data-label="@lang('Action')">
                                     <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">
                                         <i class="las la-desktop text--shadow"></i>

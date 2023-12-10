@@ -267,7 +267,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('sms-template/edit/{id}', 'SmsTemplateController@edit')->name('sms.template.edit');
         Route::post('sms-template/update/{id}', 'SmsTemplateController@update')->name('sms.template.update');
         Route::post('email-template/send-test-sms', 'SmsTemplateController@sendTestSMS')->name('sms.template.sendTestSMS');
-
+        Route::get('levels', 'LevelController@index')->name('levels.index');
         // SEO
         Route::get('seo', 'FrontendController@seoEdit')->name('seo');
 

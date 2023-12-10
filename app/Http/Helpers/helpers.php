@@ -288,7 +288,7 @@ function curlContent($url)
 }
 
 //moveable
-function curlPostContent($url, $arr = null ,$header =null)
+function curlPostContent($url, $arr = null, $header = null)
 {
     if ($arr && !$header) {
         $params = http_build_query($arr);
@@ -300,7 +300,7 @@ function curlPostContent($url, $arr = null ,$header =null)
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    if($header)
+    if ($header)
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     $result = curl_exec($ch);
     curl_close($ch);
@@ -983,7 +983,7 @@ function get5SimCountries()
         "romania" => "Romania",
         "russia" => "Russia",
         "rwanda" => "Rwanda",
-        "saintkittsandnevis" =>"Saint Kitts and Nevis",
+        "saintkittsandnevis" => "Saint Kitts and Nevis",
         "saintlucia" => "Saint Lucia",
         "saintvincentandgrenadines" => "Saint Vincent and the Grenadines",
         "salvador" => "Salvador",
@@ -1266,9 +1266,9 @@ function get5SimProducts()
     return $products;
 }
 
-function adminnotify($user,$type, $shortCodes = null)
+function adminnotify($user, $type, $shortCodes = null)
 {
-    sendEmailtoAdmin($user,$type, $shortCodes);
+    sendEmailtoAdmin($user, $type, $shortCodes);
 
 }
 
@@ -1277,7 +1277,7 @@ function sendEmailtoAdmin($user, $type = null, $shortCodes = [])
     $general = GeneralSetting::first();
     $email_template = EmailTemplate::where('act', $type)->where('email_status', 1)->first();
 
-    $message = shortCodeReplacer("{{name}}",'ايها المدير', $general->email_template);
+    $message = shortCodeReplacer("{{name}}", 'ايها المدير', $general->email_template);
     $message = shortCodeReplacer("{{message}}", $email_template->email_body, $message);
 
     if (empty($message)) {
@@ -1287,8 +1287,7 @@ function sendEmailtoAdmin($user, $type = null, $shortCodes = [])
         $message = shortCodeReplacer('{{' . $code . '}}', $value, $message);
     }
     $config = $general->mail_config;
-    foreach (\App\Models\Admin::all() as $admin)
-    {
+    foreach (\App\Models\Admin::all() as $admin) {
         if ($config->name == 'php') {
             sendPhpMail($admin->email, $user->username, $email_template->subj, $message);
         } else if ($config->name == 'smtp') {
@@ -1299,5 +1298,30 @@ function sendEmailtoAdmin($user, $type = null, $shortCodes = [])
             sendMailjetMail($config, $admin->email, $user->username, $email_template->subj, $message, $general);
         }
     }
+}
+
+function getLevelName($level)
+{
+    if ($level == 1)
+        return 'الاولى';
+    elseif ($level == 2)
+        return 'الثانية';
+    elseif ($level == 3)
+        return 'الثالثة';
+    elseif ($level == 4)
+        return 'الرابعة';
+    elseif ($level == 5)
+        return 'الخامسة';
+    elseif ($level == 6)
+        return 'السادسة';
+    elseif ($level == 7)
+        return 'السابعة';
+    elseif ($level == 8)
+        return 'الثامنة';
+    elseif ($level == 9)
+        return 'التاسعة';
+    elseif ($level == 10)
+        return 'العاشرة';
+    return;
 }
 
