@@ -17,30 +17,30 @@ Route::get('cron', 'CronController@updateOrderApiStatus')->name('cron');
 */
 
 
-Route::namespace('Gateway')->prefix('ipn')->name('ipn.')->group(function () {
-//    Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');
-//    Route::get('paypal_sdk', 'paypal_sdk\ProcessController@ipn')->name('paypal_sdk');
-    Route::post('perfect_money', 'perfect_money\ProcessController@ipn')->name('perfect_money');
-    Route::post('stripe', 'stripe\ProcessController@ipn')->name('stripe');
-    Route::post('stripe_js', 'stripe_js\ProcessController@ipn')->name('stripe_js');
-    Route::post('stripe_v3', 'stripe_v3\ProcessController@ipn')->name('stripe_v3');
-    Route::post('skrill', 'skrill\ProcessController@ipn')->name('skrill');
-    Route::post('paytm', 'paytm\ProcessController@ipn')->name('paytm');
-    Route::post('payeer', 'payeer\ProcessController@ipn')->name('payeer');
-    Route::post('paystack', 'paystack\ProcessController@ipn')->name('paystack');
-    Route::post('voguepay', 'voguepay\ProcessController@ipn')->name('voguepay');
-    Route::get('flutterwave/{trx}/{type}', 'flutterwave\ProcessController@ipn')->name('flutterwave');
-    Route::post('razorpay', 'razorpay\ProcessController@ipn')->name('razorpay');
-    Route::post('instamojo', 'instamojo\ProcessController@ipn')->name('instamojo');
-    Route::get('blockchain', 'blockchain\ProcessController@ipn')->name('blockchain');
-    Route::get('blockio', 'blockio\ProcessController@ipn')->name('blockio');
-    Route::post('coinpayments', 'coinpayments\ProcessController@ipn')->name('coinpayments');
-    Route::post('coinpayments_fiat', 'coinpayments_fiat\ProcessController@ipn')->name('coinpayments_fiat');
-    Route::post('coingate', 'coingate\ProcessController@ipn')->name('coingate');
-    Route::post('coinbase_commerce', 'coinbase_commerce\ProcessController@ipn')->name('coinbase_commerce');
-    Route::get('mollie', 'mollie\ProcessController@ipn')->name('mollie');
-    Route::post('cashmaal', 'cashmaal\ProcessController@ipn')->name('cashmaal');
-});
+//Route::namespace('Gateway')->prefix('ipn')->name('ipn.')->group(function () {
+////    Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');
+////    Route::get('paypal_sdk', 'paypal_sdk\ProcessController@ipn')->name('paypal_sdk');
+//    Route::post('perfect_money', 'perfect_money\ProcessController@ipn')->name('perfect_money');
+//    Route::post('stripe', 'stripe\ProcessController@ipn')->name('stripe');
+//    Route::post('stripe_js', 'stripe_js\ProcessController@ipn')->name('stripe_js');
+//    Route::post('stripe_v3', 'stripe_v3\ProcessController@ipn')->name('stripe_v3');
+//    Route::post('skrill', 'skrill\ProcessController@ipn')->name('skrill');
+//    Route::post('paytm', 'paytm\ProcessController@ipn')->name('paytm');
+//    Route::post('payeer', 'payeer\ProcessController@ipn')->name('payeer');
+//    Route::post('paystack', 'paystack\ProcessController@ipn')->name('paystack');
+//    Route::post('voguepay', 'voguepay\ProcessController@ipn')->name('voguepay');
+//    Route::get('flutterwave/{trx}/{type}', 'flutterwave\ProcessController@ipn')->name('flutterwave');
+//    Route::post('razorpay', 'razorpay\ProcessController@ipn')->name('razorpay');
+//    Route::post('instamojo', 'instamojo\ProcessController@ipn')->name('instamojo');
+//    Route::get('blockchain', 'blockchain\ProcessController@ipn')->name('blockchain');
+//    Route::get('blockio', 'blockio\ProcessController@ipn')->name('blockio');
+//    Route::post('coinpayments', 'coinpayments\ProcessController@ipn')->name('coinpayments');
+//    Route::post('coinpayments_fiat', 'coinpayments_fiat\ProcessController@ipn')->name('coinpayments_fiat');
+//    Route::post('coingate', 'coingate\ProcessController@ipn')->name('coingate');
+//    Route::post('coinbase_commerce', 'coinbase_commerce\ProcessController@ipn')->name('coinbase_commerce');
+//    Route::get('mollie', 'mollie\ProcessController@ipn')->name('mollie');
+//    Route::post('cashmaal', 'cashmaal\ProcessController@ipn')->name('cashmaal');
+//});
 
 // User Support Ticket
 Route::prefix('ticket')->group(function () {
@@ -385,6 +385,8 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('fivesim', 'ApiController@fivesim')->name('fivesim');
             Route::get('checksms/{id}', 'ApiController@checkSMS')->name('checksms');
             Route::get('player/{api}/{id}', 'ApiController@getPlayer')->name('player');
+
+            Route::get('levels-info', 'UserController@levelsInfo')->name('levels.info');
         });
     });
 });

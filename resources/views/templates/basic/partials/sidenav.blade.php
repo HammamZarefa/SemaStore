@@ -89,8 +89,8 @@
                         <span class="menu-title">@lang('Support Ticket')</span>
                     </a>
                 </li>
-                <li class="sidebar-menu-item {{menuActive('level*')}}" style="background-color: #2d2e2e;color: #f05234">
-                    <a class="nav-link " >
+                <li class="sidebar-menu-item {{menuActive('user.levels*')}}" style="background-color: #2d2e2e;color: #f05234">
+                    <a class="nav-link " href="{{route('user.levels.info')}}">
                         <i class="menu-icon la la-pizza-slice"></i>
                         <span class="menu-title" style="color:#f05234 ">انت في الشريحة {{getLevelName(auth()->user()->level)}}</span>
                     </a>
