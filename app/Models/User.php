@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use HammamZarefa\RapidRanker\Models\Level;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -105,6 +106,11 @@ class User extends Authenticatable
     public function serials()
     {
         return $this->hasMany(Serial::class);
+    }
+
+    public function levels()
+    {
+        return $this->belongsTo(Level::class,'level');
     }
 
 }
