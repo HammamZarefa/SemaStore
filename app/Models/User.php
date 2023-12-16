@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use HammamZarefa\RapidRanker\Models\Level;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use HammamZarefa\RapidRanker\Traits\HasLevel;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasLevel;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -38,10 +41,8 @@ class User extends Authenticatable
     ];
 
     protected $data = [
-        'data'=>1
+        'data' => 1
     ];
-
-
 
 
     public function login_logs()
@@ -51,17 +52,17 @@ class User extends Authenticatable
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class)->orderBy('id','desc');
+        return $this->hasMany(Transaction::class)->orderBy('id', 'desc');
     }
 
     public function deposits()
     {
-        return $this->hasMany(Deposit::class)->where('status','!=',0);
+        return $this->hasMany(Deposit::class)->where('status', '!=', 0);
     }
 
     public function withdrawals()
     {
-        return $this->hasMany(Withdrawal::class)->where('status','!=',0);
+        return $this->hasMany(Withdrawal::class)->where('status', '!=', 0);
     }
 
 
@@ -91,6 +92,7 @@ class User extends Authenticatable
     {
         return $this->where('sv', 0);
     }
+
     public function scopeEmailVerified()
     {
         return $this->where('ev', 1);
@@ -104,6 +106,11 @@ class User extends Authenticatable
     public function serials()
     {
         return $this->hasMany(Serial::class);
+    }
+
+    public function levels()
+    {
+        return $this->belongsTo(Level::class,'level');
     }
 
 }

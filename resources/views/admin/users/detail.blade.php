@@ -8,11 +8,14 @@
                 <div class="card-body p-0">
                     <div class="p-3 bg--white">
                         <div class="">
-                            <img src="{{ getImage(imagePath()['profile']['user']['path'].'/'.$user->image,imagePath()['profile']['user']['size'])}}" alt="@lang('Profile Image')" class="b-radius--10 w-100">
+                            <img
+                                src="{{ getImage(imagePath()['profile']['user']['path'].'/'.$user->image,imagePath()['profile']['user']['size'])}}"
+                                alt="@lang('Profile Image')" class="b-radius--10 w-100">
                         </div>
                         <div class="mt-15">
                             <h4 class="">{{$user->fullname}}</h4>
-                            <span class="text--small">@lang('Joined At') <strong>{{showDateTime($user->created_at,'d M, Y h:i A')}}</strong></span>
+                            <span
+                                class="text--small">@lang('Joined At') <strong>{{showDateTime($user->created_at,'d M, Y h:i A')}}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -33,18 +36,29 @@
                             @lang('Status')
                             @switch($user->status)
                                 @case(1)
-                                <span class="badge badge-pill bg--success">@lang('Active')</span>
-                                @break
+                                    <span class="badge badge-pill bg--success">@lang('Active')</span>
+                                    @break
                                 @case(2)
-                                <span class="badge badge-pill bg--danger">@lang('Banned')</span>
-                                @break
+                                    <span class="badge badge-pill bg--danger">@lang('Banned')</span>
+                                    @break
                             @endswitch
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Balance')
-                            <span class="font-weight-bold">{{getAmount($user->balance)}}  {{__($general->cur_text)}}</span>
+                            <span
+                                class="font-weight-bold">{{getAmount($user->balance)}}  {{__($general->cur_text)}}</span>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @lang('Level current progress')
+                            <span class="font-weight-bold">{{$user->nextLevel()['progress']}}%</span>
+                        </li>
+                        @if($user->lock_level)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                مجمد عند الشريحة
+                                <span class="font-weight-bold">{{$user->lock_level}}</span>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -61,6 +75,13 @@
                     <a href="{{route('admin.users.email.single',$user->id)}}"
                        class="btn btn--danger btn--shadow btn-block btn-lg">
                         @lang('Send Email')
+                    </a>
+                    <a data-toggle="modal" href="#lockLevel" class="btn btn--success btn--shadow btn-block btn-lg">
+                        @if($user->lock_level)
+                            @lang('Lock level')
+                        @else
+                            @lang('Unlock level')
+                        @endIf
                     </a>
                 </div>
             </div>
@@ -215,7 +236,7 @@
                 </div>
             </div>
 
-{{--            User details--}}
+            {{--            User details--}}
             <div class="card mt-50">
                 <div class="card-body">
                     <h5 class="card-title mb-50 border-bottom pb-2">{{$user->fullname}} @lang('Information')</h5>
@@ -227,14 +248,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group ">
-                                    <label class="form-control-label font-weight-bold">@lang('First Name')<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="firstname" value="{{$user->firstname}}">
+                                    <label class="form-control-label font-weight-bold">@lang('First Name')<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="firstname"
+                                           value="{{$user->firstname}}">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label  font-weight-bold">@lang('Last Name') <span class="text-danger">*</span></label>
+                                    <label class="form-control-label  font-weight-bold">@lang('Last Name') <span
+                                            class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="lastname" value="{{$user->lastname}}">
                                 </div>
                             </div>
@@ -243,14 +267,16 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group ">
-                                    <label class="form-control-label font-weight-bold">@lang('Email') <span class="text-danger">*</span></label>
+                                    <label class="form-control-label font-weight-bold">@lang('Email') <span
+                                            class="text-danger">*</span></label>
                                     <input class="form-control" type="email" name="email" value="{{$user->email}}">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label  font-weight-bold">@lang('Mobile Number') <span class="text-danger">*</span></label>
+                                    <label class="form-control-label  font-weight-bold">@lang('Mobile Number') <span
+                                            class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="mobile" value="{{$user->mobile}}">
                                 </div>
                             </div>
@@ -261,8 +287,10 @@
                             <div class="col-md-12">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('Address') </label>
-                                    <input class="form-control" type="text" name="address" value="{{@$user->address->address}}">
-                                    <small class="form-text text-muted"><i class="las la-info-circle"></i> @lang('House number, street address')
+                                    <input class="form-control" type="text" name="address"
+                                           value="{{@$user->address->address}}">
+                                    <small class="form-text text-muted"><i
+                                            class="las la-info-circle"></i> @lang('House number, street address')
                                     </small>
                                 </div>
                             </div>
@@ -270,22 +298,24 @@
                             <div class="col-xl-3 col-md-6">
                                 <div class="form-group">
                                     <label class="form-control-label font-weight-bold">@lang('City') </label>
-                                    <input class="form-control" type="text" name="city" value="{{@$user->address->city}}">
+                                    <input class="form-control" type="text" name="city"
+                                           value="{{@$user->address->city}}">
                                 </div>
                             </div>
 
                             <div class="col-xl-3 col-md-6">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('State') </label>
-                                    <input class="form-control" type="text" name="state" value="{{@$user->address->state}}">
+                                    <input class="form-control" type="text" name="state"
+                                           value="{{@$user->address->state}}">
                                 </div>
                             </div>
 
                             {{--<div class="col-xl-3 col-md-6">--}}
-                                {{--<div class="form-group ">--}}
-                                    {{--<label class="form-control-label font-weight-bold">@lang('Zip/Postal') </label>--}}
-                                    {{--<input class="form-control" type="text" name="zip" value="{{@$user->address->zip}}">--}}
-                                {{--</div>--}}
+                            {{--<div class="form-group ">--}}
+                            {{--<label class="form-control-label font-weight-bold">@lang('Zip/Postal') </label>--}}
+                            {{--<input class="form-control" type="text" name="zip" value="{{@$user->address->zip}}">--}}
+                            {{--</div>--}}
                             {{--</div>--}}
 
 
@@ -296,58 +326,60 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row">
                             <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('Email Verification') </label>
                                 <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
-                                       data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="ev"
+                                       data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')"
+                                       name="ev"
                                        @if($user->ev) checked @endif>
                             </div>
 
                             <div class="form-group col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('Status') </label>
                                 <input type="checkbox" data-onstyle="-success" data-offstyle="-danger"
-                                       data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Banned')" data-width="100%"
+                                       data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Banned')"
+                                       data-width="100%"
                                        name="status"
                                        @if($user->status) checked @endif>
                             </div>
                             <div class="form-group col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('Special') </label>
                                 <input type="checkbox" data-onstyle="-success" data-offstyle="-danger"
-                                       data-toggle="toggle" data-on="@lang('Special')" data-off="@lang('Normal')" data-width="100%"
+                                       data-toggle="toggle" data-on="@lang('Special')" data-off="@lang('Normal')"
+                                       data-width="100%"
                                        name="is_special"
                                        @if($user->is_special) checked @endif>
                             </div>
                         </div>
-                            {{--<div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">--}}
-                                {{--<label class="form-control-label font-weight-bold">@lang('SMS Verification') </label>--}}
-                                {{--<input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"--}}
-                                       {{--data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="sv"--}}
-                                       {{--@if($user->sv) checked @endif>--}}
+                        {{--<div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">--}}
+                        {{--<label class="form-control-label font-weight-bold">@lang('SMS Verification') </label>--}}
+                        {{--<input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"--}}
+                        {{--data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="sv"--}}
+                        {{--@if($user->sv) checked @endif>--}}
 
-                            {{--</div>--}}
-                            {{--<div class="form-group  col-md-6  col-sm-3 col-12">--}}
-                                {{--<label class="form-control-label font-weight-bold">@lang('2FA Status') </label>--}}
-                                {{--<input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"--}}
-                                       {{--data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Deactive')" name="ts"--}}
-                                       {{--@if($user->ts) checked @endif>--}}
-                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="form-group  col-md-6  col-sm-3 col-12">--}}
+                        {{--<label class="form-control-label font-weight-bold">@lang('2FA Status') </label>--}}
+                        {{--<input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"--}}
+                        {{--data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Deactive')" name="ts"--}}
+                        {{--@if($user->ts) checked @endif>--}}
+                        {{--</div>--}}
 
-                            {{--<div class="form-group  col-md-6  col-sm-3 col-12">--}}
-                                {{--<label class="form-control-label font-weight-bold">@lang('2FA Verification') </label>--}}
-                                {{--<input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"--}}
-                                       {{--data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="tv"--}}
-                                       {{--@if($user->tv) checked @endif>--}}
-                            {{--</div>--}}
+                        {{--<div class="form-group  col-md-6  col-sm-3 col-12">--}}
+                        {{--<label class="form-control-label font-weight-bold">@lang('2FA Verification') </label>--}}
+                        {{--<input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"--}}
+                        {{--data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="tv"--}}
+                        {{--@if($user->tv) checked @endif>--}}
+                        {{--</div>--}}
                         {{--</div>--}}
 
 
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn--primary btn-block btn-lg">@lang('Save Changes')
+                                    <button type="submit"
+                                            class="btn btn--primary btn-block btn-lg">@lang('Save Changes')
                                     </button>
                                 </div>
                             </div>
@@ -358,7 +390,28 @@
             </div>
         </div>
     </div>
+    <h5 class="mb-20 text-muted">@lang('User Level history')</h5>
+    <table class="table table--light style--two">
+        <thead>
+        <tr>
+            <th scope="col">@lang('Level')</th>
+            <th scope="col">@lang('Joined At')</th>
+        </tr>
+        </thead>
+        <tbody>
+        @forelse($user->getUserLevelsHistory() as $item)
+            <tr>
+                <td data-label="@lang('Level')">{{ $item->level_to }}</td>
+                <td data-label="@lang('Joined At')">{{ showDateTime($item->created_at) }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td class="text-muted text-center" colspan="100%"></td>
+            </tr>
+        @endforelse
 
+        </tbody>
+    </table><!-- table end -->
 
 
     {{-- Add Sub Balance MODAL --}}
@@ -376,14 +429,17 @@
                     <div class="modal-body">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <input type="checkbox" data-width="100%" data-height="44px" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Add Balance')" data-off="@lang('Subtract Balance')" name="act" checked>
+                                <input type="checkbox" data-width="100%" data-height="44px" data-onstyle="-success"
+                                       data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Add Balance')"
+                                       data-off="@lang('Subtract Balance')" name="act" checked>
                             </div>
 
 
                             <div class="form-group col-md-12">
                                 <label>@lang('Amount')<span class="text-danger">*</span></label>
                                 <div class="input-group has_append">
-                                    <input type="text" name="amount" class="form-control" placeholder="@lang('Please provide positive amount')">
+                                    <input type="text" name="amount" class="form-control"
+                                           placeholder="@lang('Please provide positive amount')">
                                     <div class="input-group-append">
                                         <div class="input-group-text">{{ __($general->cur_sym) }}</div>
                                     </div>
@@ -399,7 +455,41 @@
             </div>
         </div>
     </div>
+    <div id="lockLevel" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@if(!$user->lock_level)
+                            @lang('Lock level')
+                        @else
+                            @lang('Unlock level')
+                        @endif</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-row">
 
+                            <div class="form-group col-md-12">
+                                <label>@lang('Level')<span class="text-danger">*</span></label>
+                                <div class="input-group has_append">
+                                    <input type="text" name="amount" class="form-control"
+                                           placeholder="@lang('Choose level')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
+                        <button type="submit" id="updateLevel" class="btn btn--success">@lang('Submit')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')

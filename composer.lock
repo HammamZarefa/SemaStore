@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ae47bd4d63ac50696f44883f233e324",
+    "content-hash": "c5285db15c6098761ac324ed1c070166",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1278,6 +1278,46 @@
                 }
             ],
             "time": "2023-08-27T10:19:19+00:00"
+        },
+        {
+            "name": "hammam-zarefa/rapid-ranker",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../CODA/rapid-ranker",
+                "reference": "4e6a4eb8dd6b187b2ecff6c32104c3aa8da61ee6"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.15"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "HammamZarefa\\RapidRanker\\RapidRankerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HammamZarefa\\RapidRanker\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "HammamZarefa\\RapidRanker\\Tests\\": "tests/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "hammamZarefa",
+                    "email": "hammamzarefa@gmail.com"
+                }
+            ],
+            "description": "level up your users",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "intervention/image",

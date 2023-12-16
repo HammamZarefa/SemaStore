@@ -144,7 +144,22 @@
             })(jQuery, document);
 
         </script>
+        <script>
+            $("#showProgress").on("click", function() {
+                $('#contentProgress').addClass('active');
+                $('#coverProgress').show();
+            });
+            $("#showProgressSpan").on("click", function() {
+                $('#contentProgress').addClass('active');
+                $('#coverProgress').show();
 
+            });
+            $("#coverProgress").on("click", function() {
+                $('#contentProgress').removeClass('active');
+                $('#coverProgress').hide();
+            });
+
+        </script>
         @stack('script-lib')
         @stack('script')
 
