@@ -49,12 +49,13 @@
                         <div class="row">
 
                             @foreach ($services as $item)
+
                                 <div class="col-3 mt-4 mb-4 order-items">
                                     <div class="card border-0 shadow">
                                         <a href="javascript:void(0)" class="orderBtn"
                                            data-original-title="@lang('Buy')" data-toggle="tooltip"
                                            data-url="{{ route('user.order', [$category->id, $item->id])}}"
-                                           data-price_per_k="{{Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k)}}"
+                                           data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percentprofit))}}"
                                            data-min="{{ $item->min }}" data-max="{{ $item->max }}"
                                            data-category="{{$category->id}}"
                                            data-description="{{$item->details}}">
@@ -64,7 +65,7 @@
                                             <div class="card-body text-center">
                                                 <h5 class="card-title mb-0">{{__($item->name)}}</h5>
                                                 <div
-                                                    class="card-text text-black-50 mb-2">{{ $general->cur_sym . (Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k) )}}</div>
+                                                    class="card-text text-black-50 mb-2">{{ $general->cur_sym . (getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100))}}</div>
                                                 @if($item->details)
                                                     <a href="javascript:void(0)"
                                                        class="icon-btn btn--info detailsBtn S m-2"
@@ -76,7 +77,7 @@
                                                 <a href="javascript:void(0)" class="icon-btn orderBtn"
                                                    data-original-title="@lang('Buy')" data-toggle="tooltip"
                                                    data-url="{{ route('user.order', [$category->id, $item->id])}}"
-                                                   data-price_per_k="{{Auth::user()->is_special ? ( $item->special_price ? getAmount($item->special_price) : getAmount($item->price_per_k)) : getAmount($item->price_per_k)}}"
+                                                   data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100)}}"
                                                    data-min="{{ $item->min }}" data-max="{{ $item->max }}"
                                                    data-category="{{$category->id}}"
                                                    data-description="{{$item->details}}

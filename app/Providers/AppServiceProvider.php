@@ -3,18 +3,15 @@
 namespace App\Providers;
 
 use App\Models\AdminNotification;
-use App\Models\Deposit;
-use App\Models\Extension;
 use App\Models\Frontend;
 use App\Models\GeneralSetting;
 use App\Models\Language;
 use App\Models\News;
-use App\Models\Order;
 use App\Models\Page;
-use App\Models\SupportTicket;
-use App\Models\User;
+use HammamZarefa\RapidRanker\Models\Level;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         $viewShare['language'] = Language::all();
         $viewShare['news'] = News::all();
         $viewShare['pages'] = Page::where('tempname', $activeTemplate)->where('slug', '!=', 'home')->get();
+        $viewShare['levels'] = Level::all();
         view()->share($viewShare);
 
 
@@ -58,7 +56,6 @@ class AppServiceProvider extends ServiceProvider
 //
 //                'pending_orders' => Order::pending()->count(),
 //                'processing_orders' => Order::processing()->count(),
-            'user' => auth()->user()
             ]);
         });
 

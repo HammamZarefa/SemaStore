@@ -23,12 +23,12 @@ class OrderController extends Controller
 //            'link' => 'required|string',
 //            'quantity' => 'required|integer|gte:' . $service->min . '|lte:' . $service->max,
         ]);
-        if (in_array($service->category->type, ['CODE', '5SIM', 'NUMBER']))
-            $price = (Auth::user()->is_special ? ($service->special_price ? getAmount($service->special_price) : getAmount($service->price_per_k)) : getAmount($service->price_per_k));
-        else
-            $price = (Auth::user()->is_special ? ($service->special_price ? getAmount($service->special_price) : getAmount($service->price_per_k)) : getAmount($service->price_per_k)) * $request->quantity;
-        //Subtract user balance
         $user = auth()->user();
+        if (in_array($service->category->type, ['CODE', '5SIM', 'NUMBER']))
+            $price = (getAmount($service->price_per_k - $service->price_per_k * ($user->levels->percent_profit) / 100));
+        else
+            $price = getAmount($service->price_per_k - $service->price_per_k * ($user->levels->percent_profit) / 100) * $request->quantity;
+        //Subtract user balance
         if ($user->balance < $price) {
             $notify[] = ['error', 'Insufficient balance. Please deposit and try again!'];
             return back()->withNotify($notify);
@@ -89,20 +89,19 @@ class OrderController extends Controller
                 $order->api_order_id = $apiOrder['order'] ?? $apiOrder['order_id'];
                 $order->api_service_id = $service->api_service_id;
                 $order->order_placed_to_api = $service->api_provider_id;
-                if($service->category->type == 'NUMBER')
-                {
+                if ($service->category->type == 'NUMBER') {
                     $order->code = @$apiOrder['link'];
                     $order->status = 5;
                 }
                 $order->save();
             }
-            $user->addPoints($order->price);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             $notify[] = ['error', 'حاول لاحقا او تواصل مع مدير الموقع.' . $e->getmessage()];
             return back()->withNotify($notify);
         }
+        $user->addPoints($order->price);
         //Create admin notification
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = $user->id;
@@ -300,8 +299,8 @@ class OrderController extends Controller
 
     public function finishNumberOrder($id, $result)
     {
-        if(isset($result['sms'][0]['code']))
-            $result['smsCode'] =$result['sms'][0]['code'];
+        if (isset($result['sms'][0]['code']))
+            $result['smsCode'] = $result['sms'][0]['code'];
         $order = Order::find($id);
         $user = auth()->user() ?? $order->user;
 //        if ($user->balance < $order->price) {
