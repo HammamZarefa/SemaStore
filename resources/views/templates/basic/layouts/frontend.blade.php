@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/all.min.css')}}">
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/line-awesome.min.css')}}">
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/fontawesome-all.min.css')}}">
-
     <!-- flaticon css -->
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'font/flaticon.css')}}">
     <!-- magnific popup -->
@@ -97,10 +96,10 @@
 @yield('content')
 
 @php
-    $footer_content = getContent('footer.content', true);
-    $footer_elements = getContent('footer.element');
-    $address_content = getContent('address.content', true);
-    $extra_pages = getContent('extra.element');
+//    $footer_content = getContent('footer.content', true);
+//    $footer_elements = getContent('footer.element');
+//    $address_content = getContent('address.content', true);
+//    $extra_pages = getContent('extra.element');
 @endphp
 {{--<!-- footer-section start -->--}}
 {{--<footer class="footer-section ptb-80">--}}
