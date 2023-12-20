@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label class="font-weight-bold ">@lang('Level') <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="level">
+                            <input type="number" class="form-control" name="level">
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Next_level_points') $</label>
@@ -91,13 +91,13 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Percent_profit') %</label>
-                            <input type="number" class="form-control" name="percent_profit">
+                            <input type="text" class="form-control" name="percent_profit">
                         </div>
-                        <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1"
-                                   accept=".png, .jpg, .jpeg">
-                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                        </div>
+{{--                        <div class="avatar-edit">--}}
+{{--                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1"--}}
+{{--                                   accept=".png, .jpg, .jpeg">--}}
+{{--                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>--}}
+{{--                        </div>--}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -127,7 +127,7 @@
                         <div class="form-group">
                             <label class="font-weight-bold ">@lang('Level') <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="level">
+                            <input type="number" class="form-control" name="level">
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Next_level_points')  $</label>
@@ -139,13 +139,13 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Percent_profit') %</label>
-                            <input type="number" class="form-control" name="percent_profit">
+                            <input type="text" class="form-control" name="percent_profit">
                         </div>
-                        <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1"
-                                   accept=".png, .jpg, .jpeg">
-                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                        </div>
+{{--                        <div class="avatar-edit">--}}
+{{--                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1"--}}
+{{--                                   accept=".png, .jpg, .jpeg">--}}
+{{--                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>--}}
+{{--                        </div>--}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>

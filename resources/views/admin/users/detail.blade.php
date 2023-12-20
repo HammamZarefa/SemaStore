@@ -53,12 +53,15 @@
                             @lang('Level current progress')
                             <span class="font-weight-bold">{{$user->nextLevel()['progress']}}%</span>
                         </li>
-                        @if($user->lock_level)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @if(isset($user->lock_level))
                                 مجمد عند الشريحة
                                 <span class="font-weight-bold">{{$user->lock_level}}</span>
-                            </li>
-                        @endif
+                            @else
+                                الشريحة
+                                <span class="font-weight-bold">{{$user->level}}</span>
+                            @endif
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -461,22 +464,28 @@
                 <div class="modal-header">
                     <h5 class="modal-title">@if(!$user->lock_level)
                             @lang('Lock level')
+                            <input hidden name="lock" value="0">
                         @else
                             @lang('Unlock level')
+                            <input hidden name="lock" value="1">
                         @endif</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form action="{{route('admin.users.level.lock',$user->id)}}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-row">
-
+                            @if(isset($user->lock_level))
+                                <input hidden name="lock" value="0">
+                            @else
+                                <input hidden name="lock" value="1">
+                            @endif
                             <div class="form-group col-md-12">
                                 <label>@lang('Level')<span class="text-danger">*</span></label>
                                 <div class="input-group has_append">
-                                    <input type="text" name="amount" class="form-control"
+                                    <input type="text" name="level" class="form-control"
                                            placeholder="@lang('Choose level')">
                                 </div>
                             </div>

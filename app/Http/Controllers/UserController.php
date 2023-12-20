@@ -11,6 +11,7 @@ use App\Models\GeneralSetting;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Transaction;
+use HammamZarefa\RapidRanker\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -278,8 +279,7 @@ class UserController extends Controller
         $coupon = BalanceCoupon::where('code', $request['code'])->first();
         if ($coupon != null && $coupon->is_sold != 1 && $coupon->status != 0) {
             $balance = $coupon->balance;
-        } else
-        {
+        } else {
             $notify[] = ['error', trans('Coupon Is Not Found.')];
             return back()->withNotify($notify);
         }
@@ -321,5 +321,13 @@ class UserController extends Controller
             $notify[] = ['error', trans("يرجى التواصل مع مدير الموقع")];
             return back()->with()->withInput($notify);
         }
+    }
+
+    public function levelsInfo()
+    {
+        $levels = Level::all();
+        $page_title = "معلومات الشرائح";
+        return view(activeTemplate() . 'user.levels-info',
+            compact('levels','page_title'));
     }
 }
