@@ -107,7 +107,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         Route::get('users/send-email', 'ManageUsersController@showEmailAllForm')->name('users.email.all');
         Route::post('users/send-email', 'ManageUsersController@sendEmailAll')->name('users.email.send');
-
+        Route::post('user/lock-level/{id}','ManageUsersController@lockUnlockLevel')->name('users.level.lock');
 
         //Categories
         Route::get('categories', 'CategoryController@index')->name('categories.index');

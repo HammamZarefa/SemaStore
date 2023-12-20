@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Deposit;
@@ -48,6 +49,7 @@ class ManageUsersController extends Controller
         $users = User::emailUnverified()->latest()->paginate(getPaginate());
         return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
     }
+
     public function emailVerifiedUsers()
     {
         $page_title = 'Email Verified Users';
@@ -64,6 +66,7 @@ class ManageUsersController extends Controller
         $users = User::smsUnverified()->latest()->paginate(getPaginate());
         return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
     }
+
     public function smsVerifiedUsers()
     {
         $page_title = 'SMS Verified Users';
@@ -71,7 +74,6 @@ class ManageUsersController extends Controller
         $users = User::smsVerified()->latest()->paginate(getPaginate());
         return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
     }
-
 
 
     public function search(Request $request, $scope)
@@ -115,8 +117,8 @@ class ManageUsersController extends Controller
         $page_title = 'User Detail';
         $user = User::findOrFail($id);
 
-        $totalDeposit = Deposit::where('user_id',$user->id)->where('status',1)->sum('amount');
-        $totalTransaction = Transaction::where('user_id',$user->id)->count();
+        $totalDeposit = Deposit::where('user_id', $user->id)->where('status', 1)->sum('amount');
+        $totalTransaction = Transaction::where('user_id', $user->id)->count();
         $total_spent = Order::where('status', '!=', 4)->sum('price');
 
         $widget['total_order'] = Order::where('user_id', $user->id)->count();
@@ -126,7 +128,7 @@ class ManageUsersController extends Controller
         $widget['cancelled_order'] = Order::where('user_id', $user->id)->cancelled()->count();
         $widget['refunded_order'] = Order::where('user_id', $user->id)->refunded()->count();
 
-        return view('admin.users.detail', compact('page_title', 'user','totalDeposit','totalTransaction', 'total_spent', 'widget'));
+        return view('admin.users.detail', compact('page_title', 'user', 'totalDeposit', 'totalTransaction', 'total_spent', 'widget'));
     }
 
 
@@ -154,18 +156,18 @@ class ManageUsersController extends Controller
         $user->lastname = $request->lastname;
         $user->email = $request->email;
         $user->address = [
-                            'address' => $request->address,
-                            'city' => $request->city,
-                            'state' => $request->state,
-                            'zip' => $request->zip,
-                            'country' => $request->country,
-                        ];
+            'address' => $request->address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'zip' => $request->zip,
+            'country' => $request->country,
+        ];
         $user->status = $request->status ? 1 : 0;
         $user->ev = 1;
         $user->sv = 1;
         $user->ts = 1;
         $user->tv = 1;
-        $user->is_special=$request->is_special? 1 : 0;
+        $user->is_special = $request->is_special ? 1 : 0;
         $user->save();
 
         $notify[] = ['success', 'User detail has been updated'];
@@ -178,7 +180,7 @@ class ManageUsersController extends Controller
 
         $user = User::findOrFail($id);
         $amount = getAmount($request->amount);
-        $general = GeneralSetting::first(['cur_text','cur_sym']);
+        $general = GeneralSetting::first(['cur_text', 'cur_sym']);
         $trx = getTrx();
 
         if ($request->act) {
@@ -194,7 +196,7 @@ class ManageUsersController extends Controller
             $transaction->charge = 0;
             $transaction->trx_type = '+';
             $transaction->details = 'Added Balance Via Admin';
-            $transaction->trx =  $trx;
+            $transaction->trx = $trx;
             $transaction->save();
 
 
@@ -214,7 +216,6 @@ class ManageUsersController extends Controller
             $user->save();
 
 
-
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
             $transaction->amount = $amount;
@@ -222,7 +223,7 @@ class ManageUsersController extends Controller
             $transaction->charge = 0;
             $transaction->trx_type = '-';
             $transaction->details = 'Subtract Balance Via Admin';
-            $transaction->trx =  $trx;
+            $transaction->trx = $trx;
             $transaction->save();
 
 
@@ -246,7 +247,6 @@ class ManageUsersController extends Controller
         $login_logs = $user->login_logs()->latest()->paginate(getPaginate());
         return view('admin.users.logins', compact('page_title', 'empty_message', 'login_logs'));
     }
-
 
 
     public function showEmailSingleForm($id)
@@ -294,40 +294,41 @@ class ManageUsersController extends Controller
             $page_title = 'Search User Deposits : ' . $user->username;
             $deposits = $user->deposits()->where('trx', $search)->latest()->paginate(getPaginate());
             $empty_message = 'No deposits';
-            return view('admin.deposit.log', compact('page_title', 'search', 'user', 'deposits', 'empty_message','userId'));
+            return view('admin.deposit.log', compact('page_title', 'search', 'user', 'deposits', 'empty_message', 'userId'));
         }
 
         $page_title = 'User Deposit : ' . $user->username;
         $deposits = $user->deposits()->latest()->paginate(getPaginate());
         $empty_message = 'No deposits';
         $scope = 'all';
-        return view('admin.deposit.log', compact('page_title', 'user', 'deposits', 'empty_message','userId','scope'));
+        return view('admin.deposit.log', compact('page_title', 'user', 'deposits', 'empty_message', 'userId', 'scope'));
     }
 
 
-    public function depViaMethod($method,$type = null,$userId){
-        $method = Gateway::where('alias',$method)->firstOrFail();
+    public function depViaMethod($method, $type = null, $userId)
+    {
+        $method = Gateway::where('alias', $method)->firstOrFail();
         $user = User::findOrFail($userId);
         if ($type == 'approved') {
-            $page_title = 'Approved Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('user_id',$user->id)->where('method_code',$method->code)->where('status', 1)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
-        }elseif($type == 'rejected'){
-            $page_title = 'Rejected Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('user_id',$user->id)->where('method_code',$method->code)->where('status', 3)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
-        }elseif($type == 'successful'){
-            $page_title = 'Successful Payment Via '.$method->name;
-            $deposits = Deposit::where('status', 1)->where('user_id',$user->id)->where('method_code',$method->code)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
-        }elseif($type == 'pending'){
-            $page_title = 'Pending Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('user_id',$user->id)->where('method_code',$method->code)->where('status', 2)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
-        }else{
-            $page_title = 'Payment Via '.$method->name;
-            $deposits = Deposit::where('status','!=',0)->where('user_id',$user->id)->where('method_code',$method->code)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+            $page_title = 'Approved Payment Via ' . $method->name;
+            $deposits = Deposit::where('method_code', '>=', 1000)->where('user_id', $user->id)->where('method_code', $method->code)->where('status', 1)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+        } elseif ($type == 'rejected') {
+            $page_title = 'Rejected Payment Via ' . $method->name;
+            $deposits = Deposit::where('method_code', '>=', 1000)->where('user_id', $user->id)->where('method_code', $method->code)->where('status', 3)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+        } elseif ($type == 'successful') {
+            $page_title = 'Successful Payment Via ' . $method->name;
+            $deposits = Deposit::where('status', 1)->where('user_id', $user->id)->where('method_code', $method->code)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+        } elseif ($type == 'pending') {
+            $page_title = 'Pending Payment Via ' . $method->name;
+            $deposits = Deposit::where('method_code', '>=', 1000)->where('user_id', $user->id)->where('method_code', $method->code)->where('status', 2)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+        } else {
+            $page_title = 'Payment Via ' . $method->name;
+            $deposits = Deposit::where('status', '!=', 0)->where('user_id', $user->id)->where('method_code', $method->code)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
         }
-        $page_title = 'Deposit History: '.$user->username.' Via '.$method->name;
+        $page_title = 'Deposit History: ' . $user->username . ' Via ' . $method->name;
         $methodAlias = $method->alias;
         $empty_message = 'Deposit Log';
-        return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits','methodAlias','userId'));
+        return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits', 'methodAlias', 'userId'));
     }
 
 
@@ -349,6 +350,17 @@ class ManageUsersController extends Controller
         }
 
         $notify[] = ['success', 'All users will receive an email shortly.'];
+        return back()->withNotify($notify);
+    }
+
+    public function lockUnlockLevel(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $level = $request->level;
+        if ($request->lock == 1)
+            $user->lockLevel($level);
+        else $user->unlockLevel(@$level);
+        $notify[] = ['success', 'Updated Successfully.'];
         return back()->withNotify($notify);
     }
 }
