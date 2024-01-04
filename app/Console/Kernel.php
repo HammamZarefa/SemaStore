@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\checkUserLevel;
 use App\Console\Commands\UpdateApiOrderStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -14,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        UpdateApiOrderStatus::class
+        UpdateApiOrderStatus::class,
+        CheckUserLevel::class
     ];
 
     /**
@@ -27,6 +29,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('updateOrders:status')->everyMinute();
+        $schedule->command('userLevel:check')->dailyAt('00:00');
     }
 
     /**

@@ -1,5 +1,13 @@
 @extends($activeTemplate.'layouts.master')
-
+<style>
+    @media (max-width: 767px) {
+        .table-responsive--sm tr th, .table-responsive--sm .tr-level td {
+            display: block;
+            padding-right: 45% !important;
+            text-align: left !important;
+        }
+    }
+</style>
 @section('content')
     <div class="container">
         <div class="row justify-content-center mt-4">
@@ -32,11 +40,11 @@
                                 </thead>
                                 <tbody>
                                     @forelse($levels as $level)
-                                        <tr @if(auth()->user()->level == $level->level)style="background-color: #e4e3e3;" @endif>
-                                            <td data-label="#@lang('Level')">{{getLevelName($level->level)}}</td>
+                                        <tr class="tr-level" @if(auth()->user()->level == $level->level) style="background-color: #e4e3e3;" @endif>
+                                            <td data-label="#@lang('Level')" >{{getLevelName($level->level)}}</td>
                                             <td data-label="@lang('Next_level_points')">{{ __($level->next_level_points)  }} $</td>
-                                            <td data-label="#@lang('Points_reach_duration')">{{$level->points_reach_duration}} يوم</td>
-                                            <td data-label="@lang('Percent_profit')">{{ __($level->percent_profit)  }} %</td>
+                                            <td data-label="#@lang('Points_reach_duration')" >{{$level->points_reach_duration}} يوم</td>
+                                            <td data-label="@lang('Percent_profit')" >{{ __($level->percent_profit)  }} %</td>
                                         </tr>
                                     @empty
                                         <tr>
