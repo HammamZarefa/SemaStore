@@ -35,7 +35,7 @@ function systemDetails()
 
 function getLatestVersion()
 {
-   $result = null;
+    $result = null;
     if ($result) {
         return $result;
     } else {
@@ -1317,6 +1317,6 @@ function getLevelName($level)
         return 'التاسعة';
     elseif ($level == 10)
         return 'العاشرة';
-    return;
+    return 'معلقة';
 }
 
