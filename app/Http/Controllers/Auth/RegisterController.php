@@ -61,8 +61,7 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $page_title = "Sign Up";
-        $info = json_decode(json_encode(getIpInfo()), true);
-        $country_code = @implode(',', $info['code']);
+        $country_code ='sy';
         return view($this->activeTemplate . 'user.auth.register', compact('page_title','country_code'));
     }
 
@@ -196,7 +195,7 @@ class RegisterController extends Controller
         $userAgent = osBrowser();
         $userLogin->user_id = $user->id;
         $userLogin->user_ip =  $ip;
-        
+
         $userLogin->browser = @$userAgent['browser'];
         $userLogin->os = @$userAgent['os_platform'];
         $userLogin->save();
