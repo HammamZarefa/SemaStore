@@ -33,6 +33,12 @@
             opacity: 0.2;
         }
     }
+    .not-allowed {
+        cursor: not-allowed;
+    }
+    .unavailable{
+        opacity:0.8;
+    }
 </style>
 @section('content')
     <div class="row">
@@ -50,10 +56,10 @@
 
                             @foreach ($services as $item)
 
-                                <div class="col-3 mt-4 mb-4 order-items">
+                                <div class="col-3 mt-4 mb-4 order-items {{$item->is_available ? "" : "unavailable"}}">
                                     <div class="card border-0 shadow">
-                                        <a href="javascript:void(0)" class="orderBtn"
-                                           data-original-title="@lang('Buy')" data-toggle="tooltip"
+                                        <a href="javascript:void(0)" class="{{$item->is_available ? "orderBtn" : "not-allowed"}}"
+                                           data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
                                            data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                            data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percentprofit))}}"
                                            data-min="{{ $item->min }}" data-max="{{ $item->max }}"
@@ -74,8 +80,8 @@
                                                         <i class="la la-info "></i>
                                                     </a>
                                                 @endif
-                                                <a href="javascript:void(0)" class="icon-btn orderBtn"
-                                                   data-original-title="@lang('Buy')" data-toggle="tooltip"
+                                                <a href="javascript:void(0)" class="icon-btn {{$item->is_available ? "orderBtn" : "not-allowed"}}"
+                                                   data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
                                                    data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                                    data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100)}}"
                                                    data-min="{{ $item->min }}" data-max="{{ $item->max }}"
