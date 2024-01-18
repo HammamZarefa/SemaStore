@@ -65,6 +65,7 @@
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
                                            data-url="{{ route('admin.services.update', $item->id)}}"
                                            data-name="{{ $item->name }}"
+                                           data-is_available = {{ $item->is_available}}
                                            data-category="{{ $item->category_id }}"
                                            data-price_per_k="{{ getAmount($item->price_per_k) }}"
                                            data-min="{{ $item->min }}" data-max="{{ $item->max }}"
@@ -203,6 +204,13 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="form-control-label font-weight-bold">@lang('Available') </label>
+                            <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
+                                   data-toggle="toggle" data-on="@lang('Available')" data-off="@lang('UnAvailable')"
+                                   name="is_available" checked>
+                        </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Details')</label>
                             <textarea rows="6" class="form-control nicEdit" style="width: 500px" name="details" ></textarea>
@@ -316,6 +324,12 @@
                                     <input type="text" name="max" class="form-control">
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label font-weight-bold">@lang('Available') </label>
+                            <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
+                                   data-toggle="toggle" data-on="@lang('Available')" data-off="@lang('UnAvailable')"
+                                   name="is_available">
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">@lang('Details')</label>
@@ -435,6 +449,8 @@
                 var price_per_k = $(this).data('price_per_k');
                 var min = $(this).data('min');
                 var max = $(this).data('max');
+                var is_available = $(this).data('is_available');
+                console.log(is_available)
                 var details = $(this).data('details');
                 var api_service_id = $(this).data('api_service_id');
                 var special_price = $(this).data('special_price');
@@ -453,6 +469,9 @@
                 modal.find('input[name=min]').val(min);
                 modal.find('input[name=max]').val(max);
                 modal.find('textarea[name=details]').val(details);
+                modal.find('input[name=is_available]').bootstrapToggle(is_available === 1 ? 'toggle' : '');
+                modal.find('input[name=is_available]').prop('checked', true)
+
                 modal.modal('show');
                 showExtraField1();
             });
