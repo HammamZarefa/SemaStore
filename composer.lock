@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5285db15c6098761ac324ed1c070166",
+    "content-hash": "04a802c2dff5a9f2143a8bd12f528f68",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1282,14 +1282,21 @@
         {
             "name": "hammam-zarefa/rapid-ranker",
             "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HammamZarefa/rapid-ranker.git",
+                "reference": "8dbaf2a8e29c6b99771db9e3250c3d8f027ea820"
+            },
             "dist": {
-                "type": "path",
-                "url": "../CODA/rapid-ranker",
-                "reference": "4e6a4eb8dd6b187b2ecff6c32104c3aa8da61ee6"
+                "type": "zip",
+                "url": "https://api.github.com/repos/HammamZarefa/rapid-ranker/zipball/8dbaf2a8e29c6b99771db9e3250c3d8f027ea820",
+                "reference": "8dbaf2a8e29c6b99771db9e3250c3d8f027ea820",
+                "shasum": ""
             },
             "require-dev": {
                 "orchestra/testbench": "^8.15"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1315,9 +1322,11 @@
                 }
             ],
             "description": "level up your users",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/HammamZarefa/rapid-ranker/tree/main",
+                "issues": "https://github.com/HammamZarefa/rapid-ranker/issues"
+            },
+            "time": "2024-01-04T20:40:24+00:00"
         },
         {
             "name": "intervention/image",
@@ -9271,7 +9280,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "hammam-zarefa/rapid-ranker": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
