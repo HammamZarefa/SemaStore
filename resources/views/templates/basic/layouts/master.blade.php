@@ -51,10 +51,12 @@
                 <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/app.css')}}">
             @endif
             <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/newsTicker.css')}}">
-
-
-            {{--    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'/css/bootstrap-fileinput.css')}}">--}}
-
+            <!-- google font -->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap" rel="stylesheet">
+            <!-- swiper -->
+            <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> -->
             @stack('style-lib')
             @stack('style')
         </head>
@@ -82,9 +84,9 @@
                 <div class="bodywrapper__inner">
 
                     <div class="row align-items-center mb-30 justify-content-between">
-                        <div class="col-lg-6 col-sm-6">
-                            <h6 class="page-title">{{ __($page_title) }}</h6>
-                            <a href="{{ url()->previous() }}"><i class="fa fa-arrow-left"></i></a>
+                        <div class="col-lg-12 col-sm-6 text-lang-responsv">
+                            <!-- <a href="{{ url()->previous() }}"><i class="fa fa-arrow-right text-white"></i></a> -->
+                            <h3 class="page-title text-white">{{ __($page_title) }}</h3>
                         </div>
                         <div class="col-lg-6 col-sm-6 text-sm-right mt-sm-0 mt-3 right-part">
                             @stack('breadcrumb')
@@ -123,6 +125,8 @@
         <script src="{{asset($activeTemplateTrue.'master/js/app.js')}}"></script>
 
         <script src="{{asset($activeTemplateTrue.'/js/bootstrap-fileinput.js')}}"></script>
+        <!-- swiper -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> -->
 
         @include('admin.partials.notify')
         @include('partials.plugins')

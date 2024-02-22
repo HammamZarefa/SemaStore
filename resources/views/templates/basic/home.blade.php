@@ -84,7 +84,7 @@
     <!-- end slider -->
     <!-- start products -->
     <div class="products-contain">
-        <div class="wrapper">
+        <div class="container">
 
             <h2 class="mt-3">
                 <strong>@lang('Categories')</strong>
@@ -93,20 +93,20 @@
             </h2>
 
             <div class="cards-products row">
-                <!-- @foreach($categories as $category)
-                    <figure class="card">
-                        <img src="{{ getImage(imagePath()['category']['path'].'/'. $category->image,imagePath()['category']['size'])}}"/>
-                        <figcaption>@lang($category->name)</figcaption>
-                    </figure>
-                @endforeach -->
+        
+                {{--   @foreach($categories as $category) --}} 
+                {{--   <figure class="card">--}} 
+                {{--  <img src="{{ getImage(imagePath()['category']['path'].'/'. $category->image,imagePath()['category']['size'])}}"/>--}} 
+                {{--   <figcaption>@lang($category->name)</figcaption>--}} 
+                {{-- </figure>--}} 
+                    {{--  @endforeach --}} 
+               
                 @foreach($categories as $category)
-                    <figure class="card-item col-lg-3 col-md-4 col-sm-6 col-6">
+                    <figure class="card-item col-lg-3 col-md-4 col-sm-6 col-12">
                    <div class="image">
-                    <img src="{{asset('assets/images/category/62aa6fbc852701655336892.jpeg')}}" alt="">
-                    <!-- <img src="{{asset('assets/images/frontend/blog/5ff2e146346d21609752902.jpg')}}" alt=""> -->
-
+                    <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="">
                    </div>
-                    <figcaption class="info">اسم المنتج</figcaption>
+                    <figcaption class="info">@lang($category->name)</figcaption>
                     </figure>
                 @endforeach
             </div>

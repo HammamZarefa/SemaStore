@@ -160,17 +160,13 @@
     <div class="container">
         <div class="row">
     @foreach($categories as $category)
-        <div class=" col-2    mb-4 order-items">
-            <div class="card border-0 shadow">
-                <a href="{{route('user.service',$category->id)}}">
-                    <img src="{{ getImage(imagePath()['category']['path'].'/'. $category->image,imagePath()['category']['size'])}}" class="card-img-top" alt="...">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-0">@lang($category->name)</h5>
-                        {{--<div class="card-text text-black-50">Web Developer</div>--}}
-                    </div>
-                </a>
-            </div>
+        <div class="col-md-3 col-6">
+        <figure>
+            <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">
+            <figcaption>@lang($category->name)</figcaption>
+        </figure>
         </div>
+        
     @endforeach
         </div>
     </div>

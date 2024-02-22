@@ -8,31 +8,12 @@
 
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <!-- fontawesome css link -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/all.min.css')}}">
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/line-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/fontawesome-all.min.css')}}">
-    <!-- flaticon css -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'font/flaticon.css')}}">
-    <!-- magnific popup -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/magnific-popup.css')}}">
-    <!-- nice-select css -->
+   
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/nice-select.css')}}">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/bootstrap.min.css')}}">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/swiper.min.css')}}">
-    <!-- odometer css -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/odometer.css')}}">
-    <!-- icon css -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/themify.css')}}">
-    <!-- animate.css -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/animate.css')}}">
-    <!--headline.css -->
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/jquery.animatedheadline.css')}}">
     <!-- main style css link -->
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/style.css')}}">
-    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'/css/bootstrap-fileinput.css')}}">
 
     <link rel="stylesheet"
           href="{{asset($activeTemplateTrue.'css/color.php?color='.$general->base_color.'&secondColor='.$general->secondary_color)}}">
@@ -63,18 +44,15 @@
 
 <!-- header-section start -->
 <header class="header-section" >
-    <div class="header">
-        <div class="header-bottom-area">
-            <div class="container">
-                <div class="header-menu-content" style="background-image: url({{asset('assets/images/header_bg.jpg')}});padding: 10px 30px;">
-                    <nav class="navbar navbar-expand-lg p-0" >
-                        <a class="site-logo site-title" href="{{route('home')}}">
+<nav class="navbar navbar-expand-lg navbar-light  sticky-top" >
+  <div class="container" style="background-image: url({{asset('assets/images/header_bg.jpg')}});padding: 10px 30px;">
+  <a class="site-logo site-title" href="{{route('home')}}">
                             <img src="{{ getImage(imagePath()['logoIcon']['path'] .'/logo.png') }}" height="34px" alt="site-logo"></a>
-                        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="fas fa-bars"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ml-auto">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span style="filter: invert(1);" class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ml-auto">
                                 @auth
                                     <li><a class="menu-link" href="{{ route('user.home') }}">@lang('Dashboard')</a></li>
                                     <li><a class="menu-link" href="{{ route('user.logout') }}">@lang('Logout')</a></li>
@@ -83,13 +61,11 @@
                                     <li><a class="menu-link" href="{{ route('user.register') }}">@lang('Register')</a></li>
                                 @endauth
                             </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
     </div>
+  </div>
+</nav>
 </header>
+
 <!-- header-section end -->
 
 <a href="#" class="scrollToTop">
@@ -285,26 +261,10 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- jquery -->
 <script src="{{asset($activeTemplateTrue.'js/jquery-3.6.0.min.js')}}"></script>
-<!-- migarate-jquery -->
-<script src="{{asset($activeTemplateTrue.'js/jquery-migrate-3.0.0.js')}}"></script>
 <!-- bootstrap js -->
 <script src="{{asset($activeTemplateTrue.'js/bootstrap.min.js')}}"></script>
-<!-- magnific-popup js -->
-<script src="{{asset($activeTemplateTrue.'js/jquery.magnific-popup.js')}}"></script>
 <!-- nice-select js-->
 <script src="{{asset($activeTemplateTrue.'js/jquery.nice-select.js')}}"></script>
-<!-- swipper js -->
-<script src="{{asset($activeTemplateTrue.'js/swiper.min.js')}}"></script>
-<!--plugin js-->
-<script src="{{asset($activeTemplateTrue.'js/plugin.js')}}"></script>
-<!--chart js-->
-<script src="{{asset($activeTemplateTrue.'js/chart.js')}}"></script>
-<!-- viewport js -->
-<script src="{{asset($activeTemplateTrue.'js/viewport.jquery.js')}}"></script>
-<!-- odometer js -->
-<script src="{{asset($activeTemplateTrue.'js/odometer.min.js')}}"></script>
-<!-- wow js file -->
-<script src="{{asset($activeTemplateTrue.'js/wow.min.js')}}"></script>
 <!-- main -->
 <script src="{{asset($activeTemplateTrue.'js/main.js')}}"></script>
 
@@ -324,6 +284,15 @@
         $(document).on("change", ".langSel", function() {
             window.location.href = "{{url('/')}}/change/"+$(this).val() ;
         });
+        $('.navbar-toggler').on('click',function(){
+            if($('#navbarNavDropdown').hasClass("show")){
+                $('#navbarNavDropdown').removeClass( 'show' );
+            }
+            else{
+                $('#navbarNavDropdown').addClass( 'show' );
+
+            }
+        })
     })(jQuery);
 </script>
 
