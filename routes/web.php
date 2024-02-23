@@ -294,6 +294,17 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::get('manage-section/{id}', 'PageBuilderController@manageSection')->name('manage.section');
             Route::post('manage-section/{id}', 'PageBuilderController@manageSectionUpdate')->name('manage.section.update');
         });
+
+        Route::name('inventory.')->prefix('inventory')->group(function(){
+        Route::get('/service-inventory', 'InventoryController@service')->name('service');
+        Route::get('/service-inventory-search', 'InventoryController@serviceSearch')->name('service.search');
+        Route::get('/category-inventory', 'InventoryController@category')->name('category');
+        Route::get('/category-inventory-search', 'InventoryController@categorySearch')->name('category.search');
+        Route::get('/provider-inventory', 'InventoryController@provider')->name('provider');
+        Route::get('/provider-inventory-search', 'InventoryController@providerSearch')->name('provider.search');
+        Route::get('/user-inventory', 'InventoryController@user')->name('user');
+        Route::get('/user-inventory-search', 'InventoryController@userSearch')->name('user.search');
+        });
     });
 });
 

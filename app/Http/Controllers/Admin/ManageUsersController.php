@@ -11,6 +11,7 @@ use App\Models\SupportTicket;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserLogin;
+use HammamZarefa\RapidRanker\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -127,8 +128,9 @@ class ManageUsersController extends Controller
         $widget['completed_order'] = Order::where('user_id', $user->id)->completed()->count();
         $widget['cancelled_order'] = Order::where('user_id', $user->id)->cancelled()->count();
         $widget['refunded_order'] = Order::where('user_id', $user->id)->refunded()->count();
+        $levels = Level::all();
 
-        return view('admin.users.detail', compact('page_title', 'user', 'totalDeposit', 'totalTransaction', 'total_spent', 'widget'));
+        return view('admin.users.detail', compact('page_title', 'user', 'totalDeposit', 'totalTransaction', 'total_spent', 'widget','levels'));
     }
 
 

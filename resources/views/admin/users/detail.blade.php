@@ -462,13 +462,15 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@if(!$user->lock_level)
+                    <h5 class="modal-title">
+                        @if(!$user->lock_level)
                             @lang('Lock level')
                             <input hidden name="lock" value="0">
                         @else
                             @lang('Unlock level')
                             <input hidden name="lock" value="1">
-                        @endif</h5>
+                        @endif
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -485,8 +487,17 @@
                             <div class="form-group col-md-12">
                                 <label>@lang('Level')<span class="text-danger">*</span></label>
                                 <div class="input-group has_append">
-                                    <input type="text" name="level" class="form-control"
-                                           placeholder="@lang('Choose level')">
+                                    @if(count($levels) > 0)
+                                    <select class="form-control" name="level">
+                                        <option value="0" selected  {{isset($user->lock_level) ? "" : "disabled"}}>@lang('Choose level')</option>
+                                        @foreach($levels as $level)
+                                            <option value="{{$level->level}}">{{$level->level}}</option>
+                                        @endforeach
+                                    </select>
+                                    @else
+                                        <input type="text" name="level" class="form-control"
+                                               placeholder="@lang('Choose level')">
+                                    @endif
                                 </div>
                             </div>
                         </div>

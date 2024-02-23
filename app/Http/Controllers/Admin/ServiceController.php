@@ -55,7 +55,6 @@ class ServiceController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $service = Service::findOrFail($id);
         $this->serviceAction($service, $request);
         $image = $request->file('image');
@@ -85,6 +84,7 @@ class ServiceController extends Controller
         $service->price_per_k = $request->price_per_k;
         $service->min = $request->min;
         $service->max = $request->max;
+        $service->is_available = $request->is_available ? 1 : 0;
         $service->details = $request->details;
         if ($service->category->type == "5SIM")
             $service->api_service_params = $request->country . '/any/' . $request->product;

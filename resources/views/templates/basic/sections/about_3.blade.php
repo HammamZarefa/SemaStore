@@ -3,44 +3,46 @@
 @endphp
 
 <!-- about-section start -->
-<section class="about-section ptb-80">
-    <div class="about-shape-one">
-        <img src="{{asset($activeTemplateTrue.'images/banner/icon-1.png')}}" alt="shape">
+<section class="about-section" style="background-image: url({{asset('assets/images/about_bg.jpg')}});padding: 4rem !important;">
+<div class="row">
+    <div class="col-md-6 col-12 d-md-block d-none">
+    <img style="width:100%" src="https://semastore.net/assets/images/frontend/about_3/64bc0aab5b8831690045099.jpg" alt="shape">
     </div>
-    <div class="about-shape-two">
-        <img src="{{asset($activeTemplateTrue.'images/banner/icon-2.png')}}" alt="shape">
-    </div>
-    <div class="about-shape-three">
-        <img src="{{asset($activeTemplateTrue.'images/banner/icon-3.png')}}" alt="shape">
-    </div>
-    <div class="container">
-        <figure class="figure highlight-background highlight-background--lean-left">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1439px" height="480px">
-                <defs>
-                    <linearGradient id="PSgrad_2" x1="42.262%" x2="0%" y1="90.631%" y2="0%">
-                        <stop offset="28%" stop-color="rgb(245,246,252)" stop-opacity="1" />
-                        <stop offset="100%" stop-color="rgb(255,255,255)" stop-opacity="1" />
-                    </linearGradient>
-
-                </defs>
-                <path fill-rule="evenodd" fill="rgb(255, 255, 255)" d="M863.247,-271.203 L-345.788,-427.818 L760.770,642.200 L1969.805,798.815 L863.247,-271.203 Z" />
-                <path fill="url(#PSgrad_2)" d="M863.247,-271.203 L-345.788,-427.818 L760.770,642.200 L1969.805,798.815 L863.247,-271.203 Z" />
-            </svg>
-        </figure>
+    <div class="col-md-6 col-12">
+                <div class="about-content" style="background-image: url({{asset('assets/images/slider_circle.png')}});background-size: 50%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: hue-rotate(-75deg);">
+                <h1 class="text-center"><span class="text-white" style="font-family: 'Oxanium', cursive !important;">{{ __(@$about3_content->data_values->title) }}</span></h1>
+                    <h2 class="title"></h2>
+                    <p class="text-white text-center">{{ __(@$about3_content->data_values->content) }}</p>
+                </div>
+            </div>
+        </div>
+</div>
+    
+   
+    <!-- <div class="about-shape-three d-md-block d-none">
+        <img style="filter: hue-rotate(-33deg);" src="{{asset('assets/images/about.png')}}" alt="shape">
+    </div> -->
+    <!-- <div class="container">
         <div class="row justify-content-center ml-b-30">
-            <div class="col-lg-6 mrb-30">
-                <div class="about-thumb">
-                    <img src="{{ getImage('assets/images/frontend/about_3/' . @$about3_content->data_values->image, '599x503') }}" alt="about">
+            <div class="col-lg-6 mrb-30  d-md-block d-none">
+                <div class="">
+                    <img class="anime-img" style="width:20%;filter: hue-rotate(-75deg);opacity: .3;" src="{{asset('assets/images/slider_circle.png')}}" alt="about">
                 </div>
             </div>
             <div class="col-lg-6 mrb-30">
                 <div class="about-content">
-                    <h2 class="title">{{ __(@$about3_content->data_values->title) }}</h2>
-                    <span class="title-border"></span>
-                    <p>{{ __(@$about3_content->data_values->content) }}</p>
+                <h1 class="text-center"><span class="text-white" style="font-family: 'Oxanium', cursive !important;">{{ __(@$about3_content->data_values->title) }}</span></h1>
+                    <h2 class="title"></h2>
+                    <p class="text-white text-center">{{ __(@$about3_content->data_values->content) }}</p>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 <!-- about-section end -->

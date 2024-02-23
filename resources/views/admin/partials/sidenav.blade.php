@@ -324,6 +324,46 @@
                         </ul>
                     </div>
                 </li>
+
+                {{--               Start Inventory --}}
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{menuActive('admin.inventory*',3)}}">
+                        <i class="menu-icon la la-list"></i>
+                        <span class="menu-title">@lang('Inventory') </span>
+                    </a>
+                    <div class="sidebar-submenu {{menuActive('admin.inventory*',2)}} ">
+                        <ul>
+                            <li class="sidebar-menu-item {{menuActive(['admin.inventory.service','admin.inventory.service.search'])}}">
+                                <a href="{{route('admin.inventory.service')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Service Inventory')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{menuActive(['admin.inventory.category','admin.inventory.category.search'])}}">
+                                <a href="{{route('admin.inventory.category')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Category Inventory')</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-menu-item {{menuActive(['admin.inventory.provider','admin.inventory.provider.search'])}}">
+                                <a href="{{route('admin.inventory.provider')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Provider Inventory')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{menuActive(['admin.inventory.user','admin.inventory.user.search'])}}">
+                                <a href="{{route('admin.inventory.user')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('User Inventory')</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                {{--               End Inventory --}}
                 <li class="sidebar-menu-item  {{menuActive('admin.levels.index')}}">
                     <a href="{{route('admin.levels.index')}}" class="nav-link"
                        data-default-url="{{ route('admin.levels.index') }}">

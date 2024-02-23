@@ -1,6 +1,7 @@
 
 .tickerheader {
     background-color: #f05234;
+    background: linear-gradient(to right, #515964 ,#f05234 ,#f05234);
     color: #fff;
     padding: 10px 0;
 }
@@ -59,4 +60,5 @@
     background-color: #f05234; /* Match the background color */
     z-index: 1;
 }
+
 
