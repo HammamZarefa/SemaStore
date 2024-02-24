@@ -53,34 +53,29 @@
                     @endphp
                     <div class="container">
                         <div class="row">
-
+                          
                             @foreach ($services as $item)
-
-                                <div class="col-3 mt-4 mb-4 order-items {{$item->is_available ? "" : "unavailable"}}">
-                                    <div class="card border-0 shadow">
-                                        <a href="javascript:void(0)" class="{{$item->is_available ? "orderBtn" : "not-allowed"}}"
+                            <div class="col-lg-4 col-md-6 col-12 mt-4 mb-4 ">
+                            <a class="{{$item->is_available ? 'orderBtn' : 'not-allowed'}}" href="javascript:void(0)" 
                                            data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
                                            data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                            data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percentprofit))}}"
                                            data-min="{{ $item->min }}" data-max="{{ $item->max }}"
                                            data-category="{{$category->id}}"
                                            data-description="{{$item->details}}">
-                                            <img
-                                                src="{{$item->image ? getImage(imagePath()['service']['path'].'/'. $item->image,imagePath()['service']['size']) : getImage(imagePath()['category']['path'].'/'. $category->image,imagePath()['category']['size'])}}"
-                                                class="card-img-top" alt="...">
-                                            <div class="card-body text-center">
-                                                <h5 class="card-title mb-0">{{__($item->name)}}</h5>
-                                                <div
-                                                    class="card-text text-black-50 mb-2">{{ $general->cur_sym . (getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100))}}</div>
-                                                @if($item->details)
-                                                    <a href="javascript:void(0)"
-                                                       class="icon-btn btn--info detailsBtn S m-2"
-                                                       data-original-title="@lang('Details')" data-toggle="tooltip"
-                                                       data-details="{{ $item->details }}">
-                                                        <i class="la la-info "></i>
-                                                    </a>
-                                                @endif
-                                                <a href="javascript:void(0)" class="icon-btn {{$item->is_available ? "orderBtn" : "not-allowed"}}"
+                                           <div class="service-details">
+                                    <div class="wrapper">
+                                        <div class="banner-image"> <img
+                                                src="https://semastore.net/assets/images/category/{{$category->image}}"
+                                                class="card-img-top" alt="..."></div>
+                                        <h2 class="mb-1">{{__($item->name)}}</h2>
+                                        <h3>{{ $general->cur_sym . (getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100))}}</h3>
+                                    </div>
+                                    <div class="button-wrapper"> 
+                                        <a  href="javascript:void(0)"
+                                                data-original-title="@lang('Details')" data-toggle="tooltip"
+                                                data-details="{{ $item->details }}" class="btn outline detailsBtn">@lang('Details')</a>
+                                        <a href="javascript:void(0)" 
                                                    data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
                                                    data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                                    data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100)}}"
@@ -90,13 +85,11 @@
                                                 {{--@if(isset($category->custom_additional_field_name))--}}
 
                                                 {{--@endif--}}
-                                                        ">
-                                                    <i class="fa fa-cart-plus"></i>
-                                                </a>
-                                            </div>
-                                        </a>
+                                                        " class="btn fill icon-btn {{$item->is_available ? 'orderBtn' : 'not-allowed'}}">@lang('Buy')</a>
                                     </div>
-                                </div>
+                                    </div>
+                                </a>
+                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -124,7 +117,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
+                        <button type="button" class="btn" data-dismiss="modal">@lang('Close')</button>
                     </div>
                 </div>
             </div>
@@ -134,7 +127,53 @@
         <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+
+
+
+            <div class="order-box modal-content">
+  <h2>@lang('Place a new order')</h2>
+  <form class="row" method="post">
+    <div class="item col-6">
+    <input text="text" id="player_number" name="" required="">
+      <label for="player_number">@lang('رقم اللاعب')</label>
+    </div>
+    <div class="item col-6">
+      <input text="text" id="player_name" name="" required="">
+      <label for="player_name">@lang('اسم اللاعب')</label>
+    </div>
+    <div class="item col-6">
+      <input text="text" id="Quantity" name="" required="">
+      <label for="Quantity">@lang('Quantity') </label>
+    </div>
+    <div class="item col-6">
+      <input text="text" id="Min" name="" required="">
+      <label for="Min">@lang('Min')</label>
+    </div>
+    <div class="item col-6">
+      <input text="text" id="Max" name="" required="">
+      <label for="Max">@lang('Max')</label>
+    </div>
+    <div class="item col-6">
+      <input text="text" id="Price" name="" required="">
+      <label for="Price">@lang('Price')</label>
+    </div>
+    <div class="col-12 text-center">
+    <a href="#">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      @lang('Submit')
+    </a>
+    <a href="#" data-dismiss="modal">
+      @lang('Close')
+    </a>
+    </div>
+  </form>
+</div>
+
+
+                <!-- <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel"><i
                                 class="fa fa-fw fa-share-square"></i>@lang('Place a new order')</h4>
@@ -194,11 +233,11 @@
                                         </div>
                                     @endforeach
 
-                                    <!-- <div class="col-sm-2">
+                                  <div class="col-sm-2">
                                             <a href="#" id="get_player_name" class="pull-right mr-2" >
                                                 <i class="fa fa-cart-plus"></i>
                                             </a>
-                                        </div> -->
+                                        </div> 
 
                                 @endif
                             </div>
@@ -251,12 +290,12 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
-                            <button type="submit" class="btn btn--primary" id="btn-save"
+                            <button type="button" class="btn" data-dismiss="modal">@lang('Close')</button>
+                            <button type="submit" class="btn" id="btn-save"
                                     value="add">@lang('Submit')</button>
                         </div>
                     </form>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

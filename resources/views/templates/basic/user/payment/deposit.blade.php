@@ -4,20 +4,20 @@
 @section('content')
     <div class="row">
             @foreach($gatewayCurrency as $data)
-                <div class="col-md-3 col-sm-4  card-dep mb-4">
-                    <div class="card card-deposit">
-                        <h5 class="card-header text-center">{{__($data->name)}}
-                        </h5>
-                        <div class="card-body card-body-deposit">
+                <div class="col-md-4 col-sm-6 mb-5">
+                    <div class=" card-deposit">
+                        <h2 class="text-white text-center">{{__($data->name)}}
+                        </h2>
+                        <div class="card-body-deposit">
                             <img src="{{$data->methodImage()}}" class="card-img-top" alt="{{__($data->name)}}" class="w-100">
                         </div>
-                        <div class="card-footer">
+                        <div class="text-center mt-2">
                             <a href="javascript:void(0)" data-id="{{$data->id}}" data-resource="{{$data}}"
                                data-min_amount="{{getAmount($data->min_amount)}}"
                                data-max_amount="{{getAmount($data->max_amount)}}"
                                data-base_symbol="{{$data->baseSymbol()}}"
                                data-fix_charge="{{getAmount($data->fixed_charge)}}"
-                               data-percent_charge="{{getAmount($data->percent_charge)}}" class=" btn  btn--primary btn-block custom-success deposit" data-toggle="modal" data-target="#exampleModal">
+                               data-percent_charge="{{getAmount($data->percent_charge)}}" class="btn btn-main" data-toggle="modal" data-target="#exampleModal">
                                 @lang('Deposit Now')</a>
                         </div>
                     </div>
@@ -29,14 +29,28 @@
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <strong class="modal-title method-name" id="exampleModalLabel"></strong>
-                    <a href="javascript:void(0)" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </a>
-                </div>
-                <form action="{{route('user.deposit.insert')}}" method="post">
+            <div class="order-box modal-content">
+  <h2>@lang('Deposit Now')</h2>
+  <form class="row" action="{{route('user.deposit.insert')}}" method="post">
+    <div class="item col-12">
+    <input id="amount" type="text" class="form-control form-control-lg" onkeyup="this.value = this.value.replace (/^\.|[^\d\.]/g, '')" name="amount" placeholder="0.00" required=""  value="{{old('amount')}}">
+      <label for="player_number">@lang('Enter Amount')</label>
+    </div>
+    <div class="col-12 text-center">
+    <a href="#">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      @lang('Confirm')
+    </a>
+    <a href="#" data-dismiss="modal">
+      @lang('Close')
+    </a>
+    </div>
+  </form>
+
+                <!-- <form action="{{route('user.deposit.insert')}}" method="post">
                     @csrf
                     <div class="modal-body">
                         <p class="text-danger depositLimit"></p>
@@ -59,7 +73,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('Close')</button>
                         <button type="submit" class="btn btn--primary">@lang('Confirm')</button>
                     </div>
-                </form>
+                </form> -->
             </div>
         </div>
     </div>

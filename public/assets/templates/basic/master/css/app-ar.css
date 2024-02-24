@@ -1911,7 +1911,7 @@ p, li, a {
 }
 
 .bg--white {
-    background-color: #ffffff !important;
+    background-color: #1d1522 !important;
 }
 
 .bg--black {
@@ -3548,14 +3548,14 @@ input.form-control-sm {
 }
 
 .table th {
-    font-size:.9rem;
+    font-size:1.1rem;
     text-align: center !important;
     padding: 15px 5px;
     white-space: nowrap;
 }
 
 .table td {
-    font-size: .8rem;
+    font-size: 1rem;
     color: #5b6e88;
     text-align: center !important;
     font-weight: 500;
@@ -7333,6 +7333,19 @@ a.icon-btn {
     font-weight: 700;
     font-style: normal;
   }
+  .btn-main{
+    background-color: transparent;
+    color: #fff;
+    padding:10px 25px;
+    transition: .5s;
+    border: 2px solid #e44e33;
+    font-size: 18px;
+
+  }
+  .btn-main:hover{
+    background-color: #e44e33;
+    color: #fff;
+  }
 /* start progress */
     #coverProgress {
         background-color: rgba(0, 0, 0, 0.79);
@@ -7519,12 +7532,15 @@ a.icon-btn {
 .text-lang-responsv{
     text-align: start;
 }
-/* order */
+/* services */
 figure {
     display: grid;
     border-radius: 1rem;
     overflow: hidden;
     cursor: pointer;
+  }
+  figure img{
+    width: 100%;
   }
   figure > * {
     grid-area: 1/1;
@@ -7564,6 +7580,85 @@ figure {
      -webkit-mask: none;
      color: #fff;
     }
+  }
+
+
+  .service-details {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: #1e1623;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);  
+    padding: 20px;  
+    filter: drop-shadow(0 30px 10px rgba(0,0,0,0.125));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+    text-align: center;
+    
+  }
+  
+  .service-details .wrapper {
+    width: 100%;
+    height: 100%;
+    
+  }
+  
+  .service-details .banner-image {
+    height: 300px;
+    width: 100%;
+    border-radius: 12px;
+  }
+  
+  .service-details .button-wrapper{
+    margin-top: 18px;
+  }
+  .service-details h2,.service-details h3{
+    color: #fff;
+  }
+  .service-details .btn {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-size: 0.8rem;  
+    letter-spacing: 2px;  
+    cursor: pointer;
+  }
+  
+  .service-details .btn + .btn {
+    margin-inline-start: 10px;
+  }
+  
+  .service-details .outline {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(250, 85, 54, 0.6);
+    transition: all .3s ease;
+    
+  }
+  
+  .service-details .outline:hover{
+    transform: scale(1.05);
+    color: rgba(250, 85, 54, 0.9);
+    border: 1px solid rgba(250, 85, 54, 0.6);
+    transition: all .3s ease;  
+  }
+  
+  .service-details .fill {
+    background: rgba(250, 85, 54, 0.9);
+    color: #fff;
+    filter: drop-shadow(0);
+    font-weight: bold;
+    transition: all .3s ease; 
+  }
+  
+  .service-details .fill:hover{
+    transform: scale(1.05);  
+    border-color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 10px 5px rgba(0,0,0,0.125));
+    transition: all .3s ease;    
   }
   /* search box */
   .search-box{
@@ -7628,4 +7723,228 @@ figure {
   }
   .pagination li.active span{
     color: #fff;
+  }
+  /* modal services */
+  .modal-content{
+    background-color: #1d1522;
+  }
+  .modal-content .modal-header h4{
+    color: #fff;
+  }
+  .modal-header .close{
+    margin: -1rem;
+    margin-inline-start: auto;
+  }
+  .modal-header .close span{
+    font-size: 30px;
+    color: #fff;
+  }
+  .modal-body #details{
+    color: #fff;
+    text-align: center;
+  }
+  .modal-footer .btn{
+    background-color: #e44e33;
+    color: #fff;
+  }
+  /* order buy */
+  .modal-dialog{
+    height: 100%;
+  }
+  .order-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background:#1c1421;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+  }
+  
+  .order-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .order-box .item {
+    position: relative;
+  }
+  
+  .order-box .item input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none !important;
+    border-bottom: 1px solid #fff !important;
+    outline: none;
+    background: transparent;
+    border-radius: 0 !important;
+  }
+  .order-box .item label {
+    position: absolute;
+    top:0;
+    right: 25px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
+  }
+  .order-box .item .vaild ~ label{
+    top: -30px;
+    right: 25px;
+    color: #e44d32;
+    font-size: 16px !important;
+  }
+  .order-box .item input:focus ~ label,
+  .order-box .item input:valid ~ label {
+    top: -30px;
+    right: 25px;
+    color: #e44d32;
+    font-size: 12px;
+  }
+  
+  .order-box form a {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #e44d32;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px
+  }
+  
+  .order-box a:hover {
+    background: #e44d32;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #e44d32,
+                0 0 25px #e44d32,
+                0 0 50px #e44d32,
+                0 0 100px #e44d32;
+  }
+  
+  .order-box a span {
+    position: absolute;
+    display: block;
+  }
+  
+  .order-box a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e44d32);
+    animation: btn-anim1 1s linear infinite;
+  }
+  
+  @keyframes btn-anim1 {
+    0% {
+      left: -100%;
+    }
+    50%,100% {
+      left: 100%;
+    }
+  }
+  
+  .order-box a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #e44d32);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: .25s
+  }
+  
+  @keyframes btn-anim2 {
+    0% {
+      top: -100%;
+    }
+    50%,100% {
+      top: 100%;
+    }
+  }
+  
+  .order-box a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #e44d32);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: .5s
+  }
+  
+  @keyframes btn-anim3 {
+    0% {
+      right: -100%;
+    }
+    50%,100% {
+      right: 100%;
+    }
+  }
+  
+  .order-box a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #e44d32);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: .75s
+  }
+  
+  @keyframes btn-anim4 {
+    0% {
+      bottom: -100%;
+    }
+    50%,100% {
+      bottom: 100%;
+    }
+  }
+  /* order-tabel */
+  .order-overlay{
+    background-color: rgba(0,0,0,0.3);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    cursor: pointer;
+    display: none;
+  }
+  .order-overlay.open{
+    display: block !important;
+  }
+  .order-details{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 999;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    display: none;
+  }
+  .order-details.open{
+    display: block !important;
+  }
+  .order-tabel tbody tr{
+    cursor: pointer;
+    transition: .5s;
+  }
+  .order-tabel tbody tr:hover{
+    background-color: #eb503242;
   }

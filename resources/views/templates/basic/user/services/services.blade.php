@@ -160,11 +160,13 @@
     <div class="container">
         <div class="row">
     @foreach($categories as $category)
-        <div class="col-md-3 col-6">
-        <figure>
-            <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">
-            <figcaption>@lang($category->name)</figcaption>
-        </figure>
+        <div class="col-md-4 col-6">
+            <a href="{{route('user.service',$category->id)}}">
+                <figure>
+                    <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">
+                    <figcaption>@lang($category->name)</figcaption>
+                </figure>
+            </a>
         </div>
         
     @endforeach
