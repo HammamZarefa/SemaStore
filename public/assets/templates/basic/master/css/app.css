@@ -3547,14 +3547,14 @@ input.form-control-sm {
     margin-bottom: 0;
 }
 .table th {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     text-align: center !important;
     padding: 15px 5px;
     white-space: nowrap;
 }
 
 .table td {
-    font-size: .8rem;
+    font-size: 1rem;
     color: #5b6e88;
     text-align: center !important;
     font-weight: 500;

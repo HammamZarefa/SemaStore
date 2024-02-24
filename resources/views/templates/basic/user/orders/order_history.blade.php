@@ -26,32 +26,34 @@
                             </select>
                         </div>
                     </div>
-               <table class="table table--light custom-data-table" id="table-id">
+               <table class="table table--light custom-data-table order-tabel" id="table-id">
                     <thead>
                         <tr>
-                            <th scope="col">@lang('Order ID')</th>
                             <th scope="col">@lang('Category')</th>
-                            <th scope="col" colspan="2">@lang('Service')</th>
+                            <th scope="col">@lang('Category')</th>
+                            <!-- <th scope="col" colspan="2">@lang('Service')</th> -->
                             <th scope="col">@lang('Link')</th>
-                            <th scope="col">@lang('Quantity')</th>
-                            <th scope="col">@lang('Code')</th>
-                            <th scope="col">@lang('verify')</th>
-                            <th scope="col">@lang('Date')</th>
-                            <th scope="col">@lang('Status')</th>
+                            <!-- <th scope="col">@lang('Quantity')</th> -->
+                            <!-- <th scope="col">@lang('Code')</th> -->
+                            <!-- <th scope="col">@lang('verify')</th> -->
+                            <th scope="col">@lang('Price')</th>
+                            <!-- <th scope="col">@lang('Status')</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($orders as $item)
-                        <tr>
-                            <td data-label="@lang('Order ID')">{{ $item-> id}}</td>
+                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}">
+                            <td data-label="@lang('Order ID')">
+                               <img style="border-radius:50%" width="50" src="https://semastore.net/assets/images/category/627914c3591f11652102339.png" alt="">
+                            </td>
                             <td data-label="@lang('Category')">{{ __($item-> category -> name)}}</td>
-                            <td data-label="@lang('Service')" colspan="2">{{ __($item-> service -> name) }}</td>
+                            <!-- <td data-label="@lang('Service')" colspan="2">{{ __($item-> service -> name) }}</td> -->
                             <td data-label="@lang('Link')"><a
                                 href="{{ empty(parse_url($item->link, PHP_URL_SCHEME)) ? 'https://' : null }}{{ $item->link }}"
                                 target="_blank">{{ $item-> link}}</a></td>
-                            <td data-label="@lang('Quantity')">{{ $item-> quantity}}</td>
-                            <td data-label="@lang('Code')">{{ $item-> code}}</td>
-                            <td data-label="@lang('verify')" id="verfiy">
+                            <!-- <td data-label="@lang('Quantity')">{{ $item-> quantity}}</td> -->
+                            <!-- <td data-label="@lang('Code')">{{ $item-> code}}</td> -->
+                            <!-- <td data-label="@lang('verify')" id="verfiy">
                                 <span id="{{$item->id}}">
                                             @if($item->verify )
                                     {{ $item-> verify}}
@@ -60,9 +62,12 @@
                                     <i class="fa fa-refresh" onclick="checksms({{ $item->id }})"></i>
                                     @endif
                                 </span>
+                            </td> -->
+                            <td data-label="@lang('Date')">
+                                <h4><strong class="text-white">14$</strong></h4>
+                                <h6 style="text-decoration: line-through;color: #bab7bc;">22$</h6>
                             </td>
-                            <td data-label="@lang('Date')">{{ showDateTime($item-> created_at) }}</td>
-                            <td data-label="@lang('Status')">
+                            <!-- <td data-label="@lang('Status')">
                                         @if($item->status === 0)
                                         
                                 <span
@@ -84,7 +89,7 @@
                                     class="text--small badge font-weight-normal badge--dark">@lang('Waiting Code')</span>
                                 @endif
 
-                            </td>
+                            </td> -->
                         </tr>
                         @empty
                         <tr>
@@ -109,6 +114,28 @@
                         </ul>
                     </nav>
                 </div>
+                <div class="order-overlay"></div>
+                <div class="order-details">
+                <div class="order-box" style="position: relative;top: 0;
+  left: 0;
+  width: 100%;transform: translate(0, 0);">
+  <h2>@lang('Details')</h2>
+  <div class="row" method="post">
+    <div class="item col-12">
+    <input class="vaild" text="text" id="Category" readonly>
+      <label for="name">@lang('Category')</label> 
+    </div>
+    <div class="item col-12">
+      <input class="vaild" text="text"readonly id="Link">
+      <label for="link">@lang('Link')</label>
+    </div>
+    <div class="col-12 text-center">
+    <a href="#" class="btn-main btn-close text-white">
+      @lang('Close')
+    </a>
+    </div>
+  </form>
+</div>
 @endsection
 
 <script>

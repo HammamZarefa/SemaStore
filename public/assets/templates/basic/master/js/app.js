@@ -409,3 +409,18 @@ $(document).on('input', 'input[name=search_table]', function () {
   }
  
 });
+// order details handel
+$('.order-tabel tbody tr').on('click', function () {
+  $('.order-overlay').addClass('open');
+  $('.order-details').addClass('open');
+  $('.order-details #Category').val($(this).data('name'));
+  $('.order-details #Link').val($(this).data('link'));
+})
+$('.order-overlay').on('click', function () {
+  $('.order-overlay').removeClass('open');
+  $('.order-details').removeClass('open');
+})
+$('.order-details .btn-close').on('click', function () {
+  $('.order-overlay').removeClass('open');
+  $('.order-details').removeClass('open');
+})

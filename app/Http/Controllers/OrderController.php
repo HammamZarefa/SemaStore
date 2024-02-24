@@ -253,7 +253,7 @@ class OrderController extends Controller
     {
         $page_title = 'Order History';
         $empty_message = "No result found";
-        $orders = Order::where('user_id', auth()->id())->with(['category', 'service'])->latest()->paginate(getPaginate());
+        $orders = Order::where('user_id', auth()->id())->with(['category', 'service'])->get();
         return view(activeTemplate() . 'user.orders.order_history', compact('page_title', 'orders', 'empty_message'));
     }
 

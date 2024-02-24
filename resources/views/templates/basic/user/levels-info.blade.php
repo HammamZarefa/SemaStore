@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row justify-content-center mt-4">
             <div class="col-xl-12 col-sm-12 mb-30 " style="text-align: right">
-                    <div class="widget-two box--shadow2 b-radius--5 bg--white " >
+                    <div class="widget-two shadow b-radius--5" style="border: 1px solid #d74e34;">
                         <i class="las la-shopping-cart overlay-icon text--primary"></i>
                         <div class="widget-two__icon b-radius--5 bg--primary">
                             <img id="" src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt=""
@@ -20,15 +20,15 @@
                         </div>
                         <div class="widget-two__content">
                             <h4 class="" style="color: #f05234">إحصل على أسعار  افضل عن طريق زيادة مشترياتك</h4>
-                            <p>عند شرائك بقيمة تساوي او اكثر لقيمة الإنتقال لشريحة اعلى خلال المدة المطابقة لشرط شريحة سوف تحصل على قيمة خصم الشريحة</p>
+                            <p style="color: #fff">عند شرائك بقيمة تساوي او اكثر لقيمة الإنتقال لشريحة اعلى خلال المدة المطابقة لشرط شريحة سوف تحصل على قيمة خصم الشريحة</p>
                         </div>
                     </div><!-- widget-two end -->
 
             </div>
             <div class="col-lg-12">
-                <div class="card b-radius--10 ">
-                    <div class="card-body p-0">
-                        <div class="table-responsive--sm table-responsive">
+                <div class="">
+                    <div class="">
+                        <div  class="table table--light custom-data-table" id="table-id">
                             <table class="table table--light style--two">
                                 <thead>
                                 <tr>
@@ -40,7 +40,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse($levels as $level)
-                                        <tr class="tr-level" @if(auth()->user()->level == $level->level) style="background-color: #e4e3e3;" @endif>
+                                        <tr class="tr-level" @if(auth()->user()->level == $level->level) style="background-color: #eb503242;" @endif>
                                             <td data-label="#@lang('Level')" >{{getLevelName($level->level)}}</td>
                                             <td data-label="@lang('Next_level_points')">{{ __($level->next_level_points)  }} $</td>
                                             <td data-label="#@lang('Points_reach_duration')" >{{$level->points_reach_duration}} يوم</td>
