@@ -7,6 +7,7 @@
     <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
       <change afterPath="$PROJECT_DIR$/app/Notifications/TelegramNotification.php" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/resources/views/admin/users/add.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor.rar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ManageUsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ManageUsersController.php" afterDir="false" />
@@ -302,7 +303,7 @@
       <workItem from="1704398057910" duration="3159000" />
       <workItem from="1704998509074" duration="1982000" />
       <workItem from="1705478563742" duration="18092000" />
-      <workItem from="1708894971350" duration="5169000" />
+      <workItem from="1708894971350" duration="5466000" />
     </task>
     <servers />
   </component>
