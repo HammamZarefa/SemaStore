@@ -9,6 +9,8 @@
     }
 </style>
 @section('content')
+
+
     <div class="container">
         <div class="row justify-content-center mt-4">
             <div class="col-xl-12 col-sm-12 mb-30 " style="text-align: right">
@@ -19,50 +21,126 @@
                                  style="width: 50px;cursor: pointer">
                         </div>
                         <div class="widget-two__content">
-                            <h4 class="" style="color: #f05234">إحصل على أسعار  افضل عن طريق زيادة مشترياتك</h4>
+                            <h4 class=""style="color: #f05234">إحصل على أسعار  افضل عن طريق زيادة مشترياتك</h4>
                             <p style="color: #fff">عند شرائك بقيمة تساوي او اكثر لقيمة الإنتقال لشريحة اعلى خلال المدة المطابقة لشرط شريحة سوف تحصل على قيمة خصم الشريحة</p>
                         </div>
-                    </div><!-- widget-two end -->
 
+                    </div><!-- widget-two end -->
+ 
             </div>
-            <div class="col-lg-12">
-                <div class="">
-                    <div class="">
-                        <div  class="table table--light custom-data-table" id="table-id">
-                            <table class="table table--light style--two">
-                                <thead>
-                                <tr>
-                                    <th scope="col">@lang('Level')</th>
-                                    <th scope="col">@lang('Next_level_points') </th>
-                                    <th scope="col">@lang('Points_reach_duration') </th>
-                                    <th scope="col">@lang('Percent_profit')</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($levels as $level)
-                                        <tr class="tr-level" @if(auth()->user()->level == $level->level) style="background-color: #eb503242;" @endif>
-                                            <td data-label="#@lang('Level')" >{{getLevelName($level->level)}}</td>
-                                            <td data-label="@lang('Next_level_points')">{{ __($level->next_level_points)  }} $</td>
-                                            <td data-label="#@lang('Points_reach_duration')" >{{$level->points_reach_duration}} يوم</td>
-                                            <td data-label="@lang('Percent_profit')" >{{ __($level->percent_profit)  }} %</td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td class="text-muted text-center" colspan="100%">@lang('No results found')!</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+           <div class="row">
+           @forelse($levels as $level)
+           <div class="col-md-6 col-12 d-flex justify-content-center">
+                <div class="card-level" onclick="this.classList.toggle('expanded')" @if(auth()->user()->level == $level->level) style="background-color: #eb50327a;" @endif>
+                    <!-- <img classs="label" src="{{asset('assets/images/level-1.png')}}" alt=""> -->
+                    <img classs="label" src="../../../../assets/images/level-{{$level->level}}.png" alt="">
+                    <div class="text1">
+                        <div class="text-content">
+                            <h2 class="title text-white">
+                                <strong>@lang('Level') :</strong>
+                                <span @if(auth()->user()->level == $level->level) style="color: #fff;" @endif>{{getLevelName($level->level)}}</span>
+                            </h2>
+                        <div class="body-text text-white">
+                            <strong>@lang('Next_level_points') :</strong>
+                            <span @if(auth()->user()->level == $level->level) style="color: #fff;" @endif> {{ __($level->next_level_points)  }} $</span>
+                        </div>
+                        <div class="body-text text-white">
+                            <strong>@lang('Points_reach_duration') :</strong>
+                            <span @if(auth()->user()->level == $level->level) style="color: #fff;" @endif> {{$level->points_reach_duration}} يوم</span>
+                        </div>
+                        <div class="body-text text-white">
+                            <strong>@lang('Percent_profit') :</strong>
+                            <span @if(auth()->user()->level == $level->level) style="color: #fff;" @endif> {{ __($level->percent_profit)  }} %</span>
+                        </div>
                         </div>
                     </div>
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 35" width="30"><path d="M5 30L50 5l45 25" fill="#1c1421" stroke="#fff" stroke-width="10" @if(auth()->user()->level == $level->level) style="fill: #843630;" @endif
+                     /></svg>
                 </div>
-            </div>
+            </div> 
+            @empty
+                                        <h3 class="text-white">
+                                            @lang('No results found')!
+                                        </h3> 
+            @endforelse
+           </div>
         </div>
     </div>
 @endsection
 
 @push('style')
     <style type="text/css">
+        .card-level {
+  background: #1c1421;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  cursor: pointer;
+  height: 300px;
+  margin: 20px auto;
+  padding: 10px 15px;
+  position: relative;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.025);
+  text-align: center;
+  transition: height 1000ms;
+  width: 400px;
+  display: block;
+  
+}
+.card-level img{
+    width: 220px;
+    height: 220px;
+}
+.card-level.expanded {
+  height: 400px;
+}
+.card-level .label {
+  margin-top: 30px;
+  transform: translateY(10px);
+  transition: transform 1000ms;
+}
+.card-level.expanded .label {
+  transform: translateY(0);
+}
+.card-level .text1 {
+  clip-path: polygon(0% 100%, 0 -90%, 50% -5%, 100% -90%, 100% 100%);
+  -webkit-clip-path: polygon(0% 100%, 0 -90%, 50% -5%, 100% -90%, 100% 100%);
+  transition: clip-path 1000ms;
+  opacity: 0;
+}
+.card-level.expanded .text1 {
+  clip-path: polygon(0% 100%, 0 -100%, 50% -15%, 100% -100%, 100% 100%);
+  -webkit-clip-path: polygon(0% 100%, 0 -100%, 50% -15%, 100% -100%, 100% 100%);
+  opacity: 1;
+}
+.card-level .text-content {
+  transform: translateY(-160px);
+  transition: transform 1000ms;
+}
+.card-level.expanded .text-content {
+  transform: translateY(-15px);
+}
+.card-level .chevron {
+  position: absolute;
+  bottom: 20px;
+  left: calc(50% - 15px);
+  transform-origin: 50%;
+  transform: rotate(180deg);
+  transition: transform 1000ms;
+}
+.card-level.expanded .chevron {
+  transform: rotate(0deg);
+}
+.card-level .title {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 900;
+  margin: 20px 0 12px;
+}
+.card-level .body-text {
+  padding: 0 20px;
+}
+.card-level .body-text span,.card-level .title span{
+    color:#eb5032
+}
         .hover-input-popup {
             position: relative;
         }
@@ -148,12 +226,13 @@
 
 @push('script-lib')
     <script src="{{ asset('assets/global/js/secure_password.js') }}"></script>
+
 @endpush
 
 @push('script')
+
     <script>
         "use strict";
-
         @if($general->secure_password)
         $('input[name=password]').on('input', function () {
             secure_password($(this));

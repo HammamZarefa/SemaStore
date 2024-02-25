@@ -95,7 +95,7 @@
                         <i class="menu-icon la la-pizza-slice"></i>
                         <span class="menu-title">الشرائح </span>
                     </a>
-                    <div class="progress" style="background-color: #505862;">
+                    <div class="progress mt-2" style="background-color: #505862;">
                         <div class="progress-bar" role="progressbar"
                              style="width: {{auth()->user()->nextLevel()['progress']}}%;
                              background: linear-gradient(to right, #4f5761,#f05335,  #f05335);"
