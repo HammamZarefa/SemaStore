@@ -108,6 +108,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('users/send-email', 'ManageUsersController@showEmailAllForm')->name('users.email.all');
         Route::post('users/send-email', 'ManageUsersController@sendEmailAll')->name('users.email.send');
         Route::post('user/lock-level/{id}','ManageUsersController@lockUnlockLevel')->name('users.level.lock');
+        Route::post('user/register','ManageUsersController@register')->name('users.create');
+        Route::get('user/add','ManageUsersController@add')->name('users.add');
 
         //Categories
         Route::get('categories', 'CategoryController@index')->name('categories.index');
@@ -323,8 +325,8 @@ Route::name('user.')->group(function () {
     Route::post('/login', 'Auth\LoginController@login');
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
-    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-    Route::post('register', 'Auth\RegisterController@register')->middleware('regStatus');
+//    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+//    Route::post('register', 'Auth\RegisterController@register')->middleware('regStatus');
 
     Route::group(['middleware' => ['guest']], function () {
         Route::get('register/{reference}', 'Auth\RegisterController@referralRegister')->name('refer.register');

@@ -72,7 +72,7 @@
                                     <li><a href="{{ route('user.logout') }}">@lang('Logout')</a></li>
                                 @else
                                     <li><a href="{{ route('user.login') }}">@lang('Login')</a></li>
-                                    <li><a href="{{ route('user.register') }}">@lang('Register')</a></li>
+{{--                                    <li><a href="{{ route('user.register') }}">@lang('Register')</a></li>--}}
                                 @endauth
                             </ul>
                         </div>

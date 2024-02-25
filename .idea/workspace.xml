@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ManageUsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ManageUsersController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/detail.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -177,22 +172,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/inventory" />
-    <property name="nodejs_package_manager_path" value="npm" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "last_opened_file_path": "C:/Projects/SemaStore/resources/views/admin/users",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\SAAD\app\Http\Controllers\Admin" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\SemaStore\resources\views\admin\users" />
       <recent name="D:\CODA\SemaStore\resources\views\admin\inventory" />
       <recent name="D:\CODA\SemaStore\resources\views\admin\inventory\service" />
       <recent name="D:\CODA\SemaStore" />
       <recent name="C:\Projects\SemaStore\resources\views\templates\basic\user" />
-      <recent name="C:\Projects\SemaStore\assets\images\logoIcon" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\SAAD\app\Http\Controllers\Admin" />
     </key>
   </component>
   <component name="RunManager" selected="PHPUnit.ExampleTest.testTelegramNotification (1)">
@@ -288,6 +286,7 @@
       <workItem from="1704398057910" duration="3159000" />
       <workItem from="1704998509074" duration="1982000" />
       <workItem from="1705478563742" duration="18092000" />
+      <workItem from="1708894971350" duration="5906000" />
     </task>
     <servers />
   </component>
@@ -304,12 +303,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1705490914862">
-      <screen x="0" y="0" width="1536" height="816" />
-    </state>
-    <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.816@0.0.1536.816" timestamp="1705490914862" />
   </component>
 </project>

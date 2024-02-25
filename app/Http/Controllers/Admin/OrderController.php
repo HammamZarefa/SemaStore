@@ -134,12 +134,13 @@ class OrderController extends Controller
 
         $request->validate([
             'start_counter' => 'required|integer|gte:0|lte:' . $order->quantity,
-            'status' => 'required|integer|in:0,1,2,3,4'
+            'status' => 'required|integer|in:0,1,2,3,4',
+            'details' => 'string'
         ]);
 
         $order->start_counter = $request->start_counter;
         $order->remain = ($order->quantity - $request->start_counter);
-
+        $order->details = $request->details;
         $user = User::findOrFail($order->user_id);
 
         //Processing
