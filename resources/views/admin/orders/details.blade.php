@@ -17,11 +17,14 @@
                                 </tr>
                                 <tr>
                                     <td data-label="@lang('User')">@lang('User')</td>
-                                    <td class="text-left" data-label="@lang('User')"><a href="{{ route('admin.users.detail', $order->user_id) }}">{{ $order->user->username }}</a></td>
+                                    <td class="text-left" data-label="@lang('User')"><a
+                                            href="{{ route('admin.users.detail', $order->user_id) }}">{{ $order->user->username }}</a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td data-label="@lang('Category')">@lang('Category')</td>
-                                    <td class="text-left" data-label="@lang('Category')">{{ $order->category->name }}</td>
+                                    <td class="text-left"
+                                        data-label="@lang('Category')">{{ $order->category->name }}</td>
                                 </tr>
                                 <tr>
                                     <td data-label="@lang('Service')">@lang('Service')</td>
@@ -29,17 +32,19 @@
                                 </tr>
                                 <tr>
                                     <td data-label="@lang('Link')">@lang('Link')</td>
-                                    <td class="text-left" data-label="@lang('Link')"><a href="{{ empty(parse_url($order->link, PHP_URL_SCHEME)) ? 'https://' : null }}{{ $order->link }}" target="_blank">{{ $order->link }}</a></td>
+                                    <td class="text-left" data-label="@lang('Link')"><a
+                                            href="{{ empty(parse_url($order->link, PHP_URL_SCHEME)) ? 'https://' : null }}{{ $order->link }}"
+                                            target="_blank">{{ $order->link }}</a></td>
                                 </tr>
                                 <tr>
                                     <td data-label="@lang('Quantity')">@lang('Quantity')</td>
                                     <td class="text-left" data-label="@lang('Quantity')">{{ $order->quantity }}</td>
                                 </tr>
                                 @if(isset( $order->details))
-                                <tr>
-                                    <td data-label="@lang('Details')">@lang('Details')</td>
-                                    <td class="text-left" data-label="@lang('Details')">{{ $order->details }}</td>
-                                </tr>
+                                    <tr>
+                                        <td data-label="@lang('Details')">@lang('Details')</td>
+                                        <td class="text-left" data-label="@lang('Details')">{{ $order->details }}</td>
+                                    </tr>
                                 @endif
                                 <tr>
                                     <td data-label="@lang('Price')">@lang('Price')</td>
@@ -49,7 +54,8 @@
                                     <td data-label="@lang('Start Counter')">@lang('Start Counter')</td>
                                     <td data-label="@lang('Start Counter')" class="text-left">
                                         @if($order->status == 0 || $order->status == 1)
-                                            <input type="text" name="start_counter" max="{{ $order->quantity }}" value="{{ $order->start_counter }}" class="form-control" required>
+                                            <input type="text" name="start_counter" max="{{ $order->quantity }}"
+                                                   value="{{ $order->start_counter }}" class="form-control" required>
                                         @else
                                             {{ $order->start_counter }}
                                         @endif
@@ -65,23 +71,27 @@
                                         <td data-label="@lang('API Order')">@lang('API Order')</td>
                                         <td class="text-left" data-label="@lang('API Order')">
                                             @if($order->api_order)
-                                                <span class="text--small badge font-weight-normal badge--primary">@lang('Yes')</span>
+                                                <span
+                                                    class="text--small badge font-weight-normal badge--primary">@lang('Yes')</span>
                                             @endif
                                         </td>
                                     </tr>
                                     @if($order->order_placed_to_api)
                                         <tr>
                                             <td data-label="@lang('API Order ID')">@lang('API Order ID')</td>
-                                            <td class="text-left" data-label="@lang('API Order ID')"><strong>{{ @$order->api_order_id }}</strong></td>
+                                            <td class="text-left" data-label="@lang('API Order ID')">
+                                                <strong>{{ @$order->api_order_id }}</strong></td>
                                         </tr>
                                     @endif
                                     <tr>
                                         <td data-label="@lang('Order Placed')">@lang('Order Placed To API')</td>
                                         <td class="text-left" data-label="@lang('Order Placed')">
                                             @if($order->order_placed_to_api)
-                                                <span class="text--small badge font-weight-normal badge--primary">@lang('Yes')</span>
+                                                <span
+                                                    class="text--small badge font-weight-normal badge--primary">@lang('Yes')</span>
                                             @else
-                                                <span class="text--small badge font-weight-normal badge--danger">@lang('No')</span>
+                                                <span
+                                                    class="text--small badge font-weight-normal badge--danger">@lang('No')</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -93,12 +103,18 @@
                                         @if($order->status === 0 || $order->status === 1)
                                             <select class="form-control" name="status" required>
                                                 <option>--@lang('Select Status')--</option>
-                                                <option value="0" {{ $order->status === 0 ? 'selected' : null }}>@lang('Pending')</option>
-                                                <option value="1" {{ $order->status === 1 ? 'selected' : null }}>@lang('Processing')</option>
-                                                <option value="2" {{ $order->status === 2 ? 'selected' : null }}>@lang('Completed')</option>
-                                                <option value="3" {{ $order->status === 3 ? 'selected' : null }}>@lang('Cancelled')</option>
-                                                <option value="4" {{ $order->status === 4 ? 'selected' : null }}>@lang('Refunded')</option>
-                                                <option value="5" {{ $order->status === 5 ? 'selected' : null }}>@lang('Waiting Code')</option>
+                                                <option
+                                                    value="0" {{ $order->status === 0 ? 'selected' : null }}>@lang('Pending')</option>
+                                                <option
+                                                    value="1" {{ $order->status === 1 ? 'selected' : null }}>@lang('Processing')</option>
+                                                <option
+                                                    value="2" {{ $order->status === 2 ? 'selected' : null }}>@lang('Completed')</option>
+                                                <option
+                                                    value="3" {{ $order->status === 3 ? 'selected' : null }}>@lang('Cancelled')</option>
+                                                <option
+                                                    value="4" {{ $order->status === 4 ? 'selected' : null }}>@lang('Refunded')</option>
+                                                <option
+                                                    value="5" {{ $order->status === 5 ? 'selected' : null }}>@lang('Waiting Code')</option>
                                             </select>
                                         @elseif($order->status === 2)
                                             <span
@@ -112,6 +128,10 @@
                                         @endif
                                     </td>
                                 </tr>
+                                <td data-label="@lang('Details')">@lang('Details')</td>
+                                <td data-label="@lang('Details')" class="text-left">
+                                    <input type="text" name="details" value="{{ $order->details }}" class="form-control">
+                                </td>
                                 </tbody>
                             </table>
                         </div>
@@ -119,7 +139,8 @@
 
                     @if($order->status === 0 || $order->status === 1)
                         <div class="card-footer">
-                            <button type="submit" class="btn btn--primary btn-block btn-lg">@lang('Save Changes')</button>
+                            <button type="submit"
+                                    class="btn btn--primary btn-block btn-lg">@lang('Save Changes')</button>
                         </div>
                     @endif
                 </form>

@@ -62,6 +62,7 @@
 
 
 @push('breadcrumb-plugins')
+    <a class="btn btn-sm btn--primary box--shadow1 text--small" href="{{ route('admin.users.add') }}"><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
     <form action="{{ route('admin.users.search', $scope ?? str_replace('admin.users.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
         <div class="input-group has_append">
             <input type="text" name="search" class="form-control" placeholder="@lang('Username or email')" value="{{ $search ?? '' }}">

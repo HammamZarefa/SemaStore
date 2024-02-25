@@ -441,7 +441,9 @@
 
         (function ($) {
             "use strict";
-            $('.editBtn').on('click', function () {
+
+            // Function to handle edit button click
+            function handleEditButtonClick() {
                 var modal = $('#editModal');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
@@ -450,16 +452,15 @@
                 var min = $(this).data('min');
                 var max = $(this).data('max');
                 var is_available = $(this).data('is_available');
-                console.log(is_available)
                 var details = $(this).data('details');
                 var api_service_id = $(this).data('api_service_id');
                 var special_price = $(this).data('special_price');
                 $('.api_service_id').empty();
+
                 if (api_service_id) {
                     $('.api_service_id').html(`<label class="font-weight-bold">@lang('Service Id (If order process through API)')</label>
-                            <input type="text" name="api_service_id" value="${api_service_id}" class="form-control">`);
+                    <input type="text" name="api_service_id" value="${api_service_id}" class="form-control">`);
                 }
-
 
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
@@ -470,11 +471,14 @@
                 modal.find('input[name=max]').val(max);
                 modal.find('textarea[name=details]').val(details);
                 modal.find('input[name=is_available]').bootstrapToggle(is_available === 1 ? 'toggle' : '');
-                modal.find('input[name=is_available]').prop('checked', true)
+                modal.find('input[name=is_available]').prop('checked', true);
 
                 modal.modal('show');
                 showExtraField1();
-            });
+            }
+
+            // Event delegation for edit button click
+            $(document).on('click', '.editBtn', handleEditButtonClick);
 
             $('.statusBtn').on('click', function () {
                 var modal = $('#statusModal');
@@ -494,7 +498,7 @@
             for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[1];
                 if (td) {
-                    if (td.innerHTML == filter || filter==-1) {
+                    if (td.innerHTML == filter || filter == -1) {
                         tr[i].style.display = "";
                     } else {
                         tr[i].style.display = "none";
@@ -502,7 +506,6 @@
                 }
             }
         }
-
     </script>
 
 @endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\AdminNotification;
 use App\Models\Deposit;
 use App\Models\Gateway;
 use App\Models\GeneralSetting;
@@ -12,9 +13,11 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserLogin;
 use HammamZarefa\RapidRanker\Models\Level;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 
 class ManageUsersController extends Controller
@@ -130,7 +133,7 @@ class ManageUsersController extends Controller
         $widget['refunded_order'] = Order::where('user_id', $user->id)->refunded()->count();
         $levels = Level::all();
 
-        return view('admin.users.detail', compact('page_title', 'user', 'totalDeposit', 'totalTransaction', 'total_spent', 'widget','levels'));
+        return view('admin.users.detail', compact('page_title', 'user', 'totalDeposit', 'totalTransaction', 'total_spent', 'widget', 'levels'));
     }
 
 
@@ -364,5 +367,75 @@ class ManageUsersController extends Controller
         else $user->unlockLevel(@$level);
         $notify[] = ['success', 'Updated Successfully.'];
         return back()->withNotify($notify);
+    }
+
+    protected function validator(array $data)
+    {
+        $validate = Validator::make($data, [
+            'firstname' => 'sometimes|required|string|max:60',
+            'lastname' => 'sometimes|required|string|max:60',
+            'email' => 'required|string|email|max:160|unique:users',
+            'mobile' => 'required|string|max:30|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'username' => 'required|alpha_num|unique:users|min:6',
+            'captcha' => 'sometimes|required',
+            'country_code' => ''
+        ]);
+
+        return $validate;
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $exist = User::where('mobile', $request->country_code . $request->mobile)->first();
+        if ($exist) {
+            $notify[] = ['error', 'Mobile number already exist'];
+            return back()->withNotify($notify)->withInput();
+        }
+
+        $user = $this->create($request->all());
+        if ($user) {
+            $notify[] = ['success', 'User added successfully'];
+            return redirect()->route('admin.users.all')->withNotify($notify);
+        } else {
+            $notify[] = ['error', 'There is an error'];
+            return redirect()->back()->withNotify($notify);
+        }
+
+    }
+
+    protected function create(array $data)
+    {
+
+        $user = new User();
+        $user->firstname = isset($data['firstname']) ? $data['firstname'] : null;
+        $user->lastname = isset($data['lastname']) ? $data['lastname'] : null;
+        $user->email = strtolower(trim($data['email']));
+        $user->password = Hash::make($data['password']);
+        $user->username = trim($data['username']);
+        $user->mobile = @$data['country_code'] . $data['mobile'];
+        $user->address = [
+            'address' => '',
+            'state' => '',
+            'zip' => '',
+            'country' => isset($data['country']) ? $data['country'] : null,
+            'city' => ''
+        ];
+        $user->status = 1;
+        $user->ev = 1;
+        $user->sv = 1;
+        $user->ts = 1;
+        $user->tv = 1;
+        $user->save();
+
+        return $user;
+    }
+
+    public function add()
+    {
+        $page_title = "Sign Up";
+        $country_code ='sy';
+        return view('admin.users.add', compact('page_title','country_code'));
     }
 }

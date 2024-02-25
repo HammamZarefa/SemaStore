@@ -18,6 +18,8 @@
                                 <th scope="col">@lang('verify')</th>
                                 <th scope="col">@lang('Date')</th>
                                 <th scope="col">@lang('Status')</th>
+                                <th scope="col">@lang('Details')</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -65,6 +67,7 @@
                                         @endif
 
                                     </td>
+                                    <td data-label="@lang('Details')">{{ $item->details }}</td>
                                 </tr>
                             @empty
                                 <tr>
