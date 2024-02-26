@@ -85,6 +85,6 @@
 @endsection
 
 @push('breadcrumb')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{route('ticket.open') }}"><i
+    <a class="btn btn-main" href="{{route('ticket.open') }}"><i
             class="fa fa-fw fa-plus"></i>@lang('New Ticket')</a>
 @endpush

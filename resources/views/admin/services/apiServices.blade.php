@@ -134,7 +134,7 @@
 @endsection
 
 @push('breadcrumb-plugins')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{ route('admin.services.index') }}"><i
+    <a class="btn btn-main" href="{{ route('admin.services.index') }}"><i
             class="fa fa-fw fa-backward"></i>@lang('Go Back')</a>
 @endpush
 

@@ -15,10 +15,10 @@
         <div class="row justify-content-center mt-4">
             <div class="col-xl-12 col-sm-12 mb-30 " style="text-align: right">
                     <div class="widget-two shadow b-radius--5" style="border: 1px solid #d74e34;">
-                        <i class="las la-shopping-cart overlay-icon text--primary"></i>
-                        <div class="widget-two__icon b-radius--5 bg--primary">
-                            <img id="" src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt=""
-                                 style="width: 50px;cursor: pointer">
+                        <i class="las la-shopping-cart overlay-icon" style="color:#f55335"></i>
+                        <div class="widget-two__icon">
+                            <img id="" src="../../../../assets/images/level-5.png" alt=""
+                                 style="width: 75px;cursor: pointer">
                         </div>
                         <div class="widget-two__content">
                             <h4 class=""style="color: #f05234">إحصل على أسعار  افضل عن طريق زيادة مشترياتك</h4>
@@ -26,7 +26,18 @@
                         </div>
 
                     </div><!-- widget-two end -->
- 
+                    <div class="progress mt-3 mb-3" style="position: relative;background-color: #ee5133;overflow: visible;height: 1.5rem;">
+                        <div class="progress-bar" role="progressbar" style="width: calc(100% / ({{auth()->user()->level}} + 1 ));background-color: #fff;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> <strong class="text-dark" style="font-size: 18px;"> {{auth()->user()->nextLevel()['progress']}} %</strong></div>
+                        <div style="position: absolute;position: absolute;width: 100%;display: flex;justify-content: space-between;flex-direction: row-reverse;top: 15px;">
+                        @forelse($levels as $level)
+                        <img 
+                        width="50" classs="label" src="../../../../assets/images/level-{{$level->level}}.png" alt="">
+                        @empty
+                        <h3 class="text-white"></h3> 
+                        @endforelse
+                        </div>
+                      
+                    </div>
             </div>
            <div class="row">
            @forelse($levels as $level)

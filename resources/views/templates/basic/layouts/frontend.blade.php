@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/bootstrap.min.css')}}">
     <!-- main style css link -->
     <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/style.css')}}">
+    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/newsTicker.css')}}">
 
     <link rel="stylesheet"
           href="{{asset($activeTemplateTrue.'css/color.php?color='.$general->base_color.'&secondColor='.$general->secondary_color)}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap" rel="stylesheet">
-
     @stack('style-lib')
     @stack('style')
 
@@ -41,9 +41,21 @@
         <div class="loader-inner"></div>
     </div>
 </div>
+<div class="tickerheader" style="background: linear-gradient(to right, #271f2c ,#271f2c ,#271f2c);">
+                {{--                <div class="stickytitle">Breaking News</div>--}}
+                <div class="ticker-container">
+                    <div class="ticker">
+                        @forelse($news as $item)
+                            <img src="{{asset('assets/images/minilogo2.png')}}" width="40"/>
+                            <div class="ticker-item">{{$item->body}}</div>
+                        @empty
 
+                        @endforelse
+                    </div>
+                </div>
+            </div>
 <!-- header-section start -->
-<header class="header-section" >
+<header class="header-section" style="top: 5px;">
 <nav class="navbar navbar-expand-lg navbar-light  sticky-top" >
   <div class="container" style="background-image: url({{asset('assets/images/header_bg.jpg')}});padding: 10px 30px;">
   <a class="site-logo site-title" href="{{route('home')}}">

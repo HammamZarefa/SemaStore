@@ -84,11 +84,11 @@
                 <div class="bodywrapper__inner">
 
                     <div class="row align-items-center mb-30 justify-content-between">
-                        <div class="col-lg-12 col-sm-6 text-lang-responsv">
+                        <div class="col-6 text-lang-responsv">
                             <!-- <a href="{{ url()->previous() }}"><i class="fa fa-arrow-right text-white"></i></a> -->
                             <h3 class="page-title text-white">{{ __($page_title) }}</h3>
                         </div>
-                        <div class="col-lg-6 col-sm-6 text-sm-right mt-sm-0 mt-3 right-part">
+                        <div class="col-6 text-end mt-1">
                             @stack('breadcrumb')
                         </div>
                     </div>

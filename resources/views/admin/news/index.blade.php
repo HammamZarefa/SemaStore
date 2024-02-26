@@ -165,7 +165,7 @@
 
 
 @push('breadcrumb-plugins')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i
+    <a class="btn btn-main" data-toggle="modal" data-target="#myModal"><i
             class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
 @endpush
 

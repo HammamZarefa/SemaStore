@@ -4449,9 +4449,9 @@ th.w-85 {
     margin-bottom: -4px;
 }
 
-.dashboard-w1 .details {
+/* .dashboard-w1 .details {
     text-align: right;
-}
+} */
 
 .dashboard-w1 .details .status,
 .dashboard-w1 .details .amount,
@@ -7517,7 +7517,6 @@ a.icon-btn {
 }
 .mobile-nav .item-100{
     width: 100%;
-    text-align: center;
 }
 .overlay{
     background-color: rgba(0,0,0,0.3);
