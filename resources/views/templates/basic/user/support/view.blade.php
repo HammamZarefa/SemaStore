@@ -297,7 +297,7 @@
 @endsection
 
 @push('breadcrumb')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{ url()->previous() }}"><i
+    <a class="btn btn-main" href="{{ url()->previous() }}"><i
             class="fa fa-fw fa-backward"></i>@lang('Go Back')</a>
 @endpush
 

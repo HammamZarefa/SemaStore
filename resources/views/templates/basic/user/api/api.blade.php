@@ -246,7 +246,7 @@
 @endsection
 
 @push('breadcrumb')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{ asset('assets/examplePhpCode.txt') }}" target="_blank">@lang('Example PHP Code')</a>
+    <a class="btn btn-main" href="{{ asset('assets/examplePhpCode.txt') }}" target="_blank">@lang('Example PHP Code')</a>
 @endpush
 
 

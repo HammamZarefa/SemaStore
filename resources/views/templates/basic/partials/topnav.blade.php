@@ -4,20 +4,12 @@
     <div class="navbar__left">
         <button class="res-sidebar-open-btn"><i class="las la-bars text-white"></i></button>
     </div>
-    <div class="navbar__left price-acount">
-        <span class="navbar text-white"> @lang('exchange rate') : &nbsp;<strong style="color:#eb5032">
-        1 {{ $general->cur_sym}} = {{$general->exchange_rate}}
-        </strong> </span>
-    </div>
+    
     <div class="navbar__right">
         <ul class="navbar__action-list">
-            <li style="margin-left: auto;margin-right: auto;">
-                <img id="showProgress" src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt=""
+            <li>
+                <img id="showProgress" src="../../../assets/images/level-{{auth()->user()->level}}.png" alt=""
                      style="width: 46px;cursor: pointer">
-                <span id="showProgressSpan"
-                      style=" position: absolute;cursor: pointer;font-size:12px;margin-left: 20px;
-                      margin-right:{{auth()->user()->level == 1 ? '-28px' : '-30px'}} ;margin-top: 8px;color: #f05234;">
-                    {{auth()->user()->level}}</span>
                     <span class="text-white">
                     @lang('Your Balance')  :
                     <strong style="color:#eb5032">
@@ -30,7 +22,7 @@
                     <div class="mb-2 d-flex progressText">
                         <div class="d-flex mb-3">
                             <div class="level">
-                                <img src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt="">
+                                <img src="../../../assets/images/level-{{auth()->user()->level}}.png" alt="">
                                 <span>{{auth()->user()->level}}</span>
                             </div>
                             <br>
@@ -146,12 +138,7 @@
                     </a>
                 </div>
 </div>
-<div class="item-100 mt-1">
-        <span class="text-white"> @lang('exchange rate') : &nbsp;<strong style="color:#eb5032">
-        1 {{ $general->cur_sym}} = {{$general->exchange_rate}}
-        </strong> </span>
-</div>
-<div class="item-100 mt-1">
+<div class="item-100 mt-1 text-lang-responsv">
 <img id="showProgress" src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt=""
                      style="width: 31px;cursor: pointer">
                 <span id="showProgressSpan"

@@ -2,46 +2,46 @@
 @section('content')
     <div class="row mb-none-30">
         <div class="col-xl-4 col-lg-4 col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--primary b-radius--10 box-shadow">
+            <div class="dashboard-w1 bg--white b-radius--10 box-shadow">
                 <div class="icon">
-                    <i class="la la-wallet"></i>
+                    <i class="la la-wallet text-muted" ></i>
                 </div>
                 <div class="details">
                     <div class="numbers">
-                        <span class="amount">{{ $general->cur_sym . getAmount($widget['balance']) }}</span>
+                        <h2>{{ $general->cur_sym . getAmount($widget['balance']) }}</h2>
                     </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Balance')</span>
+                    <div class="desciption text-start">
+                        <span class=" text-white">@lang('Balance')</span>
                     </div>
                 </div>
             </div>
         </div><!-- dashboard-w1 end -->
         <div class="col-xl-4 col-lg-4 col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--green b-radius--10 box-shadow">
+            <div class="dashboard-w1 bg--white b-radius--10 box-shadow">
                 <div class="icon">
-                    <i class="la la-money-bill"></i>
+                    <i class="la la-money-bill text-muted"></i>
                 </div>
                 <div class="details">
                     <div class="numbers">
-                        <span class="amount">{{ $general->cur_sym . getAmount($widget['total_spent']) }}</span>
+                        <h2>{{ $general->cur_sym . getAmount($widget['total_spent']) }}</h2>
                     </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Total Spent')</span>
+                    <div class="desciption text-start">
+                        <span class="">@lang('Total Spent')</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-4 col-lg-4 col-sm-6 mb-30">
-            <div class="dashboard-w1 bg--gradi-7 b-radius--10 box-shadow ">
+            <div class="dashboard-w1 bg--white b-radius--10 box-shadow ">
                 <div class="icon">
-                    <i class="la la-exchange-alt"></i>
+                    <i class="la la-exchange-alt text-muted"></i>
                 </div>
                 <div class="details">
                     <div class="numbers">
-                        <span class="amount">{{$widget['total_transaction']}}</span>
+                        <h2>{{$widget['total_transaction']}}</h2>
                     </div>
-                    <div class="desciption">
-                        <span class="text--small">@lang('Total Transaction')</span>
+                    <div class="desciption text-start">
+                        <span class="">@lang('Total Transaction')</span>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="widget-two__content">
                         <h2 class="">{{$widget['total_order']}}</h2>
-                        <p>@lang('Total Order')</p>
+                        <p class="text-white">@lang('Total Order')</p>
                     </div>
                 </div><!-- widget-two end -->
             </a>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="widget-two__content">
                         <h2 class="">{{$widget['pending_order']}}</h2>
-                        <p>@lang('Pending Order')</p>
+                        <p class="text-white">@lang('Pending Order')</p>
                     </div>
                 </div><!-- widget-two end -->
             </a>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="widget-two__content">
                         <h2 class="">{{$widget['processing_order']}}</h2>
-                        <p>@lang('Processing Order')</p>
+                        <p class="text-white">@lang('Processing Order')</p>
                     </div>
                 </div><!-- widget-two end -->
             </a>
@@ -106,7 +106,7 @@
                     </div>
                     <div class="widget-two__content">
                         <h2 class="">{{$widget['completed_order']}}</h2>
-                        <p>@lang('Completed Order')</p>
+                        <p class="text-white">@lang('Completed Order')</p>
                     </div>
                 </div><!-- widget-two end -->
             </a>
@@ -121,7 +121,7 @@
                     </div>
                     <div class="widget-two__content">
                         <h2 class="">{{$widget['cancelled_order']}}</h2>
-                        <p>@lang('Cancelled Order')</p>
+                        <p class="text-white">@lang('Cancelled Order')</p>
                     </div>
                 </div><!-- widget-two end -->
             </a>
@@ -136,7 +136,7 @@
                     </div>
                     <div class="widget-two__content">
                         <h2 class="">{{$widget['refunded_order']}}</h2>
-                        <p>@lang('Refunded Order')</p>
+                        <p class="text-white">@lang('Refunded Order')</p>
                     </div>
                 </div><!-- widget-two end -->
             </a>

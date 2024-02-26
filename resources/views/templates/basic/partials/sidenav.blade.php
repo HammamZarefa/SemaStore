@@ -95,13 +95,18 @@
                         <i class="menu-icon la la-pizza-slice"></i>
                         <span class="menu-title">الشرائح </span>
                     </a>
-                    <div class="progress mt-2" style="background-color: #505862;">
+                    <!-- <div class="progress mt-2" style="background-color: #505862;">
                         <div class="progress-bar" role="progressbar"
                              style="width: {{auth()->user()->nextLevel()['progress']}}%;
                              background: linear-gradient(to right, #4f5761,#f05335,  #f05335);"
                              aria-valuenow="{{auth()->user()->nextLevel()['progress']}}"
                              aria-valuemin="0" aria-valuemax="100">{{auth()->user()->nextLevel()['progress']}}%</div>
-                    </div>
+                    </div> -->
+                </li>
+                <li class="sidebar-menu-item" style="padding: 0 20px;">
+                        <span class="navbar text-white"> @lang('exchange rate') : &nbsp;<strong style="color:#eb5032">
+                        1 {{ $general->cur_sym}} = {{$general->exchange_rate}}
+                        </strong> </span>
                 </li>
 
 
