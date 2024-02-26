@@ -102,7 +102,7 @@
                     {{--  @endforeach --}} 
                
                 @foreach($categories as $category)
-                    <figure class="card-item col-lg-3 col-md-4 col-sm-6 col-12">
+                    <figure class="card-item col-lg-3 col-md-4 col-sm-6 col-6">
                    <div class="image">
                     <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="">
                    </div>
