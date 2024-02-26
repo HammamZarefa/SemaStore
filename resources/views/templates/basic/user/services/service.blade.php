@@ -133,11 +133,11 @@
             <div class="order-box modal-content">
   <h2>@lang('Place a new order')</h2>
   <form class="row" method="post">
-    <div class="item col-6">
+    <div class="item col-md-6 col-12">
     <input text="text" id="player_number" name="" required="">
       <label for="player_number">@lang('رقم اللاعب')</label>
     </div>
-    <div class="item col-6">
+    <div class="item col-md-6 col-12">
       <input text="text" id="player_name" name="" required="">
       <label for="player_name">@lang('اسم اللاعب')</label>
     </div>

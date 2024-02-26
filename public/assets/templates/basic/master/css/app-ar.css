@@ -4850,7 +4850,7 @@ th.w-85 {
 }
 
 .sidebar__menu .sidebar-menu-item > a:hover {
-    background-color: #EBECF0;
+    background-color:#eb503242;
     padding-right: 25px;
 }
 
@@ -4996,7 +4996,7 @@ th.w-85 {
 
 .sidebar[class*="bg--"] .sidebar__menu .sidebar-menu-item .side-menu--open,
 .sidebar[class*="bg--"] .sidebar__menu .sidebar-menu-item.active > a {
-    background-color: #eb503242;
+    background-color: #fe5636;
 }
 
 .sidebar[class*="bg--"] .sidebar__menu .sidebar-dropdown > a::before {
@@ -5036,7 +5036,7 @@ th.w-85 {
 }
 
 .sidebar[class*="bg--white"] .sidebar__menu .sidebar-menu-item > a:hover {
-    background-color: #f75435;
+    background-color: #eb503242;
 }
 
 .sidebar[class*="bg--white"] .sidebar__menu .sidebar-menu-item > a:hover .menu-icon, .sidebar[class*="bg--white"] .sidebar__menu .sidebar-menu-item > a:hover .menu-title {
@@ -6005,7 +6005,7 @@ th.w-85 {
     margin-right: 250px;
     padding: 30px;
     transition: all 0.5s cubic-bezier(0.4, -0.25, 0.25, 1.1);
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 @media (max-width: 575px) {
@@ -7755,8 +7755,8 @@ figure {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 70%;
-    padding: 40px;
+    width: 90%;
+    padding: 20px;
     transform: translate(-50%, -50%);
     background:#1c1421;
     box-sizing: border-box;

@@ -160,7 +160,7 @@
     <div class="container">
         <div class="row">
     @foreach($categories as $category)
-        <div class="col-md-4 col-6">
+        <div class="col-md-3 col-4">
             <a href="{{route('user.service',$category->id)}}">
                 <figure>
                     <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">

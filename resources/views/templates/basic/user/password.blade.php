@@ -5,19 +5,18 @@
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
 
-                <div class="card">
+                <div class="">
 
-                    <div class="card-body">
-
+                    <div class="order-box" style="position: relative;top: 0;left: 0;width: 100%;transform: translate(0%, 0);padding:40px 20px">
                         <form action="" method="post" class="register">
                             @csrf
-                            <div class="form-group">
-                                <label for="password">@lang('Current Password')</label>
+                            <div class="item">
                                 <input id="password" type="password" class="form-control" name="current_password" required autocomplete="current-password">
+                                <label for="password">@lang('Current Password')</label>
                             </div>
-                            <div class="form-group hover-input-popup">
+                            <div class="item">
+                                <input id="npassword" type="password" name="password" required   class="form-control">
                                 <label for="npassword">@lang('New Password')</label>
-                                <input id="npassword" type="password" name="password" required  placeholder="@lang('Password')" class="form-control">
                                 @if($general->secure_password)
                                     <div class="input-popup">
                                         <p class="error lower">@lang('1 small letter minimum')</p>
@@ -28,12 +27,18 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label for="confirm_password">@lang('Confirm Password')</label>
+                            <div class="item">
                                 <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required autocomplete="current-password">
+                                <label for="confirm_password">@lang('Confirm Password')</label>
                             </div>
-                            <div class="form-group">
-                                <input type="submit" class="mt-4 btn btn--primary btn-block" value="@lang('Change Password')">
+                            <div class="form-group text-center">
+                            <a href="#" class="mt-0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <input type="submit" class="border-0 text-white" value="@lang('Change Password')">
+                    </a>
                             </div>
                         </form>
                     </div>
