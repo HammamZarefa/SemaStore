@@ -1,7 +1,13 @@
 @extends($activeTemplate.'layouts.master')
 @section('content')
-    <div class="row">
-    <div class="col-sm-3 col-12 d-flex align-items-center justify-content-end mb-2">
+<div class="row align-items-center">
+                    <!-- <div class="col-sm-6 col-12 mb-2">
+                        <div class="search-box">
+                            <button class="btn-search"><i class="fas fa-search"></i></button>
+                            <input type="text" class="input-search" name="search_table" placeholder="ابحث عن @lang('Order ID') , @lang('Category') , @lang('Date') , @lang('Status') ...">
+                        </div>
+                    </div> -->
+                    <div class="col-sm-6 col-12 d-flex align-items-center mb-2">
                         <h4 class="text-white text-lang-responsv mb-1">اختر عدد الصفوف</h4>
                         <div class="form-group"> 	<!--		Show Numbers Of Rows 		-->
                             <select class="form-control" name="state" id="maxRows" 
@@ -18,12 +24,9 @@
                             </select>
                         </div>
                     </div>
-        <div class="col-lg-12">
-            <div class=" ">
-                <div class="">
-                    <div class="table table--light custom-data-table" id="table-id">
-                        <table class="table table--light style--two">
-                            <thead>
+              <div style="overflow-x: scroll;width: 100%;">
+              <table class="table table--light custom-data-table order-tabel" id="table-id">
+               <thead>
                             <tr>
                                 <th scope="col">@lang('Date')</th>
                                 <th scope="col">@lang('TRX')</th>
@@ -52,9 +55,10 @@
                             @endforelse
 
                             </tbody>
-                        </table><!-- table end -->
-                    </div>
-                </div>
+
+                </table>
+              </div>
+                <!--		Start Pagination -->
                 <div class='pagination-container' style="margin:20px auto">
                     <nav>
                         <ul class="pagination justify-content-center">
@@ -69,8 +73,6 @@
                         </ul>
                     </nav>
                 </div>
-            </div><!-- card end -->
-        </div>
+                
     </div>
-
 @endsection

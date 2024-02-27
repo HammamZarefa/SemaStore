@@ -3550,8 +3550,8 @@ input.form-control-sm {
 .table th {
     font-size:1.1rem;
     text-align: center !important;
-    padding: 15px 5px;
-    white-space: nowrap;
+    padding: 15px 15px;
+    white-space: nowrap !important;
 }
 
 .table td {
@@ -3559,9 +3559,9 @@ input.form-control-sm {
     color: #5b6e88;
     text-align: center !important;
     font-weight: 500;
-    padding: 15px 5px;
+    padding: 15px 15px;
     vertical-align: middle;
-    white-space: nowrap;
+    white-space: nowrap !important;
     color: #fff;
 }
 .table a{
@@ -4321,7 +4321,22 @@ th.w-85 {
     width: calc(100% - 65px);
     padding-right: 30px;
 }
-
+@media (max-width: 767px) {
+    .widget-two {
+        display: grid;
+        place-content: center;
+    }
+    .widget-two .overlay-icon{
+        right: 36%;
+    }
+    .widget-two__icon{
+        margin: 0 auto;
+    }
+    .widget-two__content {
+        width: 100%;
+        padding-right: 0;
+      }
+}
 .widget-three {
     padding: 30px 30px;
     text-align: center;
@@ -7276,7 +7291,7 @@ a.icon-btn {
     border-radius:50px;
     text-align:center;
     font-size:30px;
-    box-shadow: 2px 2px 3px #999;
+    box-shadow: 0px 2px 10px #1c1421;
     z-index:100;
 }
 
@@ -7327,6 +7342,14 @@ a.icon-btn {
     font-family: "El Messiri", sans-serif;
     font-weight: 700;
   }
+  .resp-fo-sz{
+    font-size: 2rem;
+  }
+  @media (max-width: 568px) {
+    .resp-fo-sz{
+        font-size: 1.375rem;
+      }
+  }
   .el-messiri{
     font-family: "El Messiri", sans-serif;
     font-optical-sizing: auto;
@@ -7370,7 +7393,7 @@ a.icon-btn {
         left: 50%;
         transform: translate(-50%, 40%);
         align-items: center;
-        background-color: #40444a;
+        background-color: #1d1522;
         border-radius: 5px;
         display: none;
     }
@@ -7532,14 +7555,17 @@ a.icon-btn {
     text-align: start;
 }
 /* services */
+
 figure {
     display: grid;
     border-radius: 1rem;
     overflow: hidden;
     cursor: pointer;
+    position: relative;
   }
   figure img{
-    width: 100%;
+    width: 229px;
+    height: 229px;
   }
   figure > * {
     grid-area: 1/1;
@@ -7564,9 +7590,12 @@ figure {
   }
   @media (max-width: 767px) {
     figure figcaption {
-    font-size: 1.3rem;
-
+        font-size: 11px;
     }
+    figure img{
+        width: 68px;
+        height: 68px;
+      }
   }
   figure:hover figcaption{
     --_i: 0%;
@@ -7947,3 +7976,13 @@ figure {
   .order-tabel tbody tr:hover{
     background-color: #eb503242;
   }
+.level-icon{
+    width: 50px;
+    height: 50px;
+}
+@media (max-width: 767px) {
+    .level-icon{
+        width: 35px;
+        height: 35px;
+    }
+}

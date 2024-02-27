@@ -1,7 +1,13 @@
 @extends($activeTemplate.'layouts.master')
 @section('content')
-    <div class="row">
-    <div class="col-sm-3 col-12 d-flex align-items-center justify-content-end mb-2">
+<div class="row align-items-center">
+                    <!-- <div class="col-sm-6 col-12 mb-2">
+                        <div class="search-box">
+                            <button class="btn-search"><i class="fas fa-search"></i></button>
+                            <input type="text" class="input-search" name="search_table" placeholder="ابحث عن @lang('Order ID') , @lang('Category') , @lang('Date') , @lang('Status') ...">
+                        </div>
+                    </div> -->
+                    <div class="col-sm-6 col-12 d-flex align-items-center mb-2">
                         <h4 class="text-white text-lang-responsv mb-1">اختر عدد الصفوف</h4>
                         <div class="form-group"> 	<!--		Show Numbers Of Rows 		-->
                             <select class="form-control" name="state" id="maxRows" 
@@ -18,22 +24,19 @@
                             </select>
                         </div>
                     </div>
-        <div class="col-lg-12">
-            <div class="">
-                <div class="">
-                    <div class="table table--light custom-data-table" id="table-id">
-                        <table class="table table--light style--two">
-                            <thead>
-                            <tr>
-                                <th scope="col">@lang('Transaction ID')</th>
-                                <th scope="col">@lang('Gateway')</th>
-                                <th scope="col">@lang('Amount')</th>
-                                <th scope="col">@lang('Status')</th>
-                                <th scope="col">@lang('Time')</th>
-                                <th scope="col"> @lang('MORE')</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                    <div style="overflow-x: scroll;width: 100%;">
+               <table class="table table--light custom-data-table order-tabel" id="table-id">
+                    <thead>
+                        <tr>
+                            <th scope="col">@lang('Transaction ID')</th>
+                            <th scope="col">@lang('Gateway')</th>
+                            <th scope="col">@lang('Amount')</th>
+                            <th scope="col">@lang('Status')</th>
+                            <th scope="col">@lang('Time')</th>
+                            <th scope="col"> @lang('MORE')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                             @forelse($logs as $k=>$data)
                                 <tr>
                                     <td data-label="#@lang('Trx')">{{$data->trx}}</td>
@@ -83,8 +86,11 @@
                             @endforelse
 
                             </tbody>
-                        </table><!-- table end -->
-                        <div class='pagination-container' style="margin:20px auto">
+
+                </table>
+                </div>
+                <!--		Start Pagination -->
+                <div class='pagination-container' style="margin:20px auto">
                     <nav>
                         <ul class="pagination justify-content-center">
 
@@ -98,13 +104,7 @@
                         </ul>
                     </nav>
                 </div>
-                    </div>
-                </div>
-                <!-- <div class="card-footer">
-                    {{ paginateLinks($logs) }}
-                </div> -->
-            </div><!-- card end -->
-        </div>
+                
     </div>
 
     {{-- APPROVE MODAL --}}

@@ -26,6 +26,7 @@
                             </select>
                         </div>
                     </div>
+                    <div style="overflow-x: scroll;width: 100%;">
                <table class="table table--light custom-data-table order-tabel" id="table-id">
                     <thead>
                         <tr>
@@ -43,14 +44,24 @@
                     <tbody>
                         @forelse ($orders as $item)
                         <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}">
-                            <td data-label="@lang('Order ID')">
-                               <img style="border-radius:50%" width="50" src="https://semastore.net/assets/images/category/627914c3591f11652102339.png" alt="">
+                            <td  data-label="@lang('Order ID')">
+                               <img style="border-radius:50%" width="50" src="{{asset('assets/images/category/627914c3591f11652102339.png')}}" alt="">
+                           
                             </td>
-                            <td data-label="@lang('Category')">{{ __($item-> category -> name)}}</td>
+                            <td data-label="@lang('Category')" style="position: relative;">
+                                {{ __($item-> category -> name)}}
+                                @if($item->status === 2)
+                               <img 
+                               style="position: absolute;left: 50%;transform: translateX(-50%);bottom: -5px;width: 40px;" width="50" src="{{asset('assets/images/completed-icon.png')}}" alt="">
+                               @endif
+                            </td>
                             <!-- <td data-label="@lang('Service')" colspan="2">{{ __($item-> service -> name) }}</td> -->
-                            <td data-label="@lang('Link')"><a
+                            <td data-label="@lang('Link')">
+                                <!-- <a
                                 href="{{ empty(parse_url($item->link, PHP_URL_SCHEME)) ? 'https://' : null }}{{ $item->link }}"
-                                target="_blank">{{ $item-> link}}</a></td>
+                                target="_blank"></a> -->
+                                {{ $item-> link}}
+                            </td>
                             <!-- <td data-label="@lang('Quantity')">{{ $item-> quantity}}</td> -->
                             <!-- <td data-label="@lang('Code')">{{ $item-> code}}</td> -->
                             <!-- <td data-label="@lang('verify')" id="verfiy">
@@ -99,6 +110,7 @@
                     </tbody>
 
                 </table>
+                </div>
                 <!--		Start Pagination -->
                 <div class='pagination-container' style="margin:20px auto">
                     <nav>
