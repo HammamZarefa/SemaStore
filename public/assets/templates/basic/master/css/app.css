@@ -3549,7 +3549,7 @@ input.form-control-sm {
 .table th {
     font-size: 1.1rem;
     text-align: center !important;
-    padding: 15px 5px;
+    padding: 15px 15px;
     white-space: nowrap;
 }
 
@@ -3558,7 +3558,7 @@ input.form-control-sm {
     color: #5b6e88;
     text-align: center !important;
     font-weight: 500;
-    padding: 15px 5px;
+    padding: 15px 15px;
     vertical-align: middle;
     white-space: nowrap;
 }

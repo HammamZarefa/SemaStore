@@ -23,7 +23,6 @@
                         <div class="d-flex mb-3">
                             <div class="level">
                                 <img src="../../../assets/images/level-{{auth()->user()->level}}.png" alt="">
-                                <span>{{auth()->user()->level}}</span>
                             </div>
                             <br>
                         </div>
@@ -139,12 +138,8 @@
                 </div>
 </div>
 <div class="item-100 mt-1 text-lang-responsv">
-<img id="showProgress" src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt=""
-                     style="width: 31px;cursor: pointer">
-                <span id="showProgressSpan"
-                      style=" position: absolute;cursor: pointer;font-size:12px;margin-left: 20px;
-                      margin-right:{{auth()->user()->level == 1 ? '-28px' : '-23px'}} ;margin-top: 2px;color: #f05234;">
-                    {{auth()->user()->level}}</span>
+<img id="showProgress" class="show-m" src="../../../assets/images/level-{{auth()->user()->level}}.png" alt=""
+                     style="width: 46px;cursor: pointer">
                     <span class="text-white">
                     @lang('Your Balance')  :
                     <strong style="color:#eb5032">
@@ -152,13 +147,12 @@
         </strong>
                 </span>
 
-                <div id="coverProgress" style="display: none;"></div>
-                <div id="contentProgress">
+                <div id="coverProgress" class="cover-m" style="display: none;"></div>
+                <div id="contentProgress" class="content-m">
                     <div class="mb-2 d-flex progressText">
                         <div class="d-flex mb-3">
                             <div class="level">
-                                <img src="{{getImage(imagePath()['logoIcon']['path'] .'/level.png')}}" alt="">
-                                <span>{{auth()->user()->level}}</span>
+                            <img src="../../../assets/images/level-{{auth()->user()->level}}.png" alt="">
                             </div>
                             <br>
                         </div>

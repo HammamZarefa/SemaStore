@@ -26,12 +26,11 @@
                         </div>
 
                     </div><!-- widget-two end -->
-                    <div class="progress mt-3 mb-3" style="position: relative;background-color: #ee5133;overflow: visible;height: 1.5rem;">
-                        <div class="progress-bar" role="progressbar" style="width: calc(100% / ({{auth()->user()->level}} + 1 ));background-color: #fff;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> <strong class="text-dark" style="font-size: 18px;"> {{auth()->user()->nextLevel()['progress']}} %</strong></div>
-                        <div style="position: absolute;position: absolute;width: 100%;display: flex;justify-content: space-between;flex-direction: row-reverse;top: 15px;">
+                    <div class="progress mt-3 mb-3" style="position: relative;background-color: #fff;overflow: visible;height: 1.5rem;">
+                        <div class="progress-bar align-items-end" role="progressbar" style="width: {{auth()->user()->nextLevel()['progress']}}%;background-color: #ee5133;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> <strong class="text-white" style="font-size: 18px;padding: 0 10px;"> {{auth()->user()->nextLevel()['progress']}} %</strong></div>
+                        <div style="position: absolute;position: absolute;width: 100%;display: flex;justify-content: space-between;top: 15px;">
                         @forelse($levels as $level)
-                        <img 
-                        width="50" classs="label" src="../../../../assets/images/level-{{$level->level}}.png" alt="">
+                        <img class="level-icon" src="../../../../assets/images/level-{{$level->level}}.png" alt="">
                         @empty
                         <h3 class="text-white"></h3> 
                         @endforelse

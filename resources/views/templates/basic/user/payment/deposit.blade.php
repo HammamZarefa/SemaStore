@@ -4,9 +4,9 @@
 @section('content')
     <div class="row">
             @foreach($gatewayCurrency as $data)
-                <div class="col-md-4 col-sm-6 mb-5">
-                    <div class=" card-deposit">
-                        <h2 class="text-white text-center">{{__($data->name)}}
+                <div class="col-md-4 col-sm-6 col-6 mb-5">
+                    <div class="card-deposit">
+                        <h2 class="text-white text-center resp-fo-sz">{{__($data->name)}}
                         </h2>
                         <div class="card-body-deposit">
                             <img src="{{$data->methodImage()}}" class="card-img-top" alt="{{__($data->name)}}" class="w-100">
