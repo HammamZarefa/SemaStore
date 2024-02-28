@@ -82,6 +82,11 @@
         </button>
     </div>
     <!-- end slider -->
+    @if($sections->secs != null)
+        @foreach(json_decode($sections->secs) as $sec)
+            @include($activeTemplate.'sections.'.$sec)
+        @endforeach
+    @endif
     <!-- start products -->
     <div class="products-contain">
         <div class="container">
@@ -102,12 +107,12 @@
                     {{--  @endforeach --}} 
                
                 @foreach($categories as $category)
-                    <figure class="card-item col-lg-3 col-md-4 col-sm-6 col-6">
-                   <div class="image">
-                    <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="">
-                   </div>
-                    <figcaption class="info">@lang($category->name)</figcaption>
+                <div class="col-md-2 col-4">
+                    <figure>
+                        <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">
+                        <figcaption>@lang($category->name)</figcaption>
                     </figure>
+                </div>
                 @endforeach
             </div>
            
@@ -256,9 +261,5 @@
 
     <!-- end products -->
     <!-- *************************************** End Home Page *************************************** -->
-    @if($sections->secs != null)
-        @foreach(json_decode($sections->secs) as $sec)
-            @include($activeTemplate.'sections.'.$sec)
-        @endforeach
-    @endif
+    
 @endsection

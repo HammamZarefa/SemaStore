@@ -42,13 +42,14 @@
                         </div>
                     @else
                         <div class="" id="finishLevels" style="display :block">
-                            <h4>لقد وصلت الى الشريحة الاعلى</h4>
+                            <h4 class="text-center">لقد وصلت الى الشريحة الاعلى</h4>
                         </div>
                     @endif
-                    <div id="myProgress" data-progress="{{auth()->user()->nextLevel()['progress']}}">
+                    @if(auth()->user()->nextLevel()['remain_points'] !=-1 )
+                    <div style="overflow: hidden;margin-top:20px" id="myProgress" data-progress="{{auth()->user()->nextLevel()['progress']}}">
                         <div id="myBar" style="width: {{auth()->user()->nextLevel()['progress']}}%"></div>
                     </div>
-                  
+                    @endif
                 </div>
               
             </li>
@@ -172,12 +173,14 @@
                         </div>
                     @else
                         <div class="" id="finishLevels" style="display :block">
-                            <h4>لقد وصلت الى الشريحة الاعلى</h4>
+                            <h4 class="text-center">لقد وصلت الى الشريحة الاعلى</h4>
                         </div>
                     @endif
-                    <div id="myProgress" data-progress="{{auth()->user()->nextLevel()['progress']}}">
+                    @if(auth()->user()->nextLevel()['remain_points'] !=-1 )
+                    <div style="overflow: hidden;margin-top:20px" id="myProgress" data-progress="{{auth()->user()->nextLevel()['progress']}}">
                         <div id="myBar" style="width: {{auth()->user()->nextLevel()['progress']}}%"></div>
                     </div>
+                    @endif
                   
                 </div>
 </div>
