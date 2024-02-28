@@ -3,20 +3,22 @@
 @endphp
 
 <!-- about-section start -->
-<section class="about-section" style="background-image: url({{asset('assets/images/about_bg.jpg')}});padding: 4rem !important;">
+<section class="about-section" style="background-image: url({{asset('assets/images/about-us.jpg')}});overflow: hidden;">
 <div class="row">
-    <div class="col-md-6 col-12 d-md-block d-none">
-    <img style="width:100%" src="https://semastore.net/assets/images/frontend/about_3/64bc0aab5b8831690045099.jpg" alt="shape">
+    <div class="col-12 text-center mt-5">
+    <h2 class="">
+                <strong>@lang('About Us')</strong>
+                <br>
+                <img src="{{asset('assets/images/title_section.png')}}" alt="">
+            </h2>
+    </div>
+    <div class="col-md-6 col-12 d-md-block d-none text-center">
+        <!-- <img style="width:100%" src="https://semastore.net/assets/images/frontend/about_3/64bc0aab5b8831690045099.jpg" alt="shape"> -->
+        <img style="width:50%;margin:0 auto" src="{{asset('assets/images/cta_img.png')}}" alt="">
     </div>
     <div class="col-md-6 col-12">
-                <div class="about-content" style="background-image: url({{asset('assets/images/slider_circle.png')}});background-size: 50%;
-  height: 100%;
-  display: grid;
-  place-content: center;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: hue-rotate(-75deg);">
-                <h1 class="text-center"><span class="text-white" style="font-family: 'Oxanium', cursive !important;">{{ __(@$about3_content->data_values->title) }}</span></h1>
+                <div class="about-content">
+                <h1 class="text-center display-4"><span class="text-white" style="font-family: 'Oxanium', cursive !important;">Sema.</span><span style="color:#f45334;font-family: 'Oxanium', cursive !important;">Store</span></h1>
                     <h2 class="title"></h2>
                     <p class="text-white text-center">{{ __(@$about3_content->data_values->content) }}</p>
                 </div>

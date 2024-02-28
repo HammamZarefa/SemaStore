@@ -10,7 +10,7 @@ ____________________________________________________ */
 }
 
 body {
-  background: #1c1421;
+  background: #212121;
   color: #fff;
   text-align: start;
 }
@@ -580,4 +580,171 @@ ____________________________________________________ */
 .scrollToTop:hover {
   color: white;
   box-shadow: 0px 10px 26px 0px rgba(77, 91, 237, 0.5);
+}
+/* services */
+
+figure {
+  display: grid;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+figure img{
+  width: 229px;
+  height: 229px;
+}
+figure > * {
+  grid-area: 1/1;
+  transition: .4s;
+}
+figure figcaption {
+  display: grid;
+  align-items: end;
+  font-family: sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0000;
+  padding: .75rem;
+  background: var(--c,#0009);
+  clip-path: inset(0 var(--_i,100%) 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0),
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  -webkit-mask-clip: text, padding-box;
+  margin: -1px;
+}
+@media (max-width: 767px) {
+  figure figcaption {
+      font-size: 11px;
+  }
+  figure img{
+      width: 68px;
+      height: 68px;
+    }
+}
+figure:hover figcaption{
+  --_i: 0%;
+}
+figure:hover img {
+  transform: scale(1.2);
+}
+@supports not (-webkit-mask-clip: text) {
+  figure figcaption {
+   -webkit-mask: none;
+   color: #fff;
+  }
+}
+/* contact us */
+/* 25. Newsletter */
+.newsletter-wrap {
+	border-radius: 80px;
+	background-image: url(../../../images/footer-bg.jpg);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 25px 65px;
+	margin-top: -100px;
+	position: relative;
+	z-index: 1;
+	margin-bottom: 50px;
+}
+.newsletter-form form {
+	display: flex;
+	align-items: center;
+	margin-right: 20px;
+}
+.newsletter-form-grp {
+	position: relative;
+}
+.newsletter-form-grp i {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 14px;
+	left: 15px;
+}
+.newsletter-form form input {
+	width: 495px;
+	background: #212121;
+	border: none;
+	color: #fff;
+	padding: 17px 40px;
+	font-size: 14px;
+	font-weight: 500;
+  outline: none;
+}
+.newsletter-form form input::placeholder {
+	color: #fff;
+}
+.newsletter-form-grp::before,
+.newsletter-form button::before {
+	content: "";
+	position: absolute;
+	left: -20px;
+	top: 0;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 0 55px 20px;
+	border-color: transparent transparent #212121 transparent;
+}
+.newsletter-form-grp::after,
+.newsletter-form button::after {
+	content: "";
+	position: absolute;
+	right: -20px;
+	top: 0;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 55px 20px 0 0;
+	border-color: #212121 transparent transparent transparent;
+}
+.newsletter-title h2 {
+	font-size: 26px;
+	letter-spacing: -1px;
+}
+.newsletter-form button {
+	border: none;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 800;
+	padding: 17px 15px;
+	margin-left: 30px;
+	position: relative;
+	cursor: pointer;
+	transition: .3s linear;
+  background-color: #fd5637;
+}
+.newsletter-form button::before {
+	border-color: transparent transparent #fd5637 transparent;
+	transition: .3s linear;
+}
+.newsletter-form button::after {
+	border-color: #fd5637 transparent transparent transparent;
+	transition: .3s linear;
+}
+.newsletter-form button:hover {
+	background: #fff;
+  color: #fd5637;
+}
+.newsletter-form button:hover svg {
+  fill: #fd5637;
+}
+.newsletter-form button:hover::before {
+	border-color: transparent transparent #fff transparent;
+}
+.newsletter-form button:hover::after {
+	border-color: #fff transparent transparent transparent;
+}
+.newsletter-form-grp svg {
+	width: 12px;
+	fill: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  left: 15px;
 }
