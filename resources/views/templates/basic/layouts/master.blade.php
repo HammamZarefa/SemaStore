@@ -65,8 +65,11 @@
 
         <!-- page-wrapper start -->
         <div class="page-wrapper default-version">
+           <div class="sidebar-contain">
             @include($activeTemplate.'partials.sidenav')
-            @include($activeTemplate.'partials.topnav')
+           </div>
+           <div class="contain">
+           @include($activeTemplate.'partials.topnav')
             <div class="tickerheader">
                 {{--                <div class="stickytitle">Breaking News</div>--}}
                 <div class="ticker-container">
@@ -99,6 +102,8 @@
 
                 </div><!-- bodywrapper__inner end -->
             </div><!-- body-wrapper end -->
+            </div>
+          
         </div>
 
 

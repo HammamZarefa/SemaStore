@@ -55,7 +55,7 @@
                         <div class="row">
                           
                             @foreach ($services as $item)
-                            <div class="col-lg-4 col-md-6 col-12 mt-4 mb-4 ">
+                            <div class="col-lg-4 col-md-6 col-6 mt-4 mb-4 ">
                             <a class="{{$item->is_available ? 'orderBtn' : 'not-allowed'}}" href="javascript:void(0)" 
                                            data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
                                            data-url="{{ route('user.order', [$category->id, $item->id])}}"
