@@ -121,7 +121,10 @@ $('.navbar-search__btn-open').on('click', function () {
 $('.navbar-search__close').on('click', function () {
   $('.navbar-search').removeClass('active');
 });
-
+$('.sidebar').on( "mouseover", function() {
+  $('.sidebar').addClass('open');
+  $('#overlay').removeClass('d-none');
+} );
 // responsive sidebar expand js 
 $('.res-sidebar-open-btn').on('click', function () {
   $('.sidebar').addClass('open');
@@ -131,9 +134,14 @@ $('#overlay').on('click', function () {
   $('.sidebar').removeClass('open');
   $('#overlay').addClass('d-none');
 });
-$('.res-sidebar-close-btn').on('click', function () {
+$('.close-icon').on('click', function () {
   $('.sidebar').removeClass('open');
+  $('#overlay').addClass('d-none');
 });
+
+// $('.res-sidebar-close-btn').on('click', function () {
+//   $('.sidebar').removeClass('open');
+// });
 
 /* Get the documentElement (<html>) to display the page in fullscreen */
 let elem = document.documentElement;
