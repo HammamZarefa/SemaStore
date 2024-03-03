@@ -175,7 +175,7 @@
 </div> -->
 
 
-        <div class="order-box  modal-content">
+        <div class="order-box modal-content">
         <h2 class="mb-0">@lang('Place a new order')</h2>
         <div class="mb-3">
             <h4 class="flicker-animation text-white" id="desc"></h4>
@@ -237,23 +237,7 @@
 
                         @endif
                     </div>
-
-                    <div class="form-row">
-                        @if($category->type != '5SIM' && $category->type!='CODE')
-                            <div class="form-group col-md-6">
-                                <div class="input-group item">
-                                    <input class="vaild" type="text" name="min" readonly>
-                                    <label for="min">@lang('Min')</label>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <div class="input-group item">
-                                    <input class="vaild" type="text" name="max"  readonly>
-                                    <label for="max">@lang('Max')</label>
-                                </div>
-                            </div>
-                        @endif
-                        <div class="form-group col-md-6">
+                    <div class="form-group col-md-6">
                             <div class="item">
                                 <input type="number" id="quantity" name="quantity"
                                          required
@@ -264,13 +248,21 @@
                                 <label for="quantity">@lang('Quantity')</label>
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <div class="input-group item">
-                                <input class="vaild" type="text" id="price"
-                                        name="price" readonly>
-                                        <label for="price">@lang('Price')</label>
+                    <div class="form-row p-3 border border-white rounded">
+                        @if($category->type != '5SIM' && $category->type!='CODE')
+                            <div class="form-group col-md-6 text-center">
+                                <strong class="text-white">@lang('Min') :</strong>
+                                <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="min"></span>
                             </div>
-                        </div>
+                            <div class="form-group col-md-6 text-center">
+                                <strong class="text-white">@lang('Max') :</strong>
+                                <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="max"></span>
+                            </div>
+                        @endif
+                        <div class="form-group col-md-12 text-center">
+                                <strong class="text-white">@lang('Price') :</strong>
+                                <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="price"></span>
+                            </div>
                     </div>
                    
                 </div>
@@ -346,7 +338,7 @@
                 var max = $(this).data('max');
                 var desc = $(this).data('description');
                 modal.find('input[name=quantity]').val(1);
-                modal.find('input[name=price]').val("{{ $general->cur_sym }}" + price_per_k.toFixed(3));
+                modal.find('#price').html("{{ $general->cur_sym }}" + price_per_k.toFixed(3));
                 console.log(modal.find('input[name=quantity]').val(1))
                 //Calculate total price
 
@@ -361,13 +353,13 @@
                 $(document).on("keyup", "#quantity", function () {
                     var quantity = $('#quantity').val()
                     var total_price = price_per_k * quantity;
-                    modal.find('input[name=price]').val("{{ $general->cur_sym }}" + total_price.toFixed(3));
+                    modal.find('#price').html("{{ $general->cur_sym }}" + total_price.toFixed(3));
                 });
 
                 modal.find('form').attr('action', url);
                 modal.find('input[name=quantity]').attr('min', min).attr('max', max);
-                modal.find('input[name=min]').val(min);
-                modal.find('input[name=max]').val(max);
+                modal.find('#min').html(min);
+                modal.find('#max').html(max);
                 $("#desc").empty();
                 $("#desc").append(desc);
                 modal.modal('show');
