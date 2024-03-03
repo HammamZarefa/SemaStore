@@ -26,14 +26,13 @@
                             </select>
                         </div>
                     </div>
-                    <div style="overflow-x: scroll;width: 100%;">
                <table class="table table--light custom-data-table order-tabel" id="table-id">
                     <thead>
                         <tr>
                             <th scope="col">@lang('Category')</th>
                             <th scope="col">@lang('Category')</th>
                             <!-- <th scope="col" colspan="2">@lang('Service')</th> -->
-                            <th scope="col">@lang('Link')</th>
+                            <th scope="col"></th>
                             <!-- <th scope="col">@lang('Quantity')</th> -->
                             <!-- <th scope="col">@lang('Code')</th> -->
                             <!-- <th scope="col">@lang('verify')</th> -->
@@ -43,7 +42,7 @@
                     </thead>
                     <tbody>
                         @forelse ($orders as $item)
-                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}">
+                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="14$" data-oldPrice="22$">
                             <td  data-label="@lang('Order ID')">
                                <img style="border-radius:50%" width="50" src="{{asset('assets/images/category/627914c3591f11652102339.png')}}" alt="">
                            
@@ -60,7 +59,7 @@
                                 <!-- <a
                                 href="{{ empty(parse_url($item->link, PHP_URL_SCHEME)) ? 'https://' : null }}{{ $item->link }}"
                                 target="_blank"></a> -->
-                                {{ $item-> link}}
+                                <!-- {{ $item-> link}} -->
                             </td>
                             <!-- <td data-label="@lang('Quantity')">{{ $item-> quantity}}</td> -->
                             <!-- <td data-label="@lang('Code')">{{ $item-> code}}</td> -->
@@ -74,7 +73,7 @@
                                     @endif
                                 </span>
                             </td> -->
-                            <td data-label="@lang('Date')">
+                            <td data-label="@lang('Date')" >
                                 <h4><strong class="text-white">14$</strong></h4>
                                 <h6 style="text-decoration: line-through;color: #bab7bc;">22$</h6>
                             </td>
@@ -110,7 +109,6 @@
                     </tbody>
 
                 </table>
-                </div>
                 <!--		Start Pagination -->
                 <div class='pagination-container' style="margin:20px auto">
                     <nav>
@@ -129,25 +127,36 @@
                 <div class="order-overlay"></div>
                 <div class="order-details">
                 <div class="order-box" style="position: relative;top: 0;
-  left: 0;
-  width: 100%;transform: translate(0, 0);">
-  <h2>@lang('Details')</h2>
-  <div class="row" method="post">
-    <div class="item col-12">
-    <input class="vaild" text="text" id="Category" readonly>
-      <label for="name">@lang('Category')</label> 
-    </div>
-    <div class="item col-12">
-      <input class="vaild" text="text"readonly id="Link">
-      <label for="link">@lang('Link')</label>
-    </div>
-    <div class="col-12 text-center">
-    <a href="#" class="btn-main btn-close text-white">
-      @lang('Close')
-    </a>
-    </div>
-  </form>
-</div>
+                    left: 0;
+                    width: 100%;transform: translate(0, 0);">
+                    <h2>@lang('Details')</h2>
+                    <form class="row" method="post">
+                        <div class="item col-12">
+                        <input class="vaild" text="text" id="name" readonly>
+                        <label for="name">@lang('Category')</label> 
+                        </div>
+                        <div class="item col-12">
+                        <input class="vaild" text="text" readonly id="link">
+                        <label for="link">@lang('Link')</label>
+                        </div>
+                        <div class="item col-6 ">
+                        <input class="vaild d-none" text="text"  readonly>
+                            <label for="link">@lang('Price')</label>
+                            <input class="vaild" text="text" readonly id="newprice">
+                        </div>
+                        <div class="item col-6 ">
+                        <input class="vaild d-none" text="text"  readonly>
+                            <label for="link">@lang('Old Price')</label>
+                            <input class="vaild" text="text" readonly id="oldprice">
+                        </div>
+                        <div class="col-12 text-center">
+                        <a href="#" class="btn-main btn-close text-white">
+                        @lang('Close')
+                        </a>
+                        </div>
+                    </form>
+                    </div>
+                    </div>
 @endsection
 
 <script>

@@ -24,29 +24,33 @@
                             </select>
                         </div>
                     </div>
-              <div style="overflow-x: scroll;width: 100%;">
               <table class="table table--light custom-data-table order-tabel" id="table-id">
                <thead>
                             <tr>
                                 <th scope="col">@lang('Date')</th>
-                                <th scope="col">@lang('TRX')</th>
+                                <!-- <th scope="col">@lang('TRX')</th> -->
                                 <th scope="col">@lang('Amount')</th>
-                                <th scope="col">@lang('Charge')</th>
+                                <!-- <th scope="col">@lang('Charge')</th> -->
                                 <th scope="col">@lang('Post Balance')</th>
-                                <th scope="col">@lang('Detail')</th>
+                                <!-- <th scope="col">@lang('Detail')</th> -->
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($transactions as $trx)
-                                <tr>
-                                    <td data-label="@lang('Date')">{{ showDateTime($trx->created_at) }}</td>
-                                    <td data-label="@lang('TRX')" class="font-weight-bold">{{ $trx->trx }}</td>
+                                <tr data-date="{{ showDateTime($trx->created_at) }}" 
+                                    data-tRX="{{ $trx->trx }}" 
+                                    data-amount="{{getAmount($trx->amount)}} {{__($general->cur_text)}}" 
+                                    data-charge="{{ __(__($general->cur_sym)) }} {{ getAmount($trx->charge) }}" 
+                                    data-balance="{{ getAmount($trx->post_balance) }} {{__($general->cur_text)}}" 
+                                    data-detail="{{ __($trx->details) }}">
+                                    <td class="ellipsis"  data-label="@lang('Date')">{{ showDateTime($trx->created_at) }}</td>
+                                    <!-- <td class="ellipsis" data-label="@lang('TRX')" class="font-weight-bold">{{ $trx->trx }}</td> -->
                                     <td data-label="@lang('Amount')" class="budget">
                                         <strong @if($trx->trx_type == '+') class="text-success" @else class="text-danger" @endif> {{($trx->trx_type == '+') ? '+':'-'}} {{getAmount($trx->amount)}} {{__($general->cur_text)}}</strong>
                                     </td>
-                                    <td data-label="@lang('Charge')" class="budget">{{ __(__($general->cur_sym)) }} {{ getAmount($trx->charge) }} </td>
+                                    <!-- <td data-label="@lang('Charge')" class="budget">{{ __(__($general->cur_sym)) }} {{ getAmount($trx->charge) }} </td> -->
                                     <td data-label="@lang('Post Balance')">{{ getAmount($trx->post_balance) }} {{__($general->cur_text)}}</td>
-                                    <td data-label="@lang('Detail')">{{ __($trx->details) }}</td>
+                                    <!-- <td data-label="@lang('Detail')">{{ __($trx->details) }}</td> -->
                                 </tr>
                             @empty
                                 <tr>
@@ -57,7 +61,6 @@
                             </tbody>
 
                 </table>
-              </div>
                 <!--		Start Pagination -->
                 <div class='pagination-container' style="margin:20px auto">
                     <nav>
@@ -73,6 +76,45 @@
                         </ul>
                     </nav>
                 </div>
+                <div class="order-overlay"></div>
+                <div class="order-details">
+                <div class="order-box" style="position: relative;top: 0;
+                    left: 0;
+                    width: 100%;transform: translate(0, 0);">
+                    <h2>@lang('Details')</h2>
+                    <form class="row" method="post">
+                        <div class="item col-12">
+                        <input class="vaild" text="text" id="date" readonly>
+                        <label for="name">@lang('Date')</label> 
+                        </div>
+                        <div class="item col-12">
+                        <input class="vaild" text="text" readonly id="trx">
+                        <label for="link">@lang('TRX')</label>
+                        </div>
+                        <div class="item col-6 ">
+                            <input class="vaild" text="text" readonly id="amount">
+                            <label for="link">@lang('Amount')</label>
+                        </div>
+                        <div class="item col-6 ">
+                            <input class="vaild" text="text" readonly id="charge">
+                            <label for="link">@lang('Charge')</label>
+                        </div>
+                        <div class="item col-md-6 col-12 ">
+                            <input class="vaild" text="text" readonly id="balance">
+                            <label for="link">@lang('Post Balance')</label>
+                        </div>
+                        <div class="item col-md-6 col-12 ">
+                            <input class="vaild" text="text" readonly id="detail">
+                            <label for="link">@lang('Detail')</label>
+                        </div>
+                        <div class="col-12 text-center">
+                        <a href="#" class="btn-main btn-close text-white">
+                        @lang('Close')
+                        </a>
+                        </div>
+                    </form>
+                    </div>
+                    </div>
                 
     </div>
 @endsection

@@ -24,22 +24,26 @@
                             </select>
                         </div>
                     </div>
-                    <div style="overflow-x: scroll;width: 100%;">
                <table class="table table--light custom-data-table order-tabel" id="table-id">
                     <thead>
                         <tr>
-                            <th scope="col">@lang('Transaction ID')</th>
+                            <!-- <th scope="col">@lang('Transaction ID')</th> -->
                             <th scope="col">@lang('Gateway')</th>
                             <th scope="col">@lang('Amount')</th>
                             <th scope="col">@lang('Status')</th>
-                            <th scope="col">@lang('Time')</th>
+                            <!-- <th scope="col">@lang('Time')</th> -->
                             <th scope="col"> @lang('MORE')</th>
                         </tr>
                     </thead>
                     <tbody>
                             @forelse($logs as $k=>$data)
-                                <tr>
-                                    <td data-label="#@lang('Trx')">{{$data->trx}}</td>
+                                <tr data-transaction_id="{{$data->trx}}"
+                                    data-gateway="{{ __(@$data->gateway->name)  }}"
+                                    data-amount="{{getAmount($data->amount)}} {{__($general->cur_text)}}"
+                                    data-status="{{$data->status }}"
+                                    data-time="{{showDateTime($data->created_at)}}"
+                                    >
+                                    <!-- <td data-label="#@lang('Trx')">{{$data->trx}}</td> -->
                                     <td data-label="@lang('Gateway')">{{ __(@$data->gateway->name)  }}</td>
                                     <td data-label="@lang('Amount')">
                                         <strong>{{getAmount($data->amount)}} {{__($general->cur_text)}}</strong>
@@ -58,9 +62,9 @@
                                         @endif
 
                                     </td>
-                                    <td data-label="@lang('Time')">
+                                    <!-- <td data-label="@lang('Time')">
                                         <i class="fa fa-calendar"></i> {{showDateTime($data->created_at)}}
-                                    </td>
+                                    </td> -->
 
                                     @php
                                         $details = ($data->detail != null) ? json_encode($data->detail) : null;
@@ -88,7 +92,6 @@
                             </tbody>
 
                 </table>
-                </div>
                 <!--		Start Pagination -->
                 <div class='pagination-container' style="margin:20px auto">
                     <nav>
@@ -104,7 +107,41 @@
                         </ul>
                     </nav>
                 </div>
-                
+                <div class="order-overlay"></div>
+                <div class="order-details">
+                <div class="order-box" style="position: relative;top: 0;
+                    left: 0;
+                    width: 100%;transform: translate(0, 0);">
+                    <h2>@lang('Details')</h2>
+                    <form class="row" method="post">
+                        <div class="item col-12">
+                        <input class="vaild" text="text" id="transaction_id" readonly>
+                        <label for="name">@lang('Transaction ID')</label> 
+                        </div>
+                        <div class="item col-12">
+                        <input class="vaild" text="text" readonly id="gateway">
+                        <label for="link">@lang('Gateway')</label>
+                        </div>
+                        <div class="item col-6 ">
+                            <input class="vaild" text="text" readonly id="amount">
+                            <label for="link">@lang('Amount')</label>
+                        </div>
+                        <div class="item col-6 ">
+                            <input class="vaild" text="text" readonly id="status">
+                            <label for="link">@lang('Status')</label>
+                        </div>
+                        <div class="item col-md-6 col-12 ">
+                            <input class="vaild" text="text" readonly id="time">
+                            <label for="link">@lang('Time')</label>
+                        </div>
+                        <div class="col-12 text-center">
+                        <a href="#" class="btn-main btn-close text-white">
+                        @lang('Close')
+                        </a>
+                        </div>
+                    </form>
+                    </div>
+                    </div>
     </div>
 
     {{-- APPROVE MODAL --}}
