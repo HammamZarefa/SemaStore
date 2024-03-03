@@ -130,7 +130,7 @@
 
 
 
-            <div class="order-box modal-content">
+            <!-- <div class="order-box modal-content">
   <h2>@lang('Place a new order')</h2>
   <form class="row" method="post">
     <div class="item col-md-6 col-12">
@@ -142,7 +142,9 @@
       <label for="player_name">@lang('اسم اللاعب')</label>
     </div>
     <div class="item col-6">
-      <input text="text" id="Quantity" name="" required="">
+      <input text="text" id="Quantity" name="" @if($category->type == '5SIM' || $category->type=='CODE')
+                                            readonly
+                                    @endif>
       <label for="Quantity">@lang('Quantity') </label>
     </div>
     <div class="item col-6">
@@ -170,135 +172,130 @@
     </a>
     </div>
   </form>
-</div>
+</div> -->
 
 
-                <!-- <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel"><i
-                                class="fa fa-fw fa-share-square"></i>@lang('Place a new order')</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    </div>
-                    <form method="post">
-                        @csrf
-                        <div class="modal-body">
+        <div class="order-box  modal-content">
+        <h2 class="mb-0">@lang('Place a new order')</h2>
+        <div class="mb-3">
+            <h4 class="flicker-animation text-white" id="desc"></h4>
+        </div>
+            <form method="post">
+                @csrf
+                <div class="modal-body">
 
-                            <div class="form-row form-group">
-                                @if($category->type=="GAME")
-                                    <div class=" col-12 col-sm-6 mb-2 text-right">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend ">
-                                                <label class="input-group-text group-label"
-                                                       for="player_number">@lang('رقم اللاعب')</label>
-                                            </div>
-                                            <input type="text" name="link" class="form-control group-input"
-                                                   id="player_number" required>
-                                        </div>
+                    <div class="form-row form-group">
+                        @if($category->type=="GAME")
+                            <div class=" col-12 col-sm-6 mb-2 text-right">
+                                <div class="item">
+                                    <input type="text" name="link" class="form-control group-input"
+                                            id="player_number" required>
+                                            <label for="player_number">@lang('رقم اللاعب')</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 mb-2 text-right">
+                                <div class="item">
+                                    <input type="text" name="player_name" class="form-control group-input"
+                                            id="player_name" required>
+                                            <label
+                                                for="player_name">@lang('اسم اللاعب')</label>
+                                    <div class="col-2 col-sm-2 d-flex align-items-center refresh mb-2">
+                                        <i style="color:#e44d32;" class="fas fa-sync-alt " onclick="getName({{$category->id}})"></i>
                                     </div>
-                                    <div class="col-12 col-sm-6 mb-2 text-right">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend ">
-                                                <label class="input-group-text group-label"
-                                                       for="player_name">@lang('اسم اللاعب')</label>
-                                            </div>
-                                            <input type="text" name="player_name" class="form-control group-input"
-                                                   id="player_name" required>
-                                            <div class="col-2 col-sm-2 d-flex align-items-center refresh mb-2">
-                                                <i class="fas fa-sync-alt " onclick="getName({{$category->id}})"></i>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
 
-                                @elseif(isset($category->field_name))
-                                    <div class="col-sm-8 m-1 text-right">
+                        @elseif(isset($category->field_name))
+                            <div class="col-sm-8 m-1 text-right item">
+                                <input type="text" class="form-control has-error bold" id="link" name="link"
+                                        required>
                                         <label for="link"
-                                               class="font-weight-bold">{{$category->field_name}}
-                                            <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control has-error bold" id="link" name="link"
-                                               required>
-                                    </div>
-                                @endif
-                                @if(isset($category->custom_additional_field_name) && $category->type!="GAME")
-                                    {{--<form action="{{url('user/address')}}" class="mt-5 check-out-form" method="post">--}}
-                                    @foreach(explode(',',$category->custom_additional_field_name) as $field)
-                                        <div class="col-sm-8 m-1 text-right">
+                                        class="font-weight-bold">{{$category->field_name}}
+                                    <span
+                                        class="text-danger">*</span></label>
+                            </div>
+                        @endif
+                        @if(isset($category->custom_additional_field_name) && $category->type!="GAME")
+                            {{--<form action="{{url('user/address')}}" class="mt-5 check-out-form" method="post">--}}
+                            @foreach(explode(',',$category->custom_additional_field_name) as $field)
+                                <div class="col-sm-8 m-1 text-right item">
+                               
+                                    <input type="text" class="form-control has-error bold"
+                                            name="link"
+                                            required>
                                             <label for="link"
-                                                   class="font-weight-bold">{{$field}} <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control has-error bold"
-                                                   name="link"
-                                                   required>
-                                        </div>
-                                    @endforeach
-
-                                  <div class="col-sm-2">
-                                            <a href="#" id="get_player_name" class="pull-right mr-2" >
-                                                <i class="fa fa-cart-plus"></i>
-                                            </a>
-                                        </div> 
-
-                                @endif
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend ">
-                                            <div class="input-group-text group-label">@lang('Quantity')</div>
-                                        </div>
-                                        <input type="number" id="quantity" name="quantity"
-                                               class="form-control group-input" required
-                                               @if($category->type == '5SIM' || $category->type=='CODE')
-                                                   readonly
-                                            @endif
-                                        >
-                                    </div>
+                                            class="font-weight-bold">{{$field}} <span
+                                            class="text-danger">*</span></label>
                                 </div>
-                                @if($category->type != '5SIM' && $category->type!='CODE')
-                                    <div class="form-group col-md-6">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend ">
-                                                <div class="input-group-text group-label">@lang('Min')</div>
-                                            </div>
-                                            <input type="text" name="min" class="form-control group-input" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text group-label">@lang('Max')</div>
-                                            </div>
-                                            <input type="text" name="max" class="form-control group-input" readonly>
-                                        </div>
-                                    </div>
-                                @endif
-                                <div class="form-group col-md-6">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text group-label">@lang('Price')</div>
-                                        </div>
-                                        <input type="text" id="price"
-                                               class="form-control total_price text--success group-input"
-                                               name="price" readonly>
-                                    </div>
+                            @endforeach
+
+                            <div class="col-sm-2">
+                                    <a href="#" id="get_player_name" class="pull-right mr-2" >
+                                        <i class="fa fa-cart-plus"></i>
+                                    </a>
+                                </div> 
+
+                        @endif
+                    </div>
+
+                    <div class="form-row">
+                        @if($category->type != '5SIM' && $category->type!='CODE')
+                            <div class="form-group col-md-6">
+                                <div class="input-group item">
+                                    <input class="vaild" type="text" name="min" readonly>
+                                    <label for="min">@lang('Min')</label>
                                 </div>
                             </div>
-                            <div>
-                                <h4 class="flicker-animation" id="desc"></h4>
+                            <div class="form-group col-md-6">
+                                <div class="input-group item">
+                                    <input class="vaild" type="text" name="max"  readonly>
+                                    <label for="max">@lang('Max')</label>
+                                </div>
+                            </div>
+                        @endif
+                        <div class="form-group col-md-6">
+                            <div class="item">
+                                <input type="number" id="quantity" name="quantity"
+                                         required
+                                        @if($category->type == '5SIM' || $category->type=='CODE')
+                                            readonly
+                                    @endif
+                                >
+                                <label for="quantity">@lang('Quantity')</label>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn" data-dismiss="modal">@lang('Close')</button>
-                            <button type="submit" class="btn" id="btn-save"
-                                    value="add">@lang('Submit')</button>
+                        <div class="form-group col-md-6">
+                            <div class="input-group item">
+                                <input class="vaild" type="text" id="price"
+                                        name="price" readonly>
+                                        <label for="price">@lang('Price')</label>
+                            </div>
                         </div>
-                    </form>
-                </div> -->
-            </div>
+                    </div>
+                   
+                </div>
+                <div class="">
+             
+   
+                    <button type="button" class="btn" data-dismiss="modal">
+                        <a class="mt-0" href="#" data-dismiss="modal">
+                        @lang('Close')
+                        </a>
+                    </button>
+                    <button type="submit" class="btn" id="btn-save"
+                            value="add">   <a class="mt-0" href="#">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    @lang('Submit')
+                    </a></button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+</div>
 
 @endsection
 
@@ -313,6 +310,7 @@
 @push('script')
     <script>
         function getName(id) {
+            console.log(id)
             var player_number = $('#player_number').val();
             if (player_number == "") {
                 $('.vald-player-number').removeClass('hidden');

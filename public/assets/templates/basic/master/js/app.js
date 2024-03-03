@@ -121,10 +121,10 @@ $('.navbar-search__btn-open').on('click', function () {
 $('.navbar-search__close').on('click', function () {
   $('.navbar-search').removeClass('active');
 });
-$('.sidebar').on( "mouseover", function() {
-  $('.sidebar').addClass('open');
-  $('#overlay').removeClass('d-none');
-} );
+// $('.sidebar').on( "mouseover", function() {
+//   $('.sidebar').addClass('open');
+//   $('#overlay').removeClass('d-none');
+// } );
 // responsive sidebar expand js 
 $('.res-sidebar-open-btn').on('click', function () {
   $('.sidebar').addClass('open');
@@ -421,8 +421,13 @@ $(document).on('input', 'input[name=search_table]', function () {
 $('.order-tabel tbody tr').on('click', function () {
   $('.order-overlay').addClass('open');
   $('.order-details').addClass('open');
-  $('.order-details #Category').val($(this).data('name'));
-  $('.order-details #Link').val($(this).data('link'));
+  var dataSelected = $(this).data();
+  console.log(dataSelected)
+  $.each( dataSelected, function( key, value ) {
+    console.log(key);
+    console.log(value);
+    $(`.order-details #${key}`).val(value);
+  });
 })
 $('.order-overlay').on('click', function () {
   $('.order-overlay').removeClass('open');
@@ -432,3 +437,4 @@ $('.order-details .btn-close').on('click', function () {
   $('.order-overlay').removeClass('open');
   $('.order-details').removeClass('open');
 })
+transaction
