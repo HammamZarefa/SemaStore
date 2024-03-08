@@ -10,22 +10,21 @@
   transform: translate(0, 0);">
   <h2>@lang('Place a new order')</h2>
   <form class="row" action="{{route('user.coupon.apply')}}"  method="post" enctype="multipart/form-data" onsubmit="return submitUserForm();">
+      @csrf
     <div class="item col-12">
     <input text="text" id="player_number" name="name" required="">
       <label for="name">@lang('Coupon')</label>
     </div>
-   
+
     <div class="col-12 text-center">
-    <a href="#">
+        <button type="submit" class="btn" id="btn-save" value="add">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
       @lang('Submit')
-    </a>
-    <a href="#" data-dismiss="modal" onclick="formReset()">
-      @lang('Cancel')
-    </a>
+        </button>
+        <button type="reset" class="btn" data-dismiss="modal">@lang('Cancel')</button>
     </div>
   </form>
 </div>
