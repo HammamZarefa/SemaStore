@@ -7877,7 +7877,7 @@ figure {
     font-size: 12px;
   }
 
-  .order-box form button {
+  .order-box form a,.order-box form button {
     position: relative;
     display: inline-block;
     padding: 10px 20px;
@@ -7891,7 +7891,7 @@ figure {
     letter-spacing: 4px
   }
 
-  .order-box button:hover {
+  .order-box a:hover,.order-box button:hover {
     background: #e44d32;
     color: #fff;
     border-radius: 5px;
@@ -7901,12 +7901,12 @@ figure {
                 0 0 100px #e44d32;
   }
 
-  .order-box button span {
+  .order-box a span,.order-box button span {
     position: absolute;
     display: block;
   }
 
-  .order-box button span:nth-child(1) {
+  .order-box a span:nth-child(1),.order-box button span:nth-child(1){
     top: 0;
     left: -100%;
     width: 100%;
@@ -7924,7 +7924,7 @@ figure {
     }
   }
 
-  .order-box button span:nth-child(2) {
+  .order-box a span:nth-child(2),.order-box button span:nth-child(2) {
     top: -100%;
     right: 0;
     width: 2px;
@@ -7943,7 +7943,7 @@ figure {
     }
   }
 
-  .order-box button span:nth-child(3) {
+  .order-box a span:nth-child(3),.order-box button span:nth-child(3)  {
     bottom: 0;
     right: -100%;
     width: 100%;
@@ -7962,7 +7962,7 @@ figure {
     }
   }
 
-  .order-box button span:nth-child(4) {
+  .order-box a span:nth-child(4),.order-box button span:nth-child(4) {
     bottom: -100%;
     left: 0;
     width: 2px;
@@ -8044,3 +8044,9 @@ figure {
      }
 }
 
+#maxRows{
+    width: 60px !important;
+    margin-inline-start: 10px;
+    text-indent: 6px;
+    padding: 5px 12px;
+}
