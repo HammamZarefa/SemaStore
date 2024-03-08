@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\Admin;
 use App\Models\EmailTemplate;
 use App\Models\Extension;
 use App\Models\Frontend;
 use App\Models\GeneralSetting;
 use App\Models\SmsTemplate;
+use App\Notifications\TelegramNotification;
 use Facade\FlareClient\Http\Client;
+use Illuminate\Support\Facades\Notification;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Carbon\Carbon;
@@ -1266,7 +1269,12 @@ function adminnotify($user, $type, $shortCodes = null)
     sendEmailtoAdmin($user, $type, $shortCodes);
 
 }
-
+function sendTelegramNotification($url,$data)
+{
+   $notification= new TelegramNotification($url,$data);
+   $admin = Admin::first();
+    Notification::send($admin, $notification);
+}
 function sendEmailtoAdmin($user, $type = null, $shortCodes = [])
 {
     $general = GeneralSetting::first();

@@ -35,7 +35,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        if(1!=1)
         $this->reportable(function (Throwable $e) {
             if (config('services.telegram-bot-api.token') && config('services.telegram-bot-api.chat_id')) {
                 $notification = new ExceptionNotification($e->getMessage(),$e->getLine(),$e->getFile());

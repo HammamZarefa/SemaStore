@@ -112,6 +112,10 @@
                                         @endif
                                     </td>
                                 </tr>
+                                <td data-label="@lang('Details')">@lang('Details')</td>
+                                <td data-label="@lang('Details')" class="text-left">
+                                    <input type="text" name="details" value="{{ $order->details }}" class="form-control">
+                                </td>
                                 </tbody>
                             </table>
                         </div>

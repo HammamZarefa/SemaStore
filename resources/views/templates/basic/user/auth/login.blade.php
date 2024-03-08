@@ -7,7 +7,7 @@
                                 <form class="create-account-form register-form" method="POST" action="{{ route('user.login')}}"
                                       onsubmit="return submitUserForm();">
                                     @csrf
-                                   
+
                                     <div class="row ">
                                         <div class="col-md-6 col-12">
                                         <h2 class="title">@lang('Login your account')</h2>
@@ -29,8 +29,8 @@
                                                     <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                     <label for="remember" class="mx-2 text-white">@lang('Remember Me')</label>
                                                 </div>
-                                                        
-                                               
+
+
                                             </div>
                                         <div class="m-2 submit-contain ">
                                             <a class="mx-5 mb-3 text-white" href="{{route('user.password.request')}}">@lang('Forgot Password?')</a>
@@ -41,15 +41,15 @@
 
                                         </div>
                                         <div class="col-md-5 col-12">
-                                        <h2 class="title">
-                                            @lang('New here?')
-                                        </h2>
-                                        <div class="m-2 submit-contain ">
-                                        <a class="btn-auth" href="{{ route('user.register') }}" class="">@lang('Create Account')</a>
+{{--                                        <h2 class="title">--}}
+{{--                                            @lang('New here?')--}}
+{{--                                        </h2>--}}
+{{--                                        <div class="m-2 submit-contain ">--}}
+{{--                                        <a class="btn-auth" href="{{ route('user.register') }}" class="">@lang('Create Account')</a>--}}
                                         </div>
-                                        
+
                                         </div>
-                                    </div>
+{{--                                    </div>--}}
                                 </form>
         </div>
     </section>

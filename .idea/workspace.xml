@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de29bde8-bba1-48f8-ae98-bc4c6d8d7bde" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/templates/basic/master/css/app-ar.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/templates/basic/master/css/app-ar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/user/add_coupon.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/add_coupon.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/user/orders/order_history.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/orders/order_history.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/user/services/service.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/services/service.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ManageUsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ManageUsersController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/OrderController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Helpers/helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Helpers/helpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/orders/details.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/orders/details.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/layouts/frontend.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/layouts/frontend.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/templates/basic/user/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/templates/basic/user/auth/login.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
