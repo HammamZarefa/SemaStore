@@ -12,7 +12,7 @@
                     <div class="col-sm-3 col-12 d-flex align-items-center justify-content-end mb-2">
                         <h4 class="text-white text-lang-responsv mb-1">اختر عدد الصفوف</h4>
                         <div class="form-group"> 	<!--		Show Numbers Of Rows 		-->
-                            <select class="form-control" name="state" id="maxRows" 
+                            <select class="form-control" name="state" id="maxRows"
                             style="background-color: #383a45;
                                    border: none;
                                    color: #fff;
@@ -44,13 +44,13 @@
                         @forelse ($orders as $item)
                         <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="14$" data-oldPrice="22$">
                             <td  data-label="@lang('Order ID')">
-                               <img style="border-radius:50%" width="50" src="{{asset('assets/images/category/627914c3591f11652102339.png')}}" alt="">
-                           
+                               <img style="border-radius:50%" width="50" src="{{ getImage(imagePath()['category']['path'].'/'. $item->image,imagePath()['category']['size'])}}" alt="">
+
                             </td>
                             <td data-label="@lang('Category')" style="position: relative;">
                                 {{ __($item-> category -> name)}}
                                 @if($item->status === 2)
-                               <img 
+                               <img
                                style="position: absolute;left: 50%;transform: translateX(-50%);bottom: -5px;width: 40px;" width="50" src="{{asset('assets/images/completed-icon.png')}}" alt="">
                                @endif
                             </td>
@@ -79,7 +79,7 @@
                             </td>
                             <!-- <td data-label="@lang('Status')">
                                         @if($item->status === 0)
-                                        
+
                                 <span
                                     class="text--small badge font-weight-normal badge--warning">@lang('Pending')</span>
                                         @elseif($item->status === 1)
@@ -133,7 +133,7 @@
                     <form class="row" method="post">
                         <div class="item col-12">
                         <input class="vaild" text="text" id="name" readonly>
-                        <label for="name">@lang('Category')</label> 
+                        <label for="name">@lang('Category')</label>
                         </div>
                         <div class="item col-12">
                         <input class="vaild" text="text" readonly id="link">

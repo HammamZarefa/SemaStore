@@ -143,6 +143,12 @@ class OrderController extends Controller
             'username' => $user->username,
             'category_name' => $service->category->name,
         ]);
+        sendTelegramNotification(route('admin.orders.details',$order->id), [
+            'service_name' => $service->name,
+            'username' => $user->username,
+            'category_name' => $service->category->name,
+            'quantity' => $order->quantity,
+        ]);
         $notify[] = ['success', 'Successfully placed your order!'];
         return back()->withNotify($notify);
     }
@@ -253,7 +259,7 @@ class OrderController extends Controller
     {
         $page_title = 'Order History';
         $empty_message = "No result found";
-        $orders = Order::where('user_id', auth()->id())->with(['category', 'service'])->get();
+        $orders = Order::where('user_id', auth()->id())->with(['category', 'service'])->latest()->paginate(getPaginate());
         return view(activeTemplate() . 'user.orders.order_history', compact('page_title', 'orders', 'empty_message'));
     }
 

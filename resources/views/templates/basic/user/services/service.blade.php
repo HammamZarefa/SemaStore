@@ -33,11 +33,13 @@
             opacity: 0.2;
         }
     }
+
     .not-allowed {
         cursor: not-allowed;
     }
-    .unavailable{
-        opacity:0.8;
+
+    .unavailable {
+        opacity: 0.8;
     }
 </style>
 @section('content')
@@ -53,30 +55,34 @@
                     @endphp
                     <div class="container">
                         <div class="row">
-                          
+
                             @foreach ($services as $item)
-                            <div class="col-lg-4 col-md-6 col-6 mt-4 mb-4 ">
-                            <a class="{{$item->is_available ? 'orderBtn' : 'not-allowed'}}" href="javascript:void(0)" 
-                                           data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
-                                           data-url="{{ route('user.order', [$category->id, $item->id])}}"
-                                           data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percentprofit))}}"
-                                           data-min="{{ $item->min }}" data-max="{{ $item->max }}"
-                                           data-category="{{$category->id}}"
-                                           data-description="{{$item->details}}">
-                                           <div class="service-details">
-                                    <div class="wrapper">
-                                        <div class="banner-image"> <img
-                                                src="https://semastore.net/assets/images/category/{{$category->image}}"
-                                                class="card-img-top" alt="..."></div>
-                                        <h2 class="mb-1">{{__($item->name)}}</h2>
-                                        <h3>{{ $general->cur_sym . (getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100))}}</h3>
-                                    </div>
-                                    <div class="button-wrapper"> 
-                                        <a  href="javascript:void(0)"
-                                                data-original-title="@lang('Details')" data-toggle="tooltip"
-                                                data-details="{{ $item->details }}" class="btn outline detailsBtn">@lang('Details')</a>
-                                        <a href="javascript:void(0)" 
-                                                   data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')" data-toggle="tooltip"
+                                <div class="col-lg-4 col-md-6 col-6 mt-4 mb-4 ">
+                                    <a class="{{$item->is_available ? 'orderBtn' : 'not-allowed'}}"
+                                       href="javascript:void(0)"
+                                       data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')"
+                                       data-toggle="tooltip"
+                                       data-url="{{ route('user.order', [$category->id, $item->id])}}"
+                                       data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percentprofit))}}"
+                                       data-min="{{ $item->min }}" data-max="{{ $item->max }}"
+                                       data-category="{{$category->id}}"
+                                       data-description="{{$item->details}}">
+                                        <div class="service-details">
+                                            <div class="wrapper">
+                                                <div class="banner-image"><img
+                                                        src="https://semastore.net/assets/images/category/{{$category->image}}"
+                                                        class="card-img-top" alt="..."></div>
+                                                <h2 class="mb-1">{{__($item->name)}}</h2>
+                                                <h3>{{ $general->cur_sym . (getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100))}}</h3>
+                                            </div>
+                                            <div class="button-wrapper">
+                                                <a href="javascript:void(0)"
+                                                   data-original-title="@lang('Details')" data-toggle="tooltip"
+                                                   data-details="{{ $item->details }}"
+                                                   class="btn outline detailsBtn">@lang('Details')</a>
+                                                <a href="javascript:void(0)"
+                                                   data-original-title="@lang($item->is_available ? 'Buy' : 'Unavailable')"
+                                                   data-toggle="tooltip"
                                                    data-url="{{ route('user.order', [$category->id, $item->id])}}"
                                                    data-price_per_k="{{getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100)}}"
                                                    data-min="{{ $item->min }}" data-max="{{ $item->max }}"
@@ -85,11 +91,12 @@
                                                 {{--@if(isset($category->custom_additional_field_name))--}}
 
                                                 {{--@endif--}}
-                                                        " class="btn fill icon-btn {{$item->is_available ? 'orderBtn' : 'not-allowed'}}">@lang('Buy')</a>
-                                    </div>
-                                    </div>
-                                </a>
-                            </div>
+                                                        "
+                                                   class="btn fill icon-btn {{$item->is_available ? 'orderBtn' : 'not-allowed'}}">@lang('Buy')</a>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
                             @endforeach
                         </div>
                     </div>
@@ -129,8 +136,7 @@
             <div class="modal-dialog modal-lg">
 
 
-
-            <!-- <div class="order-box modal-content">
+                <!-- <div class="order-box modal-content">
   <h2>@lang('Place a new order')</h2>
   <form class="row" method="post">
     <div class="item col-md-6 col-12">
@@ -143,8 +149,11 @@
     </div>
     <div class="item col-6">
       <input text="text" id="Quantity" name="" @if($category->type == '5SIM' || $category->type=='CODE')
-                                            readonly
-                                    @endif>
+                    readonly
+
+
+
+                @endif>
       <label for="Quantity">@lang('Quantity') </label>
     </div>
     <div class="item col-6">
@@ -166,128 +175,124 @@
       <span></span>
       <span></span>
       @lang('Submit')
-    </a>
-    <a href="#" data-dismiss="modal">
-      @lang('Close')
-    </a>
-    </div>
-  </form>
-</div> -->
+                </a>
+                <a href="#" data-dismiss="modal">
+@lang('Close')
+                </a>
+                </div>
+              </form>
+            </div> -->
 
 
-        <div class="order-box modal-content">
-        <h2 class="mb-0">@lang('Place a new order')</h2>
-        <div class="mb-3">
-            <h4 class="flicker-animation text-white" id="desc"></h4>
-        </div>
-            <form method="post">
-                @csrf
-                <div class="modal-body">
+                <div class="order-box modal-content">
+                    <h2 class="mb-0">@lang('Place a new order')</h2>
+                    <div class="mb-3">
+                        <h4 class="flicker-animation text-white" id="desc"></h4>
+                    </div>
+                    <form method="post">
+                        @csrf
+                        <div class="modal-body">
 
-                    <div class="form-row form-group">
-                        @if($category->type=="GAME")
-                            <div class=" col-12 col-sm-6 mb-2 text-right">
-                                <div class="item">
-                                    <input type="text" name="link" class="form-control group-input"
-                                            id="player_number" required>
+                            <div class="form-row form-group">
+                                @if($category->type=="GAME")
+                                    <div class=" col-12 col-sm-6 mb-2 text-right">
+                                        <div class="item">
+                                            <input type="text" name="link" class="form-control group-input"
+                                                   id="player_number" required>
                                             <label for="player_number">@lang('رقم اللاعب')</label>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6 mb-2 text-right">
-                                <div class="item">
-                                    <input type="text" name="player_name" class="form-control group-input"
-                                            id="player_name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 mb-2 text-right">
+                                        <div class="item">
+                                            <input type="text" name="player_name" class="form-control group-input"
+                                                   id="player_name" required>
                                             <label
                                                 for="player_name">@lang('اسم اللاعب')</label>
-                                    <div class="col-2 col-sm-2 d-flex align-items-center refresh mb-2">
-                                        <i style="color:#e44d32;" class="fas fa-sync-alt " onclick="getName({{$category->id}})"></i>
+                                            <div class="col-2 col-sm-2 d-flex align-items-center refresh mb-2">
+                                                <i style="color:#e44d32;" class="fas fa-sync-alt "
+                                                   onclick="getName({{$category->id}})"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                        @elseif(isset($category->field_name))
-                            <div class="col-sm-8 m-1 text-right item">
-                                <input type="text" class="form-control has-error bold" id="link" name="link"
-                                        required>
+                                @elseif(isset($category->field_name))
+                                    <div class="col-sm-8 m-1 text-right item">
+                                        <input type="text" class="form-control has-error bold" id="link" name="link"
+                                               required>
                                         <label for="link"
-                                        class="font-weight-bold">{{$category->field_name}}
-                                    <span
-                                        class="text-danger">*</span></label>
-                            </div>
-                        @endif
-                        @if(isset($category->custom_additional_field_name) && $category->type!="GAME")
-                            {{--<form action="{{url('user/address')}}" class="mt-5 check-out-form" method="post">--}}
-                            @foreach(explode(',',$category->custom_additional_field_name) as $field)
-                                <div class="col-sm-8 m-1 text-right item">
-                               
-                                    <input type="text" class="form-control has-error bold"
-                                            name="link"
-                                            required>
+                                               class="font-weight-bold">{{$category->field_name}}
+                                            <span
+                                                class="text-danger">*</span></label>
+                                    </div>
+                                @endif
+                                @if(isset($category->custom_additional_field_name) && $category->type!="GAME")
+                                    {{--<form action="{{url('user/address')}}" class="mt-5 check-out-form" method="post">--}}
+                                    @foreach(explode(',',$category->custom_additional_field_name) as $field)
+                                        <div class="col-sm-8 m-1 text-right item">
+
+                                            <input type="text" class="form-control has-error bold"
+                                                   name="link"
+                                                   required>
                                             <label for="link"
-                                            class="font-weight-bold">{{$field}} <span
-                                            class="text-danger">*</span></label>
+                                                   class="font-weight-bold">{{$field}} <span
+                                                    class="text-danger">*</span></label>
+                                        </div>
+                                    @endforeach
+
+                                    <div class="col-sm-2">
+                                        <a href="#" id="get_player_name" class="pull-right mr-2">
+                                            <i class="fa fa-cart-plus"></i>
+                                        </a>
+                                    </div>
+
+                                @endif
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="item">
+                                    <input type="number" id="quantity" name="quantity"
+                                           required
+                                           @if($category->type == '5SIM' || $category->type=='CODE')
+                                               readonly
+                                        @endif
+                                    >
+                                    <label for="quantity">@lang('Quantity')</label>
                                 </div>
-                            @endforeach
-
-                            <div class="col-sm-2">
-                                    <a href="#" id="get_player_name" class="pull-right mr-2" >
-                                        <i class="fa fa-cart-plus"></i>
-                                    </a>
-                                </div> 
-
-                        @endif
-                    </div>
-                    <div class="form-group col-md-6">
-                            <div class="item">
-                                <input type="number" id="quantity" name="quantity"
-                                         required
-                                        @if($category->type == '5SIM' || $category->type=='CODE')
-                                            readonly
-                                    @endif
-                                >
-                                <label for="quantity">@lang('Quantity')</label>
                             </div>
+                            <div class="form-row p-3 border border-white rounded">
+                                @if($category->type != '5SIM' && $category->type!='CODE')
+                                    <div class="form-group col-md-6 text-center">
+                                        <strong class="text-white">@lang('Min') :</strong>
+                                        <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;"
+                                              id="min"></span>
+                                    </div>
+                                    <div class="form-group col-md-6 text-center">
+                                        <strong class="text-white">@lang('Max') :</strong>
+                                        <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;"
+                                              id="max"></span>
+                                    </div>
+                                @endif
+                                <div class="form-group col-md-12 text-center">
+                                    <strong class="text-white">@lang('Price') :</strong>
+                                    <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="price"></span>
+                                </div>
+                            </div>
+
                         </div>
-                    <div class="form-row p-3 border border-white rounded">
-                        @if($category->type != '5SIM' && $category->type!='CODE')
-                            <div class="form-group col-md-6 text-center">
-                                <strong class="text-white">@lang('Min') :</strong>
-                                <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="min"></span>
-                            </div>
-                            <div class="form-group col-md-6 text-center">
-                                <strong class="text-white">@lang('Max') :</strong>
-                                <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="max"></span>
-                            </div>
-                        @endif
-                        <div class="form-group col-md-12 text-center">
-                                <strong class="text-white">@lang('Price') :</strong>
-                                <span style="color:#e44d32;font-size: 18px;letter-spacing: 1px;" id="price"></span>
-                            </div>
-                    </div>
-                   
+                        <div class="">
+                            <button type="button" class="btn" data-dismiss="modal">@lang('Close')</button>
+                            <button type="submit" class="btn" id="btn-save" value="add">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                @lang('Submit')
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="">
-             
-   
-                    <button type="button" class="btn" data-dismiss="modal">
-                        <a class="mt-0" href="#" data-dismiss="modal">
-                        @lang('Close')
-                        </a>
-                    </button>
-                    <button type="submit" class="btn" id="btn-save"
-                            value="add">   <a class="mt-0" href="#">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    @lang('Submit')
-                    </a></button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
 @endsection
 
