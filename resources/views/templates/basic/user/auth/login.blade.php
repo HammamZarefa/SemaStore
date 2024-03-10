@@ -4,6 +4,10 @@
     <!-- register-section start -->
     <section class="login-section" style="background-image: url('{{asset('assets/images/login.png')}}')">
         <div class="container">
+            <div class="">
+                <div class="">
+
+                            <div class="sign-card">
                                 <form class="create-account-form register-form" method="POST" action="{{ route('user.login')}}"
                                       onsubmit="return submitUserForm();">
                                     @csrf
@@ -51,6 +55,20 @@
                                         </div>
 {{--                                    </div>--}}
                                 </form>
+                            </div>
+
+
+                        <div class="col-lg-3 p-0"></div>
+                        {{--<div class="col-lg-6 p-0">--}}
+                            {{--<div class="change-catagory-area">--}}
+                                {{--<h4 class="title">--}}
+                                    {{--@lang('New here?')--}}
+                                {{--</h4>--}}
+                                {{--<a href="{{ route('user.register') }}" class="cmn-btn-active account-control-button">@lang('Create Account')</a>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                </div>
+            </div>
         </div>
     </section>
     <!-- register-section end -->

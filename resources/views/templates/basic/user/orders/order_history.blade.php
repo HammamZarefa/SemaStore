@@ -1,6 +1,5 @@
 @extends($activeTemplate.'layouts.master')
 @section('content')
-
                 <div class="row align-items-center">
                     <div class="col-sm-6 col-12 mb-2">
                         <div class="search-box">
@@ -98,7 +97,6 @@
                                 <span
                                     class="text--small badge font-weight-normal badge--dark">@lang('Waiting Code')</span>
                                 @endif
-
                             </td> -->
                         </tr>
                         @empty
@@ -107,7 +105,6 @@
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
                 <!--		Start Pagination -->
                 <div class='pagination-container' style="margin:20px auto">

@@ -188,19 +188,23 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "last_opened_file_path": "C:/Projects/SemaStore/resources/views/admin/users",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\SAAD\app\Http\Controllers\Admin" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\SemaStore\resources\views\admin\users" />
       <recent name="D:\CODA\SemaStore\resources\views\admin\inventory" />
       <recent name="D:\CODA\SemaStore\resources\views\admin\inventory\service" />
       <recent name="D:\CODA\SemaStore" />
       <recent name="C:\Projects\SemaStore\resources\views\templates\basic\user" />
-      <recent name="C:\Projects\SemaStore\assets\images\logoIcon" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\SAAD\app\Http\Controllers\Admin" />
     </key>
   </component>
   <component name="RunManager" selected="PHPUnit.ExampleTest.testTelegramNotification (1)">
@@ -296,6 +300,7 @@
       <workItem from="1704398057910" duration="3159000" />
       <workItem from="1704998509074" duration="1982000" />
       <workItem from="1705478563742" duration="18092000" />
+      <workItem from="1708894971350" duration="5906000" />
     </task>
     <servers />
   </component>
@@ -312,6 +317,7 @@
         </entry>
       </map>
     </option>
+
   </component>
   <component name="WindowStateProjectService">
     <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1705490914862">
