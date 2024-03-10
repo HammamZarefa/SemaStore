@@ -73,8 +73,8 @@
                                 </span>
                             </td> -->
                             <td data-label="@lang('Date')" >
-                                <h4><strong class="text-white">14$</strong></h4>
-                                <h6 style="text-decoration: line-through;color: #bab7bc;">22$</h6>
+                                <h4><strong class="text-white">{{$item->price}}$</strong></h4>
+                                <h6 style="text-decoration: line-through;color: #bab7bc;">{{$item->price + $item->price*2/100}}$</h6>
                             </td>
                             <!-- <td data-label="@lang('Status')">
                                         @if($item->status === 0)
