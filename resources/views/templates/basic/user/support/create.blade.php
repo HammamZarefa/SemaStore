@@ -2,57 +2,68 @@
 @section('content')
     <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <form  action="{{route('ticket.store')}}"  method="post" enctype="multipart/form-data" onsubmit="return submitUserForm();">
+                <div class="">
+                    <div class="order-box" style="position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translate(0, 0);padding-top:30px">
+                        <form class="row"  action="{{route('ticket.store')}}"  method="post" enctype="multipart/form-data" onsubmit="return submitUserForm();">
                             @csrf
-                            <div class="row">
-                                <div class="form-group col-md-6">
+                            <div class="col-12 col-md-6">
+                                <div class="item">
+                                    <input type="text" name="name" value="{{@$user->firstname . ' '.@$user->lastname}}" required>
                                     <label for="name">@lang('Name')</label>
-                                    <input type="text" name="name" value="{{@$user->firstname . ' '.@$user->lastname}}" class="form-control form-control-lg" placeholder="@lang('Enter Name')" required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="item">
+                                    <input type="email"  name="email" value="{{@$user->email}}" required>
                                     <label for="email">@lang('Email address')</label>
-                                    <input type="email"  name="email" value="{{@$user->email}}" class="form-control form-control-lg" placeholder="@lang('Enter your Email')" required>
                                 </div>
-
-                                <div class="form-group col-md-12">
+                                <div class="item">
+                                    <input type="text" name="subject" value="{{old('subject')}}" >
                                     <label for="website">@lang('Subject')</label>
-                                    <input type="text" name="subject" value="{{old('subject')}}" class="form-control form-control-lg" placeholder="@lang('Subject')" >
-                                </div>
-                                <div class="col-12 form-group">
-                                    <label for="inputMessage">@lang('Message')</label>
-                                    <textarea name="message" id="inputMessage" rows="6" class="form-control form-control-lg">{{old('message')}}</textarea>
                                 </div>
                             </div>
+                            <div class="item col-md-6 col-12 mb-3">
+                                <textarea name="message" id="inputMessage" style="height: 100%;">{{old('message')}}</textarea>
+                                <label for="inputMessage">@lang('Message')</label>
+                            </div>
 
-                            <div class="row form-group">
-
-                                <div class="form-group col-sm-9 file-upload">
-                                    <span class="text-muted text-uppercase label--text">@lang('Attachments')</span>
-                                    <div class="custom-file">
-                                        <input type="file" name="attachments[]" id="inputAttachments" class="custom-file-input" />
-                                        <label class="custom-file-label" for="customFile">@lang('Choose file')</label>
+                            <div class="col-12 ">
+                                <div class="row" id="fileUploadsContainer">
+                                <div class="col-12 col-md-6">
+                                <!-- <span class="text-white text-uppercase text-lang-responsv d-block w-100">@lang('Attachments')</span> -->
+                                    <div class="item">
+                                        <label style="left: 25px;" for="customFile">@lang('Choose file')</label>
+                                        <input type="file" name="attachments[]" id="inputAttachments"  />
                                     </div>
-                                    <p class="ticket-attachments-message text-muted">
+                                    <p class="ticket-attachments-message text-white text-lang-responsv">
                                         @lang('Allowed File Extensions'): .@lang('jpg'), .@lang('jpeg'), .@lang('png'), .@lang('pdf'), .@lang('doc'), .@lang('docx')
                                     </p>
-                                    <div id="fileUploadsContainer"></div>
                                 </div>
+                                </div>
+                                   
+                                  
 
-                                <div class="col-sm-1">
-                                    <button type="button" class="btn btn-success btn-sm mt-4" onclick="extraTicketAttachment()">
+                                  <div class="col-1">
+                                  <button type="button" class="btn btn-main btn-sm mt-2" style="padding: 3px 10px;" onclick="extraTicketAttachment()">
                                         <i class="fa fa-plus m-0"></i>
                                     </button>
-                                </div>
+                                  </div>
                             </div>
-
-                            <div class="row form-group justify-content-center">
-                                <div class="col-md-12">
-                                    <button class=" btn btn--danger" type="button" onclick="formReset()">&nbsp;@lang('Cancel')</button>
-                                    <button class="btn btn--primary" type="submit" id="recaptcha" ><i class="fa fa-paper-plane"></i>&nbsp;@lang('Submit')</button>
+                           
+                            <div class="col-12 text-center">
+                                    <a onclick="formReset()" class="mx-2" href="#" >
+                                        @lang('Cancel')
+                                    </a>
+                                   <a type="submit" href="#">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        @lang('Submit')
+                                        </a>
                                 </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -61,7 +72,7 @@
 @endsection
 
 @push('breadcrumb')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{ url()->previous() }}"><i
+    <a class="btn btn-main" href="{{ url()->previous() }}"><i
             class="fa fa-fw fa-backward"></i>@lang('Go Back')</a>
 @endpush
 
@@ -70,10 +81,10 @@
     <script>
         "use strict";
         function extraTicketAttachment() {
-            $("#fileUploadsContainer").append(`<div class="custom-file">
-                                        <input type="file" name="attachments[]" id="inputAttachments" class="custom-file-input" />
-                                        <label class="custom-file-label" for="customFile">@lang('Choose file')</label>
-                                    </div>`)
+            $("#fileUploadsContainer").append(`<div class="col-12 col-md-6"><div class="item">
+                                        <label style="left: 25px;" for="customFile">@lang('Choose file')</label>
+                                        <input type="file" name="attachments[]" id="inputAttachments"  />
+                                    </div></div>`)
         }
         function formReset() {
             window.location.href = "{{url()->current()}}"

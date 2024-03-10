@@ -1,3 +1,4 @@
+<div class="overlay d-none" id="overlay"></div>
 <div
     class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}"
     data-background="{{getImage('assets/admin/images/sidebar/2.jpg','400x800')}}">
@@ -8,7 +9,7 @@
                     src="{{getImage(imagePath()['logoIcon']['path'] .'/logo.png')}}" alt="@lang('image')"></a>
             <a href="{{route('home')}}" class="sidebar__logo-shape"><img
                     src="{{getImage(imagePath()['logoIcon']['path'] .'/favicon.png')}}" alt="@lang('image')"></a>
-            <button type="button" class="navbar__expand"></button>
+            <!-- <button type="button" class="navbar__expand"></button> -->
         </div>
 
         <div class="sidebar__menu-wrapper" id="sidebar__menuWrapper">
@@ -92,15 +93,20 @@
                 <li class="sidebar-menu-item {{menuActive('user.levels*')}}">
                     <a class="nav-link " href="{{route('user.levels.info')}}">
                         <i class="menu-icon la la-pizza-slice"></i>
-                        <span class="menu-title" style="color:#f05234 ">الشرائح </span>
+                        <span class="menu-title">الشرائح </span>
                     </a>
-                    <div class="progress">
+                    <!-- <div class="progress mt-2" style="background-color: #505862;">
                         <div class="progress-bar" role="progressbar"
                              style="width: {{auth()->user()->nextLevel()['progress']}}%;
-                             background: linear-gradient(to right, #4f5761,#f05335,  #fef8f7);"
+                             background: linear-gradient(to right, #4f5761,#f05335,  #f05335);"
                              aria-valuenow="{{auth()->user()->nextLevel()['progress']}}"
                              aria-valuemin="0" aria-valuemax="100">{{auth()->user()->nextLevel()['progress']}}%</div>
-                    </div>
+                    </div> -->
+                </li>
+                <li class="sidebar-menu-item" style="padding: 0 20px;">
+                        <span class="navbar text-white"> @lang('exchange rate') : &nbsp;<strong style="color:#eb5032">
+                        1 {{ $general->cur_sym}} = {{$general->exchange_rate}}
+                        </strong> </span>
                 </li>
 
 

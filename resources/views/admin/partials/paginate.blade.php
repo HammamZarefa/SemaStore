@@ -1,5 +1,5 @@
 <nav aria-label="...">
-    <ul class="pagination justify-content-end mb-0">
+    <ul class=" justify-content-center mb-0">
         @if ($paginator->onFirstPage())
 
         @else
