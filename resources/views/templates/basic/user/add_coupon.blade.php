@@ -12,7 +12,7 @@
   <form class="row" action="{{route('user.coupon.apply')}}"  method="post" enctype="multipart/form-data" onsubmit="return submitUserForm();">
       @csrf
     <div class="item col-12">
-    <input text="text" id="player_number" name="name" required="">
+    <input text="text" id="player_number" name="code" required="">
       <label for="name">@lang('Coupon')</label>
     </div>
 
