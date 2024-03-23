@@ -36,7 +36,7 @@
                             <!-- <th scope="col">@lang('Code')</th> -->
                             <!-- <th scope="col">@lang('verify')</th> -->
                             <th scope="col">@lang('Price')</th>
-                            <!-- <th scope="col">@lang('Status')</th> -->
+                            <th scope="col">@lang('Status')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,7 +76,7 @@
                                 <h4><strong class="text-white">{{$item->price}}$</strong></h4>
                                 <h6 style="text-decoration: line-through;color: #bab7bc;">{{$item->price + $item->price*2/100}}$</h6>
                             </td>
-                            <!-- <td data-label="@lang('Status')">
+                            <td data-label="@lang('Status')">
                                         @if($item->status === 0)
 
                                 <span
@@ -97,7 +97,7 @@
                                 <span
                                     class="text--small badge font-weight-normal badge--dark">@lang('Waiting Code')</span>
                                 @endif
-                            </td> -->
+                            </td>
                         </tr>
                         @empty
                         <tr>
@@ -145,6 +145,13 @@
                         <input class="vaild d-none" text="text"  readonly>
                             <label for="link">@lang('Old Price')</label>
                             <input class="vaild" text="text" readonly id="oldprice">
+                        </div>
+                        <div class="item col-12" style="text-align: start;margin-bottom:25px">
+                        <strong style="color:#fe5636;text-decoration: underline;line-height: 1.8;">@lang('ملاحظة') :</strong>
+                        <span style="color:#fff">
+                        @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
+                        @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
+                        </span>
                         </div>
                         <div class="col-12 text-center">
                         <a href="#" class="btn-main btn-close text-white">
