@@ -7890,7 +7890,9 @@ figure {
     /* margin-top: 40px; */
     letter-spacing: 4px
   }
-
+  .order-box .btn.disabled {
+    cursor: not-allowed !important;
+  }
   .order-box a:hover,.order-box button:hover {
     background: #e44d32;
     color: #fff;

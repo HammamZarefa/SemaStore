@@ -189,7 +189,7 @@
                     <div class="mb-3">
                         <h4 class="flicker-animation text-white" id="desc"></h4>
                     </div>
-                    <form method="post">
+                    <form method="post" id="order_post">
                         @csrf
                         <div class="modal-body">
 
@@ -280,7 +280,7 @@
                         </div>
                         <div class="">
                             <button type="button" class="btn" data-dismiss="modal">@lang('Close')</button>
-                            <button type="submit" class="btn" id="btn-save" value="add">
+                            <button  type="submit" class="btn" id="btn-save" value="add">
                                 <span></span>
                                 <span></span>
                                 <span></span>
@@ -380,8 +380,8 @@
                 $(document).scrollTop(sessionStorage.getItem("scrollPosition_" + pathName));
             }
         })(jQuery);
-        $('form').on('submit', function (e) {
-            $('button[type=submit], input[type=submit]', $(this)).blur().addClass('disabled is-submited');
+        $('#order_post').on('submit', function (e) {
+            $('#btn-save').blur().addClass('disabled is-submited');
         });
 
         $(document).on('click', 'button[type=submit].is-submited, input[type=submit].is-submited', function (e) {
