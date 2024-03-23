@@ -8,6 +8,7 @@ use App\Models\GeneralSetting;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Auth;
@@ -18,12 +19,18 @@ class OrderController extends Controller
 {
     public function order(Request $request, $category_id, $service_id)
     {
+        $user = auth()->user();
+        $latestOrder = Order::where('user_id', $user->id)->latest()->first();
+        if ($latestOrder && Carbon::now()->diffInSeconds($latestOrder->created_at) < 60) {
+            $notify[] = ['error', 'Please wait for at least one minute before placing a new order.'];
+            return back()->withNotify($notify);
+        }
+
         $service = Service::findOrFail($service_id);
         $request->validate([
 //            'link' => 'required|string',
 //            'quantity' => 'required|integer|gte:' . $service->min . '|lte:' . $service->max,
         ]);
-        $user = auth()->user();
         if (in_array($service->category->type, ['CODE', '5SIM', 'NUMBER']))
             $price = (getAmount($service->price_per_k - $service->price_per_k * ($user->levels->percent_profit) / 100));
         else
