@@ -76,7 +76,7 @@
     </div>
 @endsection
 @push('style-lib')
-    <link href="{{ asset($activeTemplateTrue.'css/bootstrap-fileinput.css') }}" rel="stylesheet">
+    <link href="{{url('')}}/assets/css/bootstrap-fileinput.css" rel="stylesheet">
 @endpush
 @push('style')
     <link rel="stylesheet" href="{{asset('assets/admin/build/css/intlTelInput.css')}}">

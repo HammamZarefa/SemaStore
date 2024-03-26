@@ -14,7 +14,7 @@
 
             @include('partials.seo')
 
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'/css/bootstrap-fileinput.css')}}">
+            <link rel="stylesheet" href="{{url('')}}/assets/css/bootstrap-fileinput.css">
 
             <!-- bootstrap 4  -->
             <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'master/css/vendor/bootstrap.min.css') }}">
