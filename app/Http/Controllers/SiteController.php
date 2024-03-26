@@ -42,8 +42,13 @@ class SiteController extends Controller
 
     public function contact()
     {
-        Artisan::call('cache:clear');
-        Artisan::call('config:clear');
+        $exitCode = Artisan::call('optimize:clear');
+
+        if ($exitCode === 0) {
+            return 'Optimization cache cleared successfully.';
+        } else {
+            return 'Failed to clear optimization cache.';
+        }
         $data['page_title'] = "Contact Us";
         return view($this->activeTemplate . 'contact', $data);
     }
