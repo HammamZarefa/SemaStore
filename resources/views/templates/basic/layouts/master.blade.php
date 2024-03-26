@@ -17,33 +17,34 @@
             <link rel="stylesheet" href="{{url('')}}/assets/templates/basic//js/bootstrap-fileinput.js">
 
             <!-- bootstrap 4  -->
-            <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'master/css/vendor/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/bootstrap.min.css">
             <!-- bootstrap toggle css -->
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-toggle.min.css')}}">
+            {{-- <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-toggle.min.css')}}"> --}}
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/bootstrap-toggle.min.css">
             <!-- fontawesome 5  -->
             <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/all.min.css')}}">
             <!-- line-awesome webfont -->
             <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/line-awesome.min.css')}}">
 
             <!-- custom select box css -->
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/nice-select.css')}}">
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/nice-select.css">
             <!-- code preview css -->
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/prism.css')}}">
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/nice-select.css">
             <!-- select 2 css -->
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/select2.min.css')}}">
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/select2.min.css">
             <!-- jvectormap css -->
             <link rel="stylesheet"
-                  href="{{asset($activeTemplateTrue.'master/css/vendor/jquery-jvectormap-2.0.5.css')}}">
+                  href="{{url('')}}/assets/templates/basic/master/css/vendor/jquery-jvectormap-2.0.5.css">
             <!-- datepicker css -->
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/datepicker.min.css')}}">
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/datepicker.min.css">
             <!-- timepicky for time picker css -->
-            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/jquery-timepicky.css')}}">
+            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/jquery-timepicky.css">
             <!-- bootstrap-clockpicker css -->
             <link rel="stylesheet"
-                  href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-clockpicker.min.css')}}">
+                  href="{{url('')}}/assets/templates/basic/master/css/vendor/bootstrap-clockpicker.min.css">
             <!-- bootstrap-pincode css -->
             <link rel="stylesheet"
-                  href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-pincode-input.css')}}">
+                  href="{{url('')}}/assets/templates/basic/master/css/vendor/bootstrap-pincode-input.css">
             <!-- dashdoard main css -->
             @if (App::isLocale('ar'))
                 <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/app-ar.css')}}">
