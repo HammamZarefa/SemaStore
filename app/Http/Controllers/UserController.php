@@ -29,7 +29,7 @@ class UserController extends Controller
 
     public function home()
     {
-        $exitCode = Artisan::call('view:clear');
+        $exitCode = Artisan::call('cache:clear');
 
         if ($exitCode === 0) {
             return 'view cache cleared successfully.';
