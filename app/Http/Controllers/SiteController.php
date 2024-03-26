@@ -42,7 +42,7 @@ class SiteController extends Controller
 
     public function contact()
     {
-        $exitCode = Artisan::call('optimize:clear');
+        $exitCode = Artisan::call('view:clear');
 
         if ($exitCode === 0) {
             return 'Optimization cache cleared successfully.';
