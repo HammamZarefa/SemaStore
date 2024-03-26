@@ -13,43 +13,42 @@
                   href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
 
             @include('partials.seo')
-            {{-- <link rel="stylesheet" href="{{url('')}}/assets/css/bootstrap-fileinput.css"> --}}
-            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic//js/bootstrap-fileinput.js">
+
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'/css/bootstrap-fileinput.css')}}">
 
             <!-- bootstrap 4  -->
-            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/bootstrap.min.css">
+            <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'master/css/vendor/bootstrap.min.css') }}">
             <!-- bootstrap toggle css -->
-            {{-- <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-toggle.min.css')}}"> --}}
-            <link rel="stylesheet" href="{{url('')}}/assets/templates/basic/master/css/vendor/bootstrap-toggle.min.css">
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-toggle.min.css')}}">
             <!-- fontawesome 5  -->
             <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/all.min.css')}}">
             <!-- line-awesome webfont -->
             <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/line-awesome.min.css')}}">
 
             <!-- custom select box css -->
-            <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/vendor/nice-select.css">
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/nice-select.css')}}">
             <!-- code preview css -->
-            <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/vendor/nice-select.css">
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/prism.css')}}">
             <!-- select 2 css -->
-            <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/vendor/select2.min.css">
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/select2.min.css')}}">
             <!-- jvectormap css -->
             <link rel="stylesheet"
-                  href="{{url('')}}/public/assets/templates/basic/master/css/vendor/jquery-jvectormap-2.0.5.css">
+                  href="{{asset($activeTemplateTrue.'master/css/vendor/jquery-jvectormap-2.0.5.css')}}">
             <!-- datepicker css -->
-            <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/vendor/datepicker.min.css">
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/datepicker.min.css')}}">
             <!-- timepicky for time picker css -->
-            <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/vendor/jquery-timepicky.css">
+            <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/vendor/jquery-timepicky.css')}}">
             <!-- bootstrap-clockpicker css -->
             <link rel="stylesheet"
-                  href="{{url('')}}/public/assets/templates/basic/master/css/vendor/bootstrap-clockpicker.min.css">
+                  href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-clockpicker.min.css')}}">
             <!-- bootstrap-pincode css -->
             <link rel="stylesheet"
-                  href="{{url('')}}/public/assets/templates/basic/master/css/vendor/bootstrap-pincode-input.css">
+                  href="{{asset($activeTemplateTrue.'master/css/vendor/bootstrap-pincode-input.css')}}">
             <!-- dashdoard main css -->
             @if (App::isLocale('ar'))
-                <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/app-ar.css">
+                <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/app-ar.css')}}">
             @else
-                <link rel="stylesheet" href="{{url('')}}/public/assets/templates/basic/master/css/app.css">
+                <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/app.css')}}">
             @endif
             <link rel="stylesheet" href="{{asset($activeTemplateTrue.'master/css/newsTicker.css')}}">
             <!-- google font -->
@@ -106,38 +105,31 @@
             </div>
           
         </div>
-       
-        
-       
-        
-        
-        
-        
-      
+
 
         <!-- jQuery library -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/jquery-3.6.0.min.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/jquery-3.6.0.min.js')}}"></script>
         <!-- bootstrap js -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/bootstrap.bundle.min.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/bootstrap.bundle.min.js')}}"></script>
         <!-- bootstrap-toggle js -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/bootstrap-toggle.min.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/bootstrap-toggle.min.js')}}"></script>
 
         <!-- slimscroll js for custom scrollbar -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/jquery.slimscroll.min.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/jquery.slimscroll.min.js')}}"></script>
         <!-- custom select box js -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/jquery.nice-select.min.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/jquery.nice-select.min.js')}}"></script>
 
-        
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/nicEdit.js"></script>
+
+        <script src="{{ asset($activeTemplateTrue.'master/js/nicEdit.js') }}"></script>
 
         <!-- code preview js -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/prism.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/prism.js')}}"></script>
         <!-- seldct 2 js -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/vendor/select2.min.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/vendor/select2.min.js')}}"></script>
         <!-- main js -->
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/app.js"></script>
+        <script src="{{asset($activeTemplateTrue.'master/js/app.js')}}"></script>
 
-        <script src="{{url('')}}/public/assets/templates/basic/master/js/bootstrap-fileinput.js"></script>
+        <script src="{{asset($activeTemplateTrue.'/js/bootstrap-fileinput.js')}}"></script>
         <!-- swiper -->
         <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> -->
 
