@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/clear', function(){
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
@@ -16,6 +17,25 @@ Route::get('cron', 'CronController@updateOrderApiStatus')->name('cron');
 |--------------------------------------------------------------------------
 */
 
+Route::get('/artisan/optimize/clear', function () {
+    $exitCode = Artisan::call('optimize:clear');
+
+    if ($exitCode === 0) {
+        return 'Optimization cache cleared successfully.';
+    } else {
+        return 'Failed to clear optimization cache.';
+    }
+});
+
+Route::get('/artisan/optimize', function () {
+    $exitCode = Artisan::call('optimize');
+
+    if ($exitCode === 0) {
+        return 'Optimization cleared successfully.';
+    } else {
+        return 'Failed to clear optimization.';
+    }
+});
 
 //Route::namespace('Gateway')->prefix('ipn')->name('ipn.')->group(function () {
 ////    Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');

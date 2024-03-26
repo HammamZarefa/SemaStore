@@ -40,8 +40,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            // dd($orders);
+                        @endphp
                         @forelse ($orders as $item)
-                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="14$" data-oldPrice="22$">
+                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3)}}$" data-oldPrice="{{number_format($item->price + $item->price*2/100,3)}}$">
                             <td  data-label="@lang('Order ID')">
                                <img style="border-radius:50%" width="50" src="{{ getImage(imagePath()['category']['path'].'/'. $item->image,imagePath()['category']['size'])}}" alt="">
 
@@ -73,8 +76,8 @@
                                 </span>
                             </td> -->
                             <td data-label="@lang('Date')" >
-                                <h4><strong class="text-white">{{$item->price}}$</strong></h4>
-                                <h6 style="text-decoration: line-through;color: #bab7bc;">{{$item->price + $item->price*2/100}}$</h6>
+                                <h4><strong class="text-white">{{number_format($item->price, 3)}}$</strong></h4>
+                                <h6 style="text-decoration: line-through;color: #bab7bc;">{{number_format($item->price + $item->price*2/100,3)}}$</h6>
                             </td>
                             <td data-label="@lang('Status')">
                                         @if($item->status === 0)
@@ -149,7 +152,7 @@
                         <div class="item col-12" style="text-align: start;margin-bottom:25px">
                         <strong style="color:#fe5636;text-decoration: underline;line-height: 1.8;">@lang('ملاحظة') :</strong>
                         <span style="color:#fff">
-                        @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
+                            @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
                         @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
                         </span>
                         </div>

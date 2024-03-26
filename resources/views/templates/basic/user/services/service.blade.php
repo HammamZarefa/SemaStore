@@ -55,7 +55,7 @@
                     @endphp
                     <div class="container">
                         <div class="row">
-
+                          
                             @foreach ($services as $item)
                                 <div class="col-lg-4 col-md-6 col-6 mt-4 mb-4 ">
                                     <a class="{{$item->is_available ? 'orderBtn' : 'not-allowed'}}"
@@ -75,6 +75,7 @@
                                                 <h2 class="mb-1">{{__($item->name)}}</h2>
                                                 <h3>{{ $general->cur_sym . (getAmount($item->price_per_k - $item->price_per_k * (auth()->user()->levels->percent_profit)/100))}}</h3>
                                             </div>
+                                       
                                             <div class="button-wrapper">
                                                 <a href="javascript:void(0)"
                                                    data-original-title="@lang('Details')" data-toggle="tooltip"
