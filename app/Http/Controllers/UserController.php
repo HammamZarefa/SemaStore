@@ -29,10 +29,10 @@ class UserController extends Controller
 
     public function home()
     {
-        $exitCode = Artisan::call('config:clear');
+        $exitCode = Artisan::call('route:clear');
 
         if ($exitCode === 0) {
-            return 'config cache cleared successfully.';
+            return 'route cache cleared successfully.';
         } else {
             return 'Failed to clear optimization cache.';
         }
