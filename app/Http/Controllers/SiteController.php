@@ -14,7 +14,7 @@ use App\Models\SupportMessage;
 use App\Models\SupportTicket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
+
 
 class SiteController extends Controller
 {
@@ -42,13 +42,6 @@ class SiteController extends Controller
 
     public function contact()
     {
-        $exitCode = Artisan::call('view:clear');
-
-        if ($exitCode === 0) {
-            return 'Optimization cache cleared successfully.';
-        } else {
-            return 'Failed to clear optimization cache.';
-        }
         $data['page_title'] = "Contact Us";
         return view($this->activeTemplate . 'contact', $data);
     }

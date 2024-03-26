@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
 use Validator;
+use Illuminate\Support\Facades\Artisan;
 
 class UserController extends Controller
 {
@@ -28,6 +29,13 @@ class UserController extends Controller
 
     public function home()
     {
+        $exitCode = Artisan::call('optimize:clear');
+
+        if ($exitCode === 0) {
+            return 'Optimization cache cleared successfully.';
+        } else {
+            return 'Failed to clear optimization cache.';
+        }
         $page_title = 'Dashboard';
         $user = \auth()->user();
 
