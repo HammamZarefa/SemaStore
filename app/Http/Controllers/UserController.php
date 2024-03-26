@@ -29,13 +29,13 @@ class UserController extends Controller
 
     public function home()
     {
-        $exitCode = Artisan::call('route:clear');
+        // $exitCode = Artisan::call('route:clear');
 
-        if ($exitCode === 0) {
-            return 'route cache cleared successfully.';
-        } else {
-            return 'Failed to clear optimization cache.';
-        }
+        // if ($exitCode === 0) {
+        //     return 'route cache cleared successfully.';
+        // } else {
+        //     return 'Failed to clear optimization cache.';
+        // }
         $page_title = 'Dashboard';
         $user = \auth()->user();
 
