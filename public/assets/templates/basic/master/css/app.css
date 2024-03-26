@@ -7472,3 +7472,9 @@ a.icon-btn {
 .text-lang-responsv{
     text-align: end;
 }
+.category-title {
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+}

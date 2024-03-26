@@ -26,3 +26,5 @@ storage
 /.idea
 composer.json
 composer.lock
+master.blade copy.php
+master.blade copy 2.php

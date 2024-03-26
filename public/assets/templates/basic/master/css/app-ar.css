@@ -7565,6 +7565,12 @@ a.icon-btn {
     width: 100%;
     display: block;
 }
+.category-title {
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+}
 figure {
     width: 100%;
     display: grid;

@@ -159,17 +159,17 @@
     {{--</div>--}}
     <div class="container">
         <div class="row">
-    @foreach($categories as $category)
-        <div class="col-md-3 col-4">
-            <a class="services-item" href="{{route('user.service',$category->id)}}">
-                <figure>
-                    <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">
-                    <figcaption>@lang($category->name)</figcaption>
-                </figure>
-            </a>
-        </div>
-        
-    @endforeach
+            @foreach($categories as $category)
+                <div class="col-md-3 col-4">
+                    <a class="services-item" href="{{route('user.service', $category->id)}}">
+                        <figure>
+                            <img src="https://semastore.net/assets/images/category/{{$category->image}}" alt="Mountains">
+                            <figcaption>@lang($category->name)</figcaption>
+                        </figure>
+                        <p class="category-title">{{$category->name}}</p> <!-- Add this line -->
+                    </a>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection

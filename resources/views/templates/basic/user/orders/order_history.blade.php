@@ -44,9 +44,12 @@
                             // dd($orders);
                         @endphp
                         @forelse ($orders as $item)
-                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3)}}$" data-oldPrice="{{number_format($item->price + $item->price*2/100,3)}}$">
+                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3)}}$" data-oldPrice="{{number_format($item->price + $item->price*2/100,3)}}$" data-details="{{ $item->details }}">
                             <td  data-label="@lang('Order ID')">
-                               <img style="border-radius:50%" width="50" src="{{ getImage(imagePath()['category']['path'].'/'. $item->image,imagePath()['category']['size'])}}" alt="">
+                                @php
+                            // dd($item->category->image);
+                        @endphp 
+                               <img style="border-radius:50%" width="50" src="https://semastore.net/assets/images/category/{{$item->category->image}}" alt="">
 
                             </td>
                             <td data-label="@lang('Category')" style="position: relative;">
@@ -146,14 +149,14 @@
                         </div>
                         <div class="item col-6 ">
                         <input class="vaild d-none" text="text"  readonly>
-                            <label for="link">@lang('Old Price')</label>
+                            <label for="link">@lang('الرصيد')</label>
                             <input class="vaild" text="text" readonly id="oldprice">
                         </div>
                         <div class="item col-12" style="text-align: start;margin-bottom:25px">
                         <strong style="color:#fe5636;text-decoration: underline;line-height: 1.8;">@lang('ملاحظة') :</strong>
                         <span style="color:#fff">
-                            @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
-                        @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن')
+                            <input class="vaild" text="text" readonly id="details">
+                        {{-- @lang('هذه الملاحظة تجريبية يتم إاضافتها من قبل الأدمن') --}}
                         </span>
                         </div>
                         <div class="col-12 text-center">
