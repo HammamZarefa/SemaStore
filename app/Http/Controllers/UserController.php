@@ -29,10 +29,7 @@ class UserController extends Controller
 
     public function home()
     {
-        Artisan::call('optimize:clear');
-       
-            $clearOutput = Artisan::output();
-            dd($clearOutput);
+          
         $page_title = 'Dashboard';
         $user = \auth()->user();
 
