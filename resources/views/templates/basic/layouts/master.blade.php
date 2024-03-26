@@ -13,7 +13,7 @@
                   href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
 
             @include('partials.seo')
-            <link rel="stylesheet" href="{{url('')}}/assets/css/bootstrap-fileinput.css">
+            {{-- <link rel="stylesheet" href="{{url('')}}/assets/css/bootstrap-fileinput.css"> --}}
             <link rel="stylesheet" href="{{url('')}}/assets/templates/basic//js/bootstrap-fileinput.js">
 
             <!-- bootstrap 4  -->
