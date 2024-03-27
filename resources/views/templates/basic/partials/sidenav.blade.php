@@ -87,7 +87,8 @@
                 <li class="sidebar-menu-item {{menuActive('ticket*')}}">
                     <a href="{{route('ticket')}}" class="nav-link ">
                         <i class="menu-icon la la-life-ring"></i>
-                        <span class="menu-title">@lang('Support Ticket')</span>
+                        {{-- <span class="menu-title">@lang('Support Ticket')</span> --}}
+                        <span class="menu-title">@lang('تقديم شكوى')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('user.levels*')}}">
@@ -102,6 +103,12 @@
                              aria-valuenow="{{auth()->user()->nextLevel()['progress']}}"
                              aria-valuemin="0" aria-valuemax="100">{{auth()->user()->nextLevel()['progress']}}%</div>
                     </div> -->
+                </li>
+                <li class="sidebar-menu-item {{ menuActive('contact.support*') }}">
+                    <a class="nav-link" href="https://wa.me/18102107475?text=مرحبا">
+                        <i class="menu-icon la la-whatsapp"></i>
+                        <span class="menu-title">الدعم التقني</span>
+                    </a>
                 </li>
                 <li class="sidebar-menu-item" style="padding: 0 20px;">
                         <span class="navbar text-white"> @lang('exchange rate') : &nbsp;<strong style="color:#eb5032">

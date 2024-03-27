@@ -40,11 +40,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            // dd($orders);
-                        @endphp
                         @forelse ($orders as $item)
-                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3)}}$" data-postBalance="{{$item->user->balance}}$" data-details="{{ $item->details }}">
+                        @php
+                          $transaction = $item->user->transactions()
+                          ->where('created_at', $item->created_at)
+                          ->first();
+                        $postBalance = $transaction ? $transaction->post_balance : 0;
+                        @endphp
+                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3, '.', '')}}$" data-postBalance="{{ number_format($postBalance, 3, '.', '')}}$" data-details="{{ $item->details }}">
                             <td  data-label="@lang('Order ID')">
                                 @php
                             // dd($item->category->image);
@@ -79,8 +82,8 @@
                                 </span>
                             </td> -->
                             <td data-label="@lang('Date')" >
-                                <h4><strong class="text-white">{{number_format($item->price, 3)}}$</strong></h4>
-                                <h6 style="text-decoration: line-through;color: #bab7bc;">{{number_format($item->price + $item->price*2/100,3)}}$</h6>
+                                <h4><strong class="text-white">{{number_format($item->price, 3, '.', '')}}$</strong></h4>
+                                <h6 style="text-decoration: line-through;color: #bab7bc;">{{ number_format($postBalance, 3, '.', '')}}$</h6>
                             </td>
                             <td data-label="@lang('Status')">
                                         @if($item->status === 0)
