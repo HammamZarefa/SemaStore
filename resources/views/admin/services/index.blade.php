@@ -81,7 +81,7 @@
                                            data-url="{{ route('admin.services.status', $item->id) }}">
                                             <i class="la la-eye{{ $item->status ? '-slash' : null }}"></i>
                                         </a>
-
+                                        
                                     </td>
                                 </tr>
                             @empty

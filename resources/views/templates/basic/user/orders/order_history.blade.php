@@ -44,7 +44,7 @@
                             // dd($orders);
                         @endphp
                         @forelse ($orders as $item)
-                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3)}}$" data-oldPrice="{{number_format($item->price + $item->price*2/100,3)}}$" data-details="{{ $item->details }}">
+                        <tr data-name="{{ __($item-> category -> name)}}" data-link="{{ $item-> link}}" data-newPrice="{{number_format($item->price, 3)}}$" data-postBalance="{{$item->user->balance}}$" data-details="{{ $item->details }}">
                             <td  data-label="@lang('Order ID')">
                                 @php
                             // dd($item->category->image);
@@ -149,8 +149,8 @@
                         </div>
                         <div class="item col-6 ">
                         <input class="vaild d-none" text="text"  readonly>
-                            <label for="link">@lang('الرصيد')</label>
-                            <input class="vaild" text="text" readonly id="oldprice">
+                            <label for="link">@lang('Post Balance')</label>
+                            <input class="vaild" text="text" readonly id="postBalance">
                         </div>
                         <div class="item col-12" style="text-align: start;margin-bottom:25px">
                         <strong style="color:#fe5636;text-decoration: underline;line-height: 1.8;">@lang('ملاحظة') :</strong>

@@ -47,6 +47,12 @@ class ServiceController extends Controller
             }
             $service->image = $filename;
         }
+        if($request->is_available == 'on'){
+
+            $service->status = 1;
+        }else{
+            $service->status = 0;
+        }
         $service->save();
 
         $notify[] = ['success', 'Service added!'];
@@ -55,7 +61,7 @@ class ServiceController extends Controller
 
     public function update(Request $request, $id)
     {
-        $service = Service::findOrFail($id);
+                $service = Service::findOrFail($id);
         $this->serviceAction($service, $request);
         $image = $request->file('image');
         $path = imagePath()['service']['path'];
@@ -70,6 +76,12 @@ class ServiceController extends Controller
                 return back()->withNotify($notify);
             }
             $service->image = $filename;
+        }
+        if($request->is_available == 'on'){
+
+            $service->status = 1;
+        }else{
+            $service->status = 0;
         }
         $service->save();
 

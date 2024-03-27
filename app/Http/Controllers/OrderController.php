@@ -20,7 +20,11 @@ class OrderController extends Controller
     public function order(Request $request, $category_id, $service_id)
     {
         $user = auth()->user();
-        $latestOrder = Order::where('user_id', $user->id)->latest()->first();
+        $latestOrder = Order::where('user_id', $user->id)
+        ->where('category_id', $category_id)
+        ->where('service_id', $service_id)
+        ->latest()
+        ->first();
         if ($latestOrder && Carbon::now()->diffInSeconds($latestOrder->created_at) < 60) {
             $notify[] = ['error', 'Please wait for at least one minute before placing a new order.'];
             return back()->withNotify($notify);
@@ -28,8 +32,8 @@ class OrderController extends Controller
 
         $service = Service::findOrFail($service_id);
         $request->validate([
-//            'link' => 'required|string',
-//            'quantity' => 'required|integer|gte:' . $service->min . '|lte:' . $service->max,
+            //            'link' => 'required|string',
+            //            'quantity' => 'required|integer|gte:' . $service->min . '|lte:' . $service->max,
         ]);
         if (in_array($service->category->type, ['CODE', '5SIM', 'NUMBER']))
             $price = (getAmount($service->price_per_k - $service->price_per_k * ($user->levels->percent_profit) / 100));
@@ -137,7 +141,6 @@ class OrderController extends Controller
                 'post_balance' => getAmount($user->balance),
                 'code' => $order->code
             ]);
-
         } else
             notify($user, 'PENDING_ORDER', [
                 'service_name' => $service->name,
@@ -316,10 +319,10 @@ class OrderController extends Controller
             $result['smsCode'] = $result['sms'][0]['code'];
         $order = Order::find($id);
         $user = auth()->user() ?? $order->user;
-//        if ($user->balance < $order->price) {
-//            $notify[] = ['error', 'Insufficient balance. Please deposit and try again!'];
-//            return back()->withNotify($notify);
-//        }
+        //        if ($user->balance < $order->price) {
+        //            $notify[] = ['error', 'Insufficient balance. Please deposit and try again!'];
+        //            return back()->withNotify($notify);
+        //        }
         $user->balance -= $order->price;
         $user->save();
         $order->status = 2;
@@ -336,8 +339,8 @@ class OrderController extends Controller
         $transaction->trx = getTrx();
         $transaction->save();
         return $result['smsCode'];
-//        $notify[] = ['success', 'Successfully placed your order!'];
-//        return back()->withNotify($notify);
+        //        $notify[] = ['success', 'Successfully placed your order!'];
+        //        return back()->withNotify($notify);
 
     }
 

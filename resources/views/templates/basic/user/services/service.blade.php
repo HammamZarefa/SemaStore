@@ -348,12 +348,12 @@
                 console.log(modal.find('input[name=quantity]').val(1))
                 //Calculate total price
 
-                {{--$(document).on("keyup", "#link", function () {--}}
-                {{--var link = $('#link').val()--}}
-                {{--var url="{{route('player',[$category->api,':link'])}}";--}}
-                {{--url = url.replace(':link', link);--}}
-                {{--// modal.find('input[name=custom]').val(1);--}}
-                {{--});--}}
+                // {{--$(document).on("keyup", "#link", function () {--}}
+                // {{--var link = $('#link').val()--}}
+                // {{--var url="{{route('player',[$category->api,':link'])}}";--}}
+                // {{--url = url.replace(':link', link);--}}
+                // {{--// modal.find('input[name=custom]').val(1);--}}
+                // {{--});--}}
 
                 //Calculate total price
                 $(document).on("keyup", "#quantity", function () {
