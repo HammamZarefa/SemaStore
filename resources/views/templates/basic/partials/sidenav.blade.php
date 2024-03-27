@@ -105,7 +105,7 @@
                     </div> -->
                 </li>
                 <li class="sidebar-menu-item {{ menuActive('contact.support*') }}">
-                    <a class="nav-link" href="https://wa.me/18102107475?text=مرحبا">
+                    <a class="nav-link" href="https://wa.me/0018102107475?text=مرحبا">
                         <i class="menu-icon la la-whatsapp"></i>
                         <span class="menu-title">الدعم التقني</span>
                     </a>
